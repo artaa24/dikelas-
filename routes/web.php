@@ -41,7 +41,20 @@ Route::middleware('auth')->group(function () {
         Route::get('/guru/dashboard', [\App\Http\Controllers\TeacherController::class, 'dashboard']);
         Route::get('/guru/classes', [\App\Http\Controllers\TeacherController::class, 'classes']);
         Route::post('/guru/classes', [\App\Http\Controllers\TeacherController::class, 'storeClass']);
+        Route::put('/guru/classes/{id}', [\App\Http\Controllers\TeacherController::class, 'updateClass']);
+        Route::delete('/guru/classes/{id}', [\App\Http\Controllers\TeacherController::class, 'destroyClass']);
+
         Route::get('/guru/assignments', [\App\Http\Controllers\TeacherController::class, 'assignments']);
+        Route::post('/guru/assignments', [\App\Http\Controllers\TeacherController::class, 'storeAssignment']);
+        Route::put('/guru/assignments/{id}', [\App\Http\Controllers\TeacherController::class, 'updateAssignment']);
+        Route::delete('/guru/assignments/{id}', [\App\Http\Controllers\TeacherController::class, 'destroyAssignment']);
+
+        Route::get('/guru/materials', [\App\Http\Controllers\TeacherController::class, 'materials']);
+        Route::post('/guru/materials', [\App\Http\Controllers\TeacherController::class, 'storeMaterial']);
+        Route::put('/guru/materials/{id}', [\App\Http\Controllers\TeacherController::class, 'updateMaterial']);
+        Route::delete('/guru/materials/{id}', [\App\Http\Controllers\TeacherController::class, 'destroyMaterial']);
+
+        Route::get('/guru/grades', function () { return view('auth.guru.grades'); });
     });
 
     // Admin Routes

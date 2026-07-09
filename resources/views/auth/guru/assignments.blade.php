@@ -20,7 +20,7 @@
             <!-- Logo -->
             <div class="p-8 pb-6">
                 <h1 class="text-2xl font-bold text-[#0A4B7D]">DIKELAS</h1>
-                <p class="text-xs text-gray-500 uppercase tracking-widest mt-1">Teacher Portal</p>
+                <p class="text-xs text-gray-500 uppercase tracking-widest mt-1">Teacher Dashboard</p>
             </div>
 
             <!-- Navigation -->
@@ -30,24 +30,24 @@
                     Dashboard
                 </a>
                 <a href="/guru/classes" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl font-medium transition-colors">
-                    <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                    <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
                     Kelasku
                 </a>
                 <a href="/guru/materials" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl font-medium transition-colors">
-                    <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                    <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path></svg>
                     Manajemen Materi
                 </a>
-                <!-- Active Link -->
                 <a href="/guru/assignments" class="flex items-center px-4 py-3 bg-[#9AE6F1] text-[#0A4B7D] rounded-xl font-medium transition-colors">
                     <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
                     Daftar Tugas
                 </a>
-                <a href="/guru/students" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl font-medium transition-colors">
-                    <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                    Anggota
+                <a href="/guru/grades" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl font-medium transition-colors">
+                    <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Penilaian
                 </a>
             </nav>
         </div>
+
         <div class="p-4 mb-4">
             <div class="h-px bg-gray-100 mb-4 w-full"></div>
             <a href="/login" class="flex items-center px-4 py-2 text-gray-600 hover:text-red-600 transition-colors">
@@ -61,135 +61,208 @@
     <main class="flex-1 flex flex-col h-full overflow-hidden">
         
         <!-- Header -->
-        <header class="h-20 bg-white flex items-center justify-between px-8 xl:px-10 flex-shrink-0 border-b border-gray-100">
-            <!-- Search -->
-            <div class="flex-1 max-w-2xl">
-                <div class="relative">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-5">
-                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                    </span>
-                    <input type="text" class="w-full bg-gray-50 border border-gray-200 rounded-full py-3 pl-12 pr-4 text-sm focus:outline-none focus:ring-1 focus:ring-[#007cc3]" placeholder="Cari penugasan...">
-                </div>
-            </div>
+        <header class="h-20 bg-[#F8FAFC] flex items-center justify-between px-8 flex-shrink-0 border-b border-gray-100">
+            <h2 class="text-2xl font-bold text-gray-900">Daftar Tugas</h2>
 
             <!-- Right Actions -->
             <div class="flex items-center space-x-6 ml-6">
-                <a href="#" class="text-gray-400 hover:text-gray-600 relative">
+                <a href="/notifications" class="text-gray-400 hover:text-gray-600 relative">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-                    <span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-white"></span>
                 </a>
                 <div class="h-8 w-px bg-gray-200"></div>
-                <a href="#" class="flex items-center cursor-pointer">
-                    <img class="h-10 w-10 rounded-full object-cover border-2 border-gray-100 shadow-sm" src="https://i.pravatar.cc/150?img=32" alt="Teacher Avatar">
+                <a href="/edit-profile" class="flex items-center cursor-pointer">
+                    <img class="h-10 w-10 rounded-full object-cover border-2 border-white shadow-sm" src="https://i.pravatar.cc/150?img=68" alt="Teacher Avatar">
                 </a>
             </div>
         </header>
 
-        <!-- Scrollable Content -->
-        <div class="flex-1 overflow-auto hide-scrollbar p-8 xl:p-10">
+        <!-- Scrollable Dashboard Content -->
+        <div class="flex-1 overflow-auto hide-scrollbar px-8 py-8">
             
-            <div class="flex justify-between items-end mb-8">
-                <div>
-                    <h2 class="text-3xl font-bold text-gray-900 mb-2">Daftar Tugas</h2>
-                    <p class="text-gray-500">Kelola dan nilai semua tugas yang telah dikumpulkan oleh murid Anda.</p>
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+                <div class="flex bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm w-full max-w-md">
+                    <div class="pl-4 py-2.5 flex items-center">
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </div>
+                    <input type="text" class="w-full px-3 py-2.5 text-sm focus:outline-none" placeholder="Cari judul tugas...">
+                    <select class="border-l border-gray-200 bg-gray-50 px-3 text-sm focus:outline-none text-gray-600">
+                        <option>Semua Kelas</option>
+                        @foreach($classrooms as $c)
+                        <option value="{{ $c->id }}">{{ $c->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
-                <a href="/guru/create-assignment" class="bg-[#007cc3] hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg shadow-blue-500/30 flex items-center transition">
+                
+                <button onclick="document.getElementById('createAssignmentModal').classList.remove('hidden')" class="bg-[#007cc3] text-white px-5 py-2.5 rounded-xl font-medium shadow-sm hover:bg-blue-700 transition flex items-center whitespace-nowrap">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                     Buat Tugas Baru
-                </a>
+                </button>
             </div>
 
-            <!-- Task Cards -->
+            <!-- Assignments Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @forelse($assignments as $assignment)
-                @php
-                    $totalStudents = $assignment->classroom->students->count();
-                    $totalSubmissions = $assignment->submissions->count();
-                    $gradedSubmissions = $assignment->submissions->where('status', 'graded')->count();
-                    $pendingGrades = $totalSubmissions - $gradedSubmissions;
-                    
-                    $isLate = now()->gt($assignment->deadline_at);
-                    
-                    if ($totalStudents > 0) {
-                        $progressPercent = ($gradedSubmissions / $totalStudents) * 100;
-                    } else {
-                        $progressPercent = 0;
-                    }
-                    
-                    if ($pendingGrades > 0) {
-                        $statusBadge = '<span class="bg-yellow-50 text-yellow-600 px-3 py-1 rounded-full text-xs font-bold border border-yellow-100 uppercase tracking-wider">Perlu Dinilai</span>';
-                        $borderColor = 'border-yellow-100';
-                        $lineColor = 'from-yellow-400 to-orange-400';
-                        $progressColor = 'bg-yellow-400';
-                    } elseif ($isLate) {
-                        $statusBadge = '<span class="bg-red-50 text-red-600 px-3 py-1 rounded-full text-xs font-bold border border-red-100 uppercase tracking-wider">Tenggat Lewat</span>';
-                        $borderColor = 'border-red-100';
-                        $lineColor = 'from-red-500 to-orange-400';
-                        $progressColor = 'bg-[#007cc3]';
-                    } else {
-                        $statusBadge = '<span class="bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-xs font-bold border border-blue-100 uppercase tracking-wider">Aktif</span>';
-                        $borderColor = 'border-gray-100';
-                        $lineColor = 'bg-white'; // No top line if not urgent
-                        $progressColor = 'bg-[#007cc3]';
-                    }
-                    
-                    if ($gradedSubmissions == $totalStudents && $totalStudents > 0) {
-                        $statusBadge = '<span class="bg-green-50 text-green-600 px-3 py-1 rounded-full text-xs font-bold border border-green-100 uppercase tracking-wider">Selesai</span>';
-                        $borderColor = 'border-green-100';
-                        $lineColor = 'from-green-400 to-emerald-400';
-                        $progressColor = 'bg-green-500';
-                    }
-                @endphp
-                <div class="bg-white rounded-3xl shadow-sm border {{ $borderColor }} overflow-hidden flex flex-col h-full relative">
-                    @if($lineColor != 'bg-white')
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r {{ $lineColor }}"></div>
+                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 flex flex-col relative overflow-hidden group">
+                    @if(\Carbon\Carbon::parse($assignment->deadline_at)->isPast())
+                    <div class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full mt-6 mr-6"></div>
+                    @else
+                    <div class="absolute top-0 right-0 w-2 h-2 bg-green-500 rounded-full mt-6 mr-6"></div>
                     @endif
-                    <div class="p-6 flex-1">
-                        <div class="flex justify-between items-start mb-4">
-                            {!! $statusBadge !!}
-                            <div class="bg-gray-100 px-3 py-1 rounded-full text-xs font-bold text-gray-600">{{ $assignment->classroom->name }}</div>
+                    
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center mr-4">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $assignment->title }}</h3>
-                        <p class="text-sm text-gray-500 line-clamp-2 mb-4">{{ $assignment->description }}</p>
-                        
-                        <div class="bg-gray-50 rounded-xl p-4 mt-auto">
-                            <div class="flex justify-between text-sm mb-2">
-                                <span class="font-medium text-gray-600">Progress Penilaian</span>
-                                <span class="font-bold text-gray-900">{{ $gradedSubmissions }} / {{ $totalStudents }}</span>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-2">
-                                <div class="{{ $progressColor }} h-2 rounded-full" style="width: {{ $progressPercent }}%"></div>
-                            </div>
-                            @if($pendingGrades > 0)
-                                <p class="text-xs text-red-500 mt-2 font-medium">{{ $pendingGrades }} Siswa belum dinilai!</p>
-                            @elseif($gradedSubmissions == $totalStudents && $totalStudents > 0)
-                                <p class="text-xs text-green-600 mt-2 font-medium">Semua siswa sudah dinilai.</p>
-                            @else
-                                <p class="text-xs text-gray-500 mt-2 font-medium">Menunggu pengumpulan...</p>
-                            @endif
+                        <div class="flex-1 pr-6">
+                            <h3 class="font-bold text-gray-900 text-lg leading-tight">{{ $assignment->title }}</h3>
+                            <p class="text-xs text-gray-500 mt-1">{{ $assignment->classroom->name ?? 'Semua Kelas' }}</p>
                         </div>
                     </div>
-                    <div class="px-6 py-4 border-t border-gray-50 flex gap-3">
-                        <a href="{{ route('classrooms.show', $assignment->classroom_id) }}" class="flex-1 text-center bg-white border border-[#007cc3] text-[#007cc3] font-semibold py-2 rounded-xl text-sm hover:bg-blue-50 transition">Buka Kelas</a>
-                        <a href="{{ route('assignments.show', $assignment->id) }}" class="flex-1 bg-red-50 border border-red-100 text-red-600 font-semibold py-2 rounded-xl text-sm hover:bg-red-100 transition text-center">
-                            {{ $pendingGrades > 0 ? 'Nilai Sekarang' : 'Lihat Rekap' }}
-                        </a>
+                    
+                    <p class="text-sm text-gray-600 mb-6 flex-1">{{ Str::limit($assignment->description, 80) }}</p>
+                    
+                    <div class="bg-gray-50 rounded-xl p-3 flex justify-between items-center mb-6">
+                        <div class="text-center">
+                            <p class="text-xs text-gray-500 mb-0.5">Dikumpulkan</p>
+                            @php
+                                $totalStudents = $assignment->classroom ? $assignment->classroom->students->count() : 0;
+                                $submittedCount = $assignment->submissions->count();
+                                $gradedCount = $assignment->submissions->whereNotNull('score')->count();
+                            @endphp
+                            <p class="font-bold text-gray-900 text-lg">{{ $submittedCount }}<span class="text-sm font-normal text-gray-500">/{{ $totalStudents > 0 ? $totalStudents : '-' }}</span></p>
+                        </div>
+                        <div class="w-px h-8 bg-gray-200"></div>
+                        <div class="text-center">
+                            <p class="text-xs text-gray-500 mb-0.5">Sudah Dinilai</p>
+                            <p class="font-bold text-green-600 text-lg">{{ $gradedCount }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between text-xs font-medium border-t border-gray-100 pt-4">
+                        <div class="flex items-center {{ \Carbon\Carbon::parse($assignment->deadline_at)->isPast() ? 'text-red-500' : 'text-orange-500' }}">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Batas: {{ \Carbon\Carbon::parse($assignment->deadline_at)->format('d M Y H:i') }}
+                        </div>
+                        
+                        <div class="flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button onclick="document.getElementById('editAssignmentModal{{ $assignment->id }}').classList.remove('hidden')" class="p-1.5 bg-blue-50 text-blue-600 rounded hover:bg-blue-100 transition" title="Edit Tugas">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                            </button>
+                            <form action="/guru/assignments/{{ $assignment->id }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus tugas ini?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="p-1.5 bg-red-50 text-red-600 rounded hover:bg-red-100 transition" title="Hapus Tugas">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                </button>
+                            </form>
+                            <a href="/guru/grades" class="text-[#007cc3] hover:underline px-3 py-1.5 bg-blue-50 rounded-lg transition ml-1">Detail</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Edit Assignment Modal -->
+                <div id="editAssignmentModal{{ $assignment->id }}" class="fixed inset-0 z-50 hidden">
+                    <div class="absolute inset-0 bg-gray-900/50 backdrop-blur-sm" onclick="document.getElementById('editAssignmentModal{{ $assignment->id }}').classList.add('hidden')"></div>
+                    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
+                        <div class="relative bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg w-full">
+                            <form action="/guru/assignments/{{ $assignment->id }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                    <div class="mb-4">
+                                        <h3 class="text-xl leading-6 font-bold text-gray-900">Edit Tugas</h3>
+                                    </div>
+                                    <div class="space-y-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Judul Tugas</label>
+                                            <input type="text" name="title" value="{{ $assignment->title }}" required class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-[#007cc3] focus:border-[#007cc3] outline-none transition">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi Tugas</label>
+                                            <textarea name="description" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-[#007cc3] focus:border-[#007cc3] outline-none transition">{{ $assignment->description }}</textarea>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Batas Waktu (Deadline)</label>
+                                            <input type="datetime-local" name="deadline_at" value="{{ \Carbon\Carbon::parse($assignment->deadline_at)->format('Y-m-d\TH:i') }}" required class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-[#007cc3] focus:border-[#007cc3] outline-none transition">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse border-t border-gray-100">
+                                    <button type="submit" class="w-full inline-flex justify-center rounded-xl border border-transparent shadow-sm px-4 py-2 bg-[#007cc3] text-base font-medium text-white hover:bg-blue-700 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm transition">
+                                        Simpan Perubahan
+                                    </button>
+                                    <button type="button" onclick="document.getElementById('editAssignmentModal{{ $assignment->id }}').classList.add('hidden')" class="mt-3 w-full inline-flex justify-center rounded-xl border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm transition">
+                                        Batal
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
                 @empty
-                <div class="col-span-full text-center py-12">
-                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
-                        <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
-                    </div>
-                    <h3 class="text-lg font-bold text-gray-900 mb-2">Belum ada tugas</h3>
-                    <p class="text-gray-500">Anda belum membuat tugas apapun di kelas Anda.</p>
+                <div class="col-span-full py-12 text-center text-gray-500 bg-white rounded-3xl border border-gray-100">
+                    <svg class="mx-auto h-12 w-12 text-gray-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                    <p class="text-lg font-medium text-gray-900">Belum ada tugas</p>
+                    <p class="text-sm mt-1">Berikan penugasan baru untuk murid di kelas Anda.</p>
                 </div>
                 @endforelse
-
             </div>
-            
+
         </div>
     </main>
+
+    <!-- Create Assignment Modal -->
+    <div id="createAssignmentModal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-gray-900/50 backdrop-blur-sm" onclick="document.getElementById('createAssignmentModal').classList.add('hidden')"></div>
+        <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
+            <div class="relative bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg w-full">
+                <form action="/guru/assignments" method="POST">
+                    @csrf
+                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                        <div class="mb-4">
+                            <h3 class="text-xl leading-6 font-bold text-gray-900" id="modal-title">Buat Tugas Baru</h3>
+                            <p class="text-sm text-gray-500 mt-1">Berikan penugasan untuk siswa di kelas Anda.</p>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Judul Tugas</label>
+                                <input type="text" name="title" required class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-[#007cc3] focus:border-[#007cc3] outline-none transition" placeholder="Contoh: Latihan Soal UTS">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi Tugas</label>
+                                <textarea name="description" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-[#007cc3] focus:border-[#007cc3] outline-none transition" placeholder="Tuliskan instruksi pengerjaan tugas..."></textarea>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Batas Waktu (Deadline)</label>
+                                    <input type="datetime-local" name="deadline_at" required class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-[#007cc3] focus:border-[#007cc3] outline-none transition">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Kelas Tujuan</label>
+                                    <select name="classroom_id" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-[#007cc3] focus:border-[#007cc3] outline-none transition text-gray-700">
+                                        @foreach($classrooms as $c)
+                                        <option value="{{ $c->id }}">{{ $c->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse border-t border-gray-100">
+                        <button type="submit" class="w-full inline-flex justify-center rounded-xl border border-transparent shadow-sm px-4 py-2 bg-[#007cc3] text-base font-medium text-white hover:bg-blue-700 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm transition">
+                            Simpan Tugas
+                        </button>
+                        <button type="button" onclick="document.getElementById('createAssignmentModal').classList.add('hidden')" class="mt-3 w-full inline-flex justify-center rounded-xl border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm transition">
+                            Batal
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>

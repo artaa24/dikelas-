@@ -20,41 +20,36 @@
             <!-- Logo -->
             <div class="p-8 pb-6">
                 <h1 class="text-2xl font-bold text-[#0A4B7D]">DIKELAS</h1>
-                <p class="text-xs text-gray-500 uppercase tracking-widest mt-1">Teacher Portal</p>
+                <p class="text-xs text-gray-500 uppercase tracking-widest mt-1">Teacher Dashboard</p>
             </div>
 
             <!-- Navigation -->
             <nav class="px-4 space-y-2">
-                <!-- Active Link -->
                 <a href="/guru/dashboard" class="flex items-center px-4 py-3 bg-[#9AE6F1] text-[#0A4B7D] rounded-xl font-medium transition-colors">
                     <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
                     Dashboard
                 </a>
                 <a href="/guru/classes" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl font-medium transition-colors">
-                    <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                    <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
                     Kelasku
                 </a>
                 <a href="/guru/materials" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl font-medium transition-colors">
-                    <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                    <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path></svg>
                     Manajemen Materi
                 </a>
                 <a href="/guru/assignments" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl font-medium transition-colors">
                     <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
                     Daftar Tugas
                 </a>
-                <a href="/guru/students" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl font-medium transition-colors">
-                    <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                    Anggota
+                <a href="/guru/grades" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl font-medium transition-colors">
+                    <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Penilaian
                 </a>
             </nav>
         </div>
 
         <div class="p-4 mb-4">
             <div class="h-px bg-gray-100 mb-4 w-full"></div>
-            <a href="#" class="flex items-center px-4 py-2 text-gray-600 hover:text-gray-900 transition-colors mb-2">
-                <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                Pusat Bantuan
-            </a>
             <a href="/login" class="flex items-center px-4 py-2 text-gray-600 hover:text-red-600 transition-colors">
                 <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
                 Keluar
@@ -66,208 +61,176 @@
     <main class="flex-1 flex flex-col h-full overflow-hidden">
         
         <!-- Header -->
-        <header class="h-20 bg-white flex items-center justify-between px-8 xl:px-10 flex-shrink-0 border-b border-gray-100">
-            <!-- Breadcrumbs / Greeting -->
-            <div>
-                <h2 class="text-xl font-bold text-gray-800">Selamat datang, Guru! 👋</h2>
-                <p class="text-sm text-gray-500">Mari kelola kelas Anda dengan mudah hari ini.</p>
+        <header class="h-20 bg-[#F8FAFC] flex items-center justify-between px-8 flex-shrink-0">
+            <!-- Search -->
+            <div class="flex-1 max-w-2xl">
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-5">
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </span>
+                    <input type="text" class="w-full bg-white border border-gray-200 rounded-full py-3.5 pl-12 pr-4 text-sm focus:outline-none focus:ring-1 focus:ring-[#007cc3]" placeholder="Cari kelas, murid, atau tugas...">
+                </div>
             </div>
 
             <!-- Right Actions -->
-            <div class="flex items-center space-x-6">
-                <!-- Add New Button -->
-                <a href="/guru/create-material" class="hidden sm:flex bg-[#007cc3] hover:bg-blue-700 text-white text-sm font-semibold py-2 px-5 rounded-full shadow-sm shadow-blue-500/20 transition-all items-center">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                    Tambah Materi
-                </a>
-                
-                <a href="#" class="text-gray-400 hover:text-gray-600 relative">
+            <div class="flex items-center space-x-6 ml-6">
+                <a href="/notifications" class="text-gray-400 hover:text-gray-600 relative">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-                    <span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-white"></span>
+                    <span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-[#F8FAFC]"></span>
                 </a>
-                
                 <div class="h-8 w-px bg-gray-200"></div>
-                <a href="#" class="flex items-center cursor-pointer">
-                    <img class="h-10 w-10 rounded-full object-cover border-2 border-gray-100 shadow-sm" src="https://i.pravatar.cc/150?img=32" alt="Teacher Avatar">
-                    <div class="ml-3 hidden md:block">
-                        <p class="text-sm font-semibold text-gray-700">{{ auth()->user()->name }}</p>
-                        <p class="text-xs text-gray-500">Guru / Pengajar</p>
-                    </div>
+                <a href="/edit-profile" class="flex items-center cursor-pointer">
+                    <img class="h-10 w-10 rounded-full object-cover border-2 border-white shadow-sm" src="https://i.pravatar.cc/150?img=68" alt="Teacher Avatar">
                 </a>
             </div>
         </header>
 
-        <!-- Scrollable Content -->
-        <div class="flex-1 overflow-auto hide-scrollbar p-8 xl:p-10">
+        <!-- Scrollable Dashboard Content -->
+        <div class="flex-1 overflow-auto hide-scrollbar px-8 pb-10 flex flex-col xl:flex-row gap-8">
             
-            <!-- Quick Stats -->
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
-                <div class="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-500 mb-1">Total Kelas</p>
-                        <h3 class="text-3xl font-bold text-gray-900">{{ $totalClasses }}</h3>
-                    </div>
-                    <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center">
-                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-                    </div>
-                </div>
-                
-                <div class="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-500 mb-1">Total Murid</p>
-                        <h3 class="text-3xl font-bold text-gray-900">{{ $totalStudents }}</h3>
-                    </div>
-                    <div class="w-14 h-14 rounded-2xl bg-green-50 text-green-600 flex items-center justify-center">
-                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                    </div>
+            <!-- Left Side (Main Dashboard Content) -->
+            <div class="flex-1 min-w-0">
+                <!-- Welcome Banner -->
+                <div class="bg-gradient-to-r from-[#0A4B7D] to-[#007cc3] rounded-[2rem] p-10 text-white mb-8 shadow-xl shadow-blue-900/10 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-white opacity-5 rounded-full"></div>
+                    <div class="absolute bottom-0 left-10 -mb-16 w-32 h-32 bg-white opacity-10 rounded-full"></div>
+                    
+                    <h2 class="text-3xl font-bold mb-3 flex items-center relative z-10">
+                        Selamat Pagi, Guru Hebat! 👋
+                    </h2>
+                    <p class="text-blue-50 text-lg mb-8 max-w-2xl relative z-10 opacity-90">
+                        Hari ini Anda memiliki 3 jadwal kelas dan 45 tugas murid yang perlu diperiksa. Terus menginspirasi anak bangsa!
+                    </p>
+                    <a href="/guru/classes" class="bg-white text-[#0A4B7D] px-6 py-3 rounded-full font-semibold shadow hover:bg-gray-50 transition relative z-10 inline-block text-center text-sm">
+                        Kelola Kelas Sekarang
+                    </a>
                 </div>
 
-                <div class="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-500 mb-1">Materi Terupload</p>
-                        <h3 class="text-3xl font-bold text-gray-900">{{ $totalMaterials }}</h3>
-                    </div>
-                    <div class="w-14 h-14 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center">
-                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-3xl p-6 border border-red-100 shadow-sm flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-red-500 mb-1">Perlu Dinilai</p>
-                        <h3 class="text-3xl font-bold text-red-600">{{ $pendingGrades }}</h3>
-                    </div>
-                    <div class="w-14 h-14 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center">
-                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Content Grid -->
-            <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
-                
-                <!-- Jadwal Hari ini -->
-                <div class="xl:col-span-2 space-y-6">
-                    <div class="flex justify-between items-end mb-2">
-                        <h3 class="text-xl font-bold text-gray-900">Jadwal Mengajar Hari Ini</h3>
-                        <a href="#" class="text-sm font-semibold text-[#007cc3] hover:underline">Lihat Kalender Lengkap</a>
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-10">
+                    <div class="bg-white rounded-[2rem] p-6 shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center">
+                        <div class="w-12 h-12 rounded-full bg-[#E5F9FC] text-[#02B1CC] flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                        </div>
+                        <p class="text-xs text-gray-500 font-medium mb-1">Total Kelas</p>
+                        <h3 class="text-3xl font-bold text-gray-900">{{ $totalClasses ?? 4 }}</h3>
                     </div>
                     
-                    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden p-2">
-                        <!-- Class Schedule Item -->
-                        <div class="flex items-center p-4 hover:bg-gray-50 rounded-2xl transition cursor-pointer">
-                            <div class="w-16 h-16 bg-blue-50 text-[#007cc3] rounded-2xl flex flex-col items-center justify-center font-bold mr-5">
-                                <span class="text-lg leading-none">08</span>
-                                <span class="text-xs uppercase mt-1 opacity-70">AM</span>
-                            </div>
-                            <div class="flex-1">
-                                <span class="inline-block px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-bold rounded-md mb-1">Algoritma & Pemrograman</span>
-                                <h4 class="font-bold text-gray-900 text-lg">Kelas X - IPA 1</h4>
-                                <p class="text-sm text-gray-500">Ruang Laboratorium Komputer A</p>
-                            </div>
-                            <button class="px-5 py-2.5 bg-white border border-[#007cc3] text-[#007cc3] font-semibold rounded-xl text-sm hover:bg-[#007cc3] hover:text-white transition">
-                                Mulai Kelas
-                            </button>
+                    <div class="bg-white rounded-[2rem] p-6 shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center">
+                        <div class="w-12 h-12 rounded-full bg-[#E8F1FC] text-[#3B82F6] flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                         </div>
-                        
-                        <!-- Class Schedule Item -->
-                        <div class="flex items-center p-4 hover:bg-gray-50 rounded-2xl transition cursor-pointer border-t border-gray-50">
-                            <div class="w-16 h-16 bg-gray-50 text-gray-400 rounded-2xl flex flex-col items-center justify-center font-bold mr-5">
-                                <span class="text-lg leading-none">10</span>
-                                <span class="text-xs uppercase mt-1 opacity-70">AM</span>
-                            </div>
-                            <div class="flex-1">
-                                <span class="inline-block px-2 py-0.5 bg-purple-100 text-purple-700 text-xs font-bold rounded-md mb-1">Matematika Diskrit</span>
-                                <h4 class="font-bold text-gray-900 text-lg">Kelas X - IPS 2</h4>
-                                <p class="text-sm text-gray-500">Ruang Kelas 104</p>
-                            </div>
-                            <button class="px-5 py-2.5 bg-gray-50 border border-gray-200 text-gray-400 font-semibold rounded-xl text-sm hover:text-gray-600 transition">
-                                Persiapan
-                            </button>
-                        </div>
+                        <p class="text-xs text-gray-500 font-medium mb-1">Total Murid</p>
+                        <h3 class="text-3xl font-bold text-gray-900">{{ $totalStudents ?? 120 }}</h3>
                     </div>
 
-                    <!-- Aktivitas Terbaru -->
-                    <div class="flex justify-between items-end mb-2 mt-8">
-                        <h3 class="text-xl font-bold text-gray-900">Aktivitas Terkini</h3>
-                        <a href="/guru/activity" class="text-sm font-semibold text-[#007cc3] hover:underline">Lihat Aktivitas Lengkap</a>
-                    </div>
-                    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6">
-                        <div class="space-y-6">
-                            <!-- Item -->
-                            <div class="flex">
-                                <div class="mt-1 flex-shrink-0">
-                                    <div class="w-2.5 h-2.5 bg-[#007cc3] rounded-full"></div>
-                                    <div class="w-px h-full bg-gray-200 mx-auto mt-2"></div>
-                                </div>
-                                <div class="ml-4 pb-2">
-                                    <p class="text-sm text-gray-500 mb-0.5">Baru Saja</p>
-                                    <p class="text-sm font-semibold text-gray-800">Budi Santoso mengumpulkan <span class="text-[#007cc3]">Tugas Array 1</span></p>
-                                </div>
-                            </div>
-                            <!-- Item -->
-                            <div class="flex">
-                                <div class="mt-1 flex-shrink-0">
-                                    <div class="w-2.5 h-2.5 bg-green-500 rounded-full"></div>
-                                    <div class="w-px h-full bg-gray-200 mx-auto mt-2"></div>
-                                </div>
-                                <div class="ml-4 pb-2">
-                                    <p class="text-sm text-gray-500 mb-0.5">2 Jam yang lalu</p>
-                                    <p class="text-sm font-semibold text-gray-800">Anda menambahkan materi baru <span class="text-[#007cc3]">Pengantar C++</span></p>
-                                </div>
-                            </div>
-                            <!-- Item -->
-                            <div class="flex">
-                                <div class="mt-1 flex-shrink-0">
-                                    <div class="w-2.5 h-2.5 bg-gray-300 rounded-full"></div>
-                                </div>
-                                <div class="ml-4">
-                                    <p class="text-sm text-gray-500 mb-0.5">Kemarin</p>
-                                    <p class="text-sm font-semibold text-gray-800">15 siswa telah menyelesaikan Kuis Matematika Dasar</p>
-                                </div>
-                            </div>
+                    <div class="bg-white rounded-[2rem] p-6 shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center">
+                        <div class="w-12 h-12 rounded-full bg-[#EBF8F2] text-[#10B981] flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
                         </div>
+                        <p class="text-xs text-gray-500 font-medium mb-1">Materi Dibagikan</p>
+                        <h3 class="text-3xl font-bold text-gray-900">{{ $totalMaterials ?? 32 }}</h3>
                     </div>
 
+                    <div class="bg-white rounded-[2rem] p-6 shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full mt-6 mr-6"></div>
+                        <div class="w-12 h-12 rounded-full bg-[#FEF2F2] text-[#EF4444] flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+                        </div>
+                        <p class="text-xs text-gray-500 font-medium mb-1">Perlu Dinilai</p>
+                        <h3 class="text-3xl font-bold text-gray-900">{{ $pendingGrades ?? 45 }}</h3>
+                    </div>
                 </div>
 
-                <!-- Right Sidebar (Tasks to Grade) -->
-                <div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-6">Perlu Penilaian</h3>
-                    
-                    <div class="bg-white rounded-3xl border border-red-100 shadow-sm p-1 overflow-hidden relative">
-                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-orange-400"></div>
-                        
-                        <!-- Assignment Item -->
-                        <div class="p-5 border-b border-gray-50 hover:bg-gray-50 transition cursor-pointer group rounded-t-3xl">
-                            <div class="flex justify-between items-start mb-2">
-                                <span class="text-[10px] font-bold uppercase tracking-wider text-red-500 bg-red-50 px-2 py-0.5 rounded">Tenggat Lewat</span>
-                                <span class="text-xs font-bold text-gray-400">12/30 Kumpul</span>
-                            </div>
-                            <h4 class="font-bold text-gray-800 group-hover:text-[#007cc3] transition">Tugas Algoritma #1</h4>
-                            <p class="text-xs text-gray-500 mt-1">Kelas X - IPA 1</p>
-                            <a href="/guru/assignments" class="mt-3 block text-center w-full bg-red-50 text-red-600 font-semibold text-xs py-2 rounded-xl group-hover:bg-red-500 group-hover:text-white transition">
-                                Nilai Sekarang
-                            </a>
-                        </div>
+                <!-- Kelas Anda -->
+                <div class="mb-6 flex justify-between items-end">
+                    <h3 class="text-xl font-bold text-gray-900">Kelas Aktif Anda</h3>
+                    <a href="/guru/classes" class="text-sm text-[#007cc3] font-medium hover:underline">Kelola Semua Kelas</a>
+                </div>
 
-                        <!-- Assignment Item -->
-                        <div class="p-5 border-b border-gray-50 hover:bg-gray-50 transition cursor-pointer group">
-                            <div class="flex justify-between items-start mb-2">
-                                <span class="text-[10px] font-bold uppercase tracking-wider text-yellow-600 bg-yellow-50 px-2 py-0.5 rounded border border-yellow-200">Hari ini</span>
-                                <span class="text-xs font-bold text-gray-400">28/30 Kumpul</span>
-                            </div>
-                            <h4 class="font-bold text-gray-800 group-hover:text-[#007cc3] transition">Kuis Matematika</h4>
-                            <p class="text-xs text-gray-500 mt-1">Kelas X - IPS 2</p>
-                            <a href="/guru/assignments" class="mt-3 block text-center w-full bg-gray-50 text-gray-600 border border-gray-200 font-semibold text-xs py-2 rounded-xl hover:bg-gray-100 transition">
-                                Cek Progress
-                            </a>
-                        </div>
-                    </div>
+                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-2 overflow-hidden">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
+                                <th class="p-4 font-medium rounded-tl-xl rounded-bl-xl">Nama Kelas</th>
+                                <th class="p-4 font-medium">Jadwal</th>
+                                <th class="p-4 font-medium">Siswa</th>
+                                <th class="p-4 font-medium text-right rounded-tr-xl rounded-br-xl">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm">
+                            <tr class="border-b border-gray-50 hover:bg-gray-50/50 transition">
+                                <td class="p-4">
+                                    <div class="flex items-center">
+                                        <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-bold mr-3">
+                                            XI
+                                        </div>
+                                        <div>
+                                            <p class="font-bold text-gray-900">Matematika Wajib - XI IPA 1</p>
+                                            <p class="text-xs text-gray-500">Kode: MTK-XI-1</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-4 text-gray-600">Senin, 08:00 WIB</td>
+                                <td class="p-4 text-gray-600">32 Siswa</td>
+                                <td class="p-4 text-right">
+                                    <a href="/guru/classes" class="inline-block px-4 py-2 bg-gray-100 text-gray-700 hover:bg-gray-200 rounded-lg font-medium text-xs transition">Masuk Kelas</a>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-gray-50 hover:bg-gray-50/50 transition">
+                                <td class="p-4">
+                                    <div class="flex items-center">
+                                        <div class="w-10 h-10 rounded-lg bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold mr-3">
+                                            XI
+                                        </div>
+                                        <div>
+                                            <p class="font-bold text-gray-900">Matematika Wajib - XI IPA 2</p>
+                                            <p class="text-xs text-gray-500">Kode: MTK-XI-2</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-4 text-gray-600">Selasa, 10:00 WIB</td>
+                                <td class="p-4 text-gray-600">30 Siswa</td>
+                                <td class="p-4 text-right">
+                                    <a href="/guru/classes" class="inline-block px-4 py-2 bg-gray-100 text-gray-700 hover:bg-gray-200 rounded-lg font-medium text-xs transition">Masuk Kelas</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
 
             </div>
             
+            <!-- Right Sidebar (Agenda) -->
+            <div class="w-full xl:w-80 flex-shrink-0 space-y-6">
+                <!-- Tugas Menunggu Penilaian -->
+                <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="font-bold text-gray-900">Menunggu Penilaian</h3>
+                        <a href="/guru/grades" class="text-xs text-[#007cc3] font-medium hover:underline">Buka</a>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="p-4 border border-gray-100 rounded-2xl hover:border-blue-100 transition">
+                            <h4 class="font-bold text-gray-900 text-sm mb-1">Tugas Persamaan Kuadrat</h4>
+                            <p class="text-xs text-gray-500 mb-3">XI IPA 1 • Deadline: Kemarin</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs font-medium text-orange-500 bg-orange-50 px-2.5 py-1 rounded-full">28/32 Kumpul</span>
+                                <a href="/guru/grades" class="text-xs font-bold text-[#007cc3] hover:underline">Nilai Sekarang</a>
+                            </div>
+                        </div>
+                        <div class="p-4 border border-gray-100 rounded-2xl hover:border-blue-100 transition">
+                            <h4 class="font-bold text-gray-900 text-sm mb-1">Tugas Matriks Dasar</h4>
+                            <p class="text-xs text-gray-500 mb-3">XI IPA 2 • Deadline: Hari ini</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs font-medium text-orange-500 bg-orange-50 px-2.5 py-1 rounded-full">15/30 Kumpul</span>
+                                <a href="/guru/grades" class="text-xs font-bold text-[#007cc3] hover:underline">Pantau</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </main>
 
