@@ -39,8 +39,7 @@
             <h2 class="text-3xl font-bold text-center text-gray-900 mb-3 tracking-tight">Selamat Datang di DIKELAS</h2>
             <p class="text-center text-gray-500 mb-10 text-sm">Masuk untuk melanjutkan proses belajar mengajar Anda.</p>
 
-            <form action="{{ route('login') }}" method="POST">
-                @csrf
+            <form action="/dashboard" method="GET">
                 <div class="mb-5">
                     <label class="block text-gray-700 text-sm font-medium mb-2" for="email">Email</label>
                     <div class="relative">

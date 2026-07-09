@@ -65,8 +65,7 @@
                 <p class="text-gray-500 text-sm">Lengkapi data diri Anda untuk mulai belajar.</p>
             </div>
             
-            <form action="{{ route('register') }}" method="POST">
-                @csrf
+            <form action="/login" method="GET">
                 <div class="space-y-5">
                     <!-- Nama Lengkap -->
                     <div>
