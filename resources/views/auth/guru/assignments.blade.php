@@ -93,10 +93,10 @@
                     <h2 class="text-3xl font-bold text-gray-900 mb-2">Daftar Tugas</h2>
                     <p class="text-gray-500">Kelola dan nilai semua tugas yang telah dikumpulkan oleh murid Anda.</p>
                 </div>
-                <button class="bg-[#007cc3] hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg shadow-blue-500/30 flex items-center transition">
+                <a href="/guru/create-assignment" class="bg-[#007cc3] hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg shadow-blue-500/30 flex items-center transition">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                     Buat Tugas Baru
-                </button>
+                </a>
             </div>
 
             <!-- Task Cards -->
@@ -125,7 +125,7 @@
                     </div>
                     <div class="px-6 py-4 border-t border-gray-50 flex gap-3">
                         <button class="flex-1 bg-white border border-[#007cc3] text-[#007cc3] font-semibold py-2 rounded-xl text-sm hover:bg-blue-50 transition">Edit Tugas</button>
-                        <button class="flex-1 bg-red-50 border border-red-100 text-red-600 font-semibold py-2 rounded-xl text-sm hover:bg-red-100 transition">Nilai Sekarang</button>
+                        <a href="/guru/assignment-preview" class="flex-1 bg-red-50 border border-red-100 text-red-600 font-semibold py-2 rounded-xl text-sm hover:bg-red-100 transition text-center">Nilai Sekarang</a>
                     </div>
                 </div>
                 
@@ -151,7 +151,7 @@
                         </div>
                     </div>
                     <div class="px-6 py-4 border-t border-gray-50">
-                        <button class="w-full bg-white border border-gray-200 text-gray-600 font-semibold py-2 rounded-xl text-sm hover:bg-gray-50 transition">Lihat Rekap Nilai</button>
+                        <a href="/guru/assignment-preview" class="w-full inline-block text-center bg-white border border-gray-200 text-gray-600 font-semibold py-2 rounded-xl text-sm hover:bg-gray-50 transition">Lihat Rekap Nilai</a>
                     </div>
                 </div>
 

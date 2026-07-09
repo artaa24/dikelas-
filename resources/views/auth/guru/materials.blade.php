@@ -93,10 +93,10 @@
                     <h2 class="text-3xl font-bold text-gray-900 mb-2">Manajemen Materi</h2>
                     <p class="text-gray-500">Kelola semua modul, video, dan dokumen pelajaran Anda.</p>
                 </div>
-                <button class="bg-[#007cc3] hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg shadow-blue-500/30 flex items-center transition">
+                <a href="/guru/create-material" class="bg-[#007cc3] hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg shadow-blue-500/30 flex items-center transition">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                     Tambah Materi Baru
-                </button>
+                </a>
             </div>
 
             <!-- Material List -->

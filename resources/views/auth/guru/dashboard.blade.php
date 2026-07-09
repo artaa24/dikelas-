@@ -76,7 +76,7 @@
             <!-- Right Actions -->
             <div class="flex items-center space-x-6">
                 <!-- Add New Button -->
-                <a href="/guru/materials" class="hidden sm:flex bg-[#007cc3] hover:bg-blue-700 text-white text-sm font-semibold py-2 px-5 rounded-full shadow-sm shadow-blue-500/20 transition-all items-center">
+                <a href="/guru/create-material" class="hidden sm:flex bg-[#007cc3] hover:bg-blue-700 text-white text-sm font-semibold py-2 px-5 rounded-full shadow-sm shadow-blue-500/20 transition-all items-center">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                     Tambah Materi
                 </a>
@@ -190,6 +190,7 @@
                     <!-- Aktivitas Terbaru -->
                     <div class="flex justify-between items-end mb-2 mt-8">
                         <h3 class="text-xl font-bold text-gray-900">Aktivitas Terkini</h3>
+                        <a href="/guru/activity" class="text-sm font-semibold text-[#007cc3] hover:underline">Lihat Aktivitas Lengkap</a>
                     </div>
                     <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6">
                         <div class="space-y-6">
@@ -245,7 +246,7 @@
                             </div>
                             <h4 class="font-bold text-gray-800 group-hover:text-[#007cc3] transition">Tugas Algoritma #1</h4>
                             <p class="text-xs text-gray-500 mt-1">Kelas X - IPA 1</p>
-                            <a href="/guru/assignments" class="mt-3 block text-center w-full bg-red-50 text-red-600 font-semibold text-xs py-2 rounded-xl group-hover:bg-red-500 group-hover:text-white transition">
+                            <a href="/guru/assignment-preview" class="mt-3 block text-center w-full bg-red-50 text-red-600 font-semibold text-xs py-2 rounded-xl group-hover:bg-red-500 group-hover:text-white transition">
                                 Nilai Sekarang
                             </a>
                         </div>

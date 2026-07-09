@@ -74,3 +74,45 @@ Route::get('/guru/assignments', function () {
 Route::get('/guru/students', function () {
     return view('auth.guru.students');
 });
+
+Route::get('/guru/create-material', function () {
+    return view('auth.guru.create-material');
+});
+
+Route::get('/guru/create-assignment', function () {
+    return view('auth.guru.create-assignment');
+});
+
+Route::get('/guru/add-student', function () {
+    return view('auth.guru.add-student');
+});
+
+Route::get('/guru/assignment-preview', function () {
+    return view('auth.guru.assignment-preview');
+});
+
+Route::get('/guru/activity', function () {
+    return view('auth.guru.activity');
+});
+
+Route::get('/guru/settings', function () {
+    return view('auth.guru.settings');
+});
+
+// General / Student Extra Routes
+Route::get('/bookmarks', function () {
+    return view('auth.bookmarks');
+});
+
+Route::get('/announcements', function () {
+    return view('auth.announcements');
+});
+
+Route::get('/edit-profile', function () {
+    return view('auth.edit-profile');
+});
+
+Route::get('/help-center', function () {
+    return view('auth.help-center');
+});
+
