@@ -109,12 +109,12 @@
                     <div class="absolute bottom-0 left-10 -mb-16 w-32 h-32 bg-white opacity-10 rounded-full"></div>
                     
                     <h2 class="text-4xl font-bold mb-4 flex items-center relative z-10">
-                        Selamat Datang, Budi!
+                        Selamat Datang, {{ explode(' ', auth()->user()->name)[0] }}!
                     </h2>
                     <p class="text-blue-50 text-lg mb-8 max-w-2xl relative z-10 leading-relaxed opacity-90">
                         Siap belajar hari ini? Kamu telah menyelesaikan 85% dari target mingguanmu. Hanya tinggal 2 tugas lagi untuk mencapai IPK sempurna!
                     </p>
-                    <a href="/class-detail" class="bg-white text-[#007cc3] px-6 py-3 rounded-full font-semibold shadow hover:bg-gray-50 transition relative z-10 inline-block text-center">
+                    <a href="/courses" class="bg-white text-[#007cc3] px-6 py-3 rounded-full font-semibold shadow hover:bg-gray-50 transition relative z-10 inline-block text-center">
                         Lanjutkan Belajar
                     </a>
                 </div>
@@ -125,8 +125,8 @@
                         <div class="w-12 h-12 rounded-full bg-[#E5F9FC] text-[#02B1CC] flex items-center justify-center mb-4">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                         </div>
-                        <p class="text-sm text-gray-500 font-medium mb-1">Selesai</p>
-                        <h3 class="text-3xl font-bold text-gray-900 mb-1">12 <span class="text-sm font-medium text-gray-500">Matkul</span></h3>
+                        <p class="text-sm text-gray-500 font-medium mb-1">Kelas Diikuti</p>
+                        <h3 class="text-3xl font-bold text-gray-900 mb-1">{{ $totalClasses }} <span class="text-sm font-medium text-gray-500">Kelas</span></h3>
                     </div>
                     
                     <div class="bg-white rounded-[2rem] p-6 shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center">
@@ -134,7 +134,7 @@
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
                         </div>
                         <p class="text-sm text-gray-500 font-medium mb-1">Tugas Aktif</p>
-                        <h3 class="text-3xl font-bold text-gray-900 mb-1">4 <span class="text-sm font-medium text-gray-500">Tugas</span></h3>
+                        <h3 class="text-3xl font-bold text-gray-900 mb-1">{{ $activeAssignments }} <span class="text-sm font-medium text-gray-500">Tugas</span></h3>
                     </div>
 
                     <div class="bg-white rounded-[2rem] p-6 shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center">
@@ -142,7 +142,7 @@
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
                         </div>
                         <p class="text-sm text-gray-500 font-medium mb-1">IPK Semester</p>
-                        <h3 class="text-3xl font-bold text-gray-900 mb-1">3.92 <span class="text-sm font-medium text-gray-500">Skala 4.0</span></h3>
+                        <h3 class="text-3xl font-bold text-gray-900 mb-1">{{ $gpa }} <span class="text-sm font-medium text-gray-500">Skala 4.0</span></h3>
                     </div>
 
                     <div class="bg-white rounded-[2rem] p-6 shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center">

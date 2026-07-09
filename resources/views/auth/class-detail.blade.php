@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detail Kelas - DIKELAS</title>
+    <title>{{ $classroom->name }} - DIKELAS</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -82,26 +82,37 @@
             </div>
 
             <div class="absolute bottom-0 left-0 w-full px-10 pb-8 flex justify-between items-end">
-                <div>
-                    <span class="inline-block px-3 py-1 bg-[#9AE6F1] text-[#0A4B7D] text-xs font-bold rounded-md mb-3">Teknologi</span>
-                    <h2 class="text-4xl font-bold text-white mb-2 shadow-sm">Algoritma & Pemrograman Dasar</h2>
-                    <p class="text-blue-100 flex items-center text-sm">
-                        <img src="https://i.pravatar.cc/150?img=32" class="w-6 h-6 rounded-full border border-white/50 mr-2" alt="Instructor">
-                        Dosen: Prof. Dr. Agus, S.Kom., M.T.
-                    </p>
+                <div class="flex-1">
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="bg-[#9AE6F1] text-[#0A4B7D] px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">{{ $classroom->code }}</span>
+                        <span class="text-sm font-medium text-white/80"><svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg> {{ $classroom->students->count() }} Siswa</span>
+                    </div>
+                    <h2 class="text-3xl lg:text-4xl font-bold text-white mb-2">{{ $classroom->name }}</h2>
+                    <p class="text-white/80 font-medium text-lg">Dosen: {{ $classroom->teacher->name }}</p>
                 </div>
-                <div class="hidden md:block">
-                    <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20 text-white min-w-[200px]">
-                        <div class="flex justify-between items-end mb-2">
-                            <span class="text-xs text-blue-100">Progres Anda</span>
-                            <span class="font-bold text-xl">75%</span>
-                        </div>
-                        <div class="w-full bg-white/20 rounded-full h-2 mb-1">
-                            <div class="bg-[#9AE6F1] h-2 rounded-full" style="width: 75%"></div>
-                        </div>
-                        <span class="text-[10px] text-blue-100">18 dari 24 modul diselesaikan</span>
+                
+                @if(auth()->user()->role->name == 'student')
+                <div class="bg-white/10 rounded-2xl p-4 border border-white/20 w-full md:w-64 backdrop-blur-sm">
+                    <div class="flex justify-between items-end mb-2">
+                        <span class="text-white/80 text-sm font-medium">Progress Belajar</span>
+                        <span class="text-white font-bold text-lg">0%</span>
+                    </div>
+                    <div class="w-full bg-black/20 rounded-full h-2">
+                        <div class="bg-white h-2 rounded-full" style="width: 0%"></div>
                     </div>
                 </div>
+                @else
+                <div class="hidden md:flex gap-3">
+                    <button onclick="document.getElementById('uploadMaterialModal').classList.remove('hidden')" class="bg-white text-[#0A4B7D] hover:bg-gray-100 font-bold py-2.5 px-5 rounded-xl shadow-md transition flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                        Materi Baru
+                    </button>
+                    <button onclick="document.getElementById('createAssignmentModal').classList.remove('hidden')" class="bg-[#9AE6F1] text-[#0A4B7D] hover:bg-cyan-200 font-bold py-2.5 px-5 rounded-xl shadow-md transition flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        Tugas Baru
+                    </button>
+                </div>
+                @endif
             </div>
         </div>
 
@@ -120,81 +131,74 @@
 
                 <h3 class="text-xl font-bold text-gray-900 mb-4">Silabus Pembelajaran</h3>
                 
-                <div class="space-y-4">
-                    <!-- Modul 1 (Completed) -->
+                <div class="space-y-6">
+                    <!-- Modul Materi (Dinamis) -->
                     <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
                         <div class="p-5 flex items-center justify-between cursor-pointer bg-gray-50/50 hover:bg-gray-50 transition border-b border-gray-100">
                             <div class="flex items-center">
-                                <div class="bg-green-100 text-green-600 rounded-full p-2 mr-4">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                                <div class="bg-[#007cc3] text-white rounded-full p-2 mr-4">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
                                 </div>
                                 <div>
-                                    <h4 class="font-bold text-gray-900 text-lg">Modul 1: Pengenalan Algoritma</h4>
-                                    <p class="text-sm text-gray-500">Konsep dasar, sejarah, dan kegunaan algoritma dalam pemrograman.</p>
+                                    <h4 class="font-bold text-gray-900 text-lg">Daftar Materi Pembelajaran</h4>
+                                    <p class="text-sm text-gray-500">Materi yang diunggah oleh guru untuk dipelajari.</p>
                                 </div>
                             </div>
-                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                         </div>
                         <div class="p-2 bg-white">
-                            <!-- Items inside module -->
-                            <a href="/material-detail" class="flex items-center px-4 py-3 hover:bg-gray-50 rounded-xl transition group">
-                                <svg class="w-5 h-5 text-gray-400 group-hover:text-[#007cc3] mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                <span class="text-sm font-medium text-gray-700 flex-1">Video: Apa itu Algoritma?</span>
-                                <span class="text-xs text-gray-400">12 Menit</span>
+                            @forelse($materials as $material)
+                            <a href="{{ Storage::url($material->file_path) }}" target="_blank" class="flex items-center px-4 py-3 hover:bg-gray-50 rounded-xl transition group border-b border-gray-50 last:border-0">
+                                @if($material->file_type == 'pdf')
+                                <svg class="w-5 h-5 text-red-500 group-hover:text-red-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                                @elseif($material->file_type == 'video')
+                                <svg class="w-5 h-5 text-purple-500 group-hover:text-purple-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                @else
+                                <svg class="w-5 h-5 text-blue-500 group-hover:text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                @endif
+                                <div class="flex-1">
+                                    <span class="text-sm font-bold text-gray-800 block">{{ $material->title }}</span>
+                                    <span class="text-xs text-gray-500 line-clamp-1">{{ $material->description }}</span>
+                                </div>
+                                <span class="text-xs font-semibold text-gray-400 bg-gray-100 px-2 py-1 rounded-md">{{ number_format($material->file_size / 1024, 0) }} KB</span>
                             </a>
-                            <a href="/material-detail" class="flex items-center px-4 py-3 hover:bg-gray-50 rounded-xl transition group">
-                                <svg class="w-5 h-5 text-gray-400 group-hover:text-[#007cc3] mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                                <span class="text-sm font-medium text-gray-700 flex-1">Materi Bacaan: Sejarah Algoritma</span>
-                                <span class="text-xs text-gray-400">PDF</span>
-                            </a>
+                            @empty
+                            <div class="p-8 text-center text-gray-500">
+                                Belum ada materi yang diunggah.
+                            </div>
+                            @endforelse
                         </div>
                     </div>
 
-                    <!-- Modul 2 (Current) -->
-                    <div class="bg-white rounded-2xl border-2 border-[#007cc3] shadow-md overflow-hidden">
-                        <div class="p-5 flex items-center justify-between cursor-pointer">
+                    <!-- Modul Tugas (Dinamis) -->
+                    <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+                        <div class="p-5 flex items-center justify-between cursor-pointer bg-gray-50/50 hover:bg-gray-50 transition border-b border-gray-100">
                             <div class="flex items-center">
-                                <div class="bg-[#007cc3] text-white rounded-full w-9 h-9 flex items-center justify-center font-bold mr-4">
-                                    2
+                                <div class="bg-red-100 text-red-600 rounded-full p-2 mr-4">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
                                 </div>
                                 <div>
-                                    <h4 class="font-bold text-gray-900 text-lg">Modul 2: Struktur Data Dasar (Array)</h4>
-                                    <p class="text-sm text-gray-500">Mempelajari cara menyimpan kumpulan data secara statis.</p>
+                                    <h4 class="font-bold text-gray-900 text-lg">Daftar Tugas Kelas</h4>
+                                    <p class="text-sm text-gray-500">Tugas yang harus dikerjakan oleh murid.</p>
                                 </div>
                             </div>
-                            <svg class="w-5 h-5 text-gray-600 transform rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                         </div>
-                        <div class="p-2 bg-white border-t border-gray-100">
-                            <a href="/material-detail" class="flex items-center px-4 py-3 bg-blue-50/50 rounded-xl transition group">
-                                <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                <span class="text-sm font-medium text-gray-900 flex-1 line-through opacity-75">Pengenalan Array</span>
-                                <span class="text-xs font-bold text-green-600">Selesai</span>
-                            </a>
-                            <a href="/material-detail" class="flex items-center px-4 py-3 bg-white hover:bg-gray-50 rounded-xl transition group border-l-2 border-blue-500 shadow-sm my-1">
-                                <svg class="w-5 h-5 text-blue-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                <span class="text-sm font-bold text-[#007cc3] flex-1">Video: Array Multi-dimensi (Sedang Berjalan)</span>
-                                <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-md font-bold">Lanjutkan</span>
-                            </a>
-                            <a href="/assignment-detail" class="flex items-center px-4 py-3 hover:bg-gray-50 rounded-xl transition group">
+                        <div class="p-2 bg-white">
+                            @forelse($assignments as $assignment)
+                            <a href="{{ route('assignments.show', $assignment->id) }}" class="flex items-center px-4 py-3 hover:bg-gray-50 rounded-xl transition group">
                                 <svg class="w-5 h-5 text-red-400 group-hover:text-red-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
-                                <span class="text-sm font-medium text-gray-700 flex-1">Tugas 1: Praktik Array <span class="text-red-500 text-xs ml-2 font-bold">(Wajib)</span></span>
-                                <span class="text-xs font-medium text-red-500">Tenggat: Hari Ini</span>
+                                <div class="flex-1">
+                                    <span class="text-sm font-medium text-gray-700 block">{{ $assignment->title }}</span>
+                                    <span class="text-xs text-gray-500 line-clamp-1">{{ $assignment->description }}</span>
+                                </div>
+                                <span class="text-xs font-medium {{ now()->gt($assignment->deadline_at) ? 'text-red-500' : 'text-[#007cc3]' }}">
+                                    Tenggat: {{ \Carbon\Carbon::parse($assignment->deadline_at)->format('d M Y, H:i') }}
+                                </span>
                             </a>
-                        </div>
-                    </div>
-
-                    <!-- Modul 3 (Locked) -->
-                    <div class="bg-gray-50 rounded-2xl border border-gray-200 overflow-hidden opacity-75">
-                        <div class="p-5 flex items-center justify-between cursor-not-allowed">
-                            <div class="flex items-center">
-                                <div class="bg-gray-200 text-gray-500 rounded-full w-9 h-9 flex items-center justify-center font-bold mr-4">
-                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg>
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-gray-500 text-lg">Modul 3: Linked List</h4>
-                                    <p class="text-sm text-gray-400">Terbuka setelah menyelesaikan Modul 2.</p>
-                                </div>
+                            @empty
+                            <div class="p-8 text-center text-gray-500">
+                                Belum ada tugas yang diberikan.
                             </div>
+                            @endforelse
                         </div>
                     </div>
 
@@ -208,15 +212,11 @@
                 <div class="mb-6 space-y-3">
                     <div class="flex items-center text-sm">
                         <svg class="w-5 h-5 text-gray-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        <span class="text-gray-600">Jadwal: Senin & Rabu, 09:00 WIB</span>
+                        <span class="text-gray-600">Dibuat: {{ $classroom->created_at->format('d M Y') }}</span>
                     </div>
                     <div class="flex items-center text-sm">
                         <svg class="w-5 h-5 text-gray-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                        <span class="text-gray-600">45 Mahasiswa terdaftar</span>
-                    </div>
-                    <div class="flex items-center text-sm">
-                        <svg class="w-5 h-5 text-gray-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
-                        <span class="text-gray-600">Bahasa Indonesia</span>
+                        <span class="text-gray-600">{{ $classroom->students->count() }} Murid terdaftar</span>
                     </div>
                 </div>
 
@@ -224,16 +224,12 @@
 
                 <h3 class="font-bold text-gray-900 mb-4">Teman Kelas</h3>
                 <div class="flex flex-wrap gap-2 mb-6">
-                    <img class="h-10 w-10 rounded-full object-cover border-2 border-white shadow-sm" src="https://i.pravatar.cc/150?img=12" alt="Student">
-                    <img class="h-10 w-10 rounded-full object-cover border-2 border-white shadow-sm" src="https://i.pravatar.cc/150?img=13" alt="Student">
-                    <img class="h-10 w-10 rounded-full object-cover border-2 border-white shadow-sm" src="https://i.pravatar.cc/150?img=14" alt="Student">
-                    <img class="h-10 w-10 rounded-full object-cover border-2 border-white shadow-sm" src="https://i.pravatar.cc/150?img=15" alt="Student">
-                    <div class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center text-xs font-bold text-gray-500 border-2 border-white shadow-sm">+41</div>
+                    @foreach($classroom->students->take(8) as $student)
+                        <div class="h-10 w-10 rounded-full object-cover border-2 border-white shadow-sm bg-[#007cc3] text-white font-bold flex items-center justify-center text-sm" title="{{ $student->name }}">
+                            {{ strtoupper(substr($student->name, 0, 1)) }}
+                        </div>
+                    @endforeach
                 </div>
-
-                <button class="w-full bg-[#007cc3]/10 text-[#007cc3] hover:bg-[#007cc3]/20 font-bold py-3 rounded-xl transition text-sm">
-                    Lihat Semua Anggota
-                </button>
             </div>
         </div>
     </main>

@@ -81,72 +81,143 @@
                 <div class="h-8 w-px bg-gray-200"></div>
                 <a href="#" class="flex items-center cursor-pointer">
                     <img class="h-10 w-10 rounded-full object-cover border-2 border-gray-100 shadow-sm" src="https://i.pravatar.cc/150?img=32" alt="Teacher Avatar">
+                    <div class="ml-3 hidden md:block">
+                        <p class="text-sm font-semibold text-gray-700">{{ auth()->user()->name }}</p>
+                        <p class="text-xs text-gray-500">Guru / Pengajar</p>
+                    </div>
                 </a>
             </div>
         </header>
 
         <!-- Scrollable Content -->
-        <div class="flex-1 overflow-auto hide-scrollbar p-8 xl:p-10">
+        <div class="flex-1 overflow-auto hide-scrollbar p-8 xl:p-10 relative">
+            
+            @if(session('success'))
+            <div class="mb-6 bg-green-50 text-green-600 border border-green-200 rounded-xl p-4 text-sm font-medium flex items-center">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                {{ session('success') }}
+            </div>
+            @endif
+
+            @if($errors->any())
+            <div class="mb-6 bg-red-50 text-red-600 border border-red-200 rounded-xl p-4 text-sm font-medium">
+                <ul class="list-disc pl-5">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
             
             <div class="flex justify-between items-end mb-8">
                 <div>
                     <h2 class="text-3xl font-bold text-gray-900 mb-2">Kelasku</h2>
                     <p class="text-gray-500">Daftar kelas aktif yang Anda ajar pada semester ini.</p>
                 </div>
-                <button class="bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 font-semibold py-2 px-5 rounded-full shadow-sm flex items-center transition">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
-                    Filter Kelas
-                </button>
+                <div class="flex gap-3">
+                    <button class="bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 font-semibold py-2 px-5 rounded-full shadow-sm flex items-center transition">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
+                        Filter Kelas
+                    </button>
+                    <button onclick="openAddClassModal()" class="bg-[#007cc3] hover:bg-blue-700 text-white font-bold py-2 px-5 rounded-full shadow-md flex items-center transition">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        Buat Kelas Baru
+                    </button>
+                </div>
             </div>
 
             <!-- Class Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Class 1 -->
+                @forelse($classrooms as $index => $class)
                 <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden group hover:shadow-md transition">
-                    <div class="h-40 bg-blue-600 relative overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover mix-blend-overlay opacity-50 group-hover:scale-105 transition duration-500">
+                    <div class="h-40 {{ ['bg-blue-600', 'bg-purple-600', 'bg-green-600', 'bg-orange-600'][$index % 4] }} relative overflow-hidden">
                         <div class="absolute top-4 left-4 bg-white/20 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-lg">Semester Ganjil</div>
+                        <div class="absolute top-4 right-4 bg-black/30 backdrop-blur-md text-white text-xs font-mono px-3 py-1.5 rounded-lg">{{ $class->code }}</div>
                         <div class="absolute bottom-4 left-4 right-4">
-                            <h3 class="font-bold text-white text-xl">Algoritma & Pemrograman Dasar</h3>
-                            <p class="text-blue-100 text-sm">Kelas X - IPA 1</p>
+                            <h3 class="font-bold text-white text-xl">{{ $class->name }}</h3>
+                            <p class="text-white/80 text-sm line-clamp-1">{{ $class->description ?? 'Tidak ada deskripsi' }}</p>
                         </div>
                     </div>
                     <div class="p-6">
                         <div class="flex justify-between items-center mb-6 text-sm text-gray-500">
-                            <div class="flex items-center"><svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg> 32 Murid</div>
-                            <div class="flex items-center"><svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg> 24 Materi</div>
+                            <div class="flex items-center"><svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg> {{ $class->students_count }} Murid</div>
+                            <div class="flex items-center"><svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg> 0 Materi</div>
                         </div>
                         <div class="grid grid-cols-2 gap-3">
-                            <button class="w-full bg-white border border-[#007cc3] text-[#007cc3] hover:bg-gray-50 font-semibold py-2 rounded-xl text-sm transition">Kelola Materi</button>
-                            <button class="w-full bg-[#007cc3] border border-[#007cc3] text-white hover:bg-blue-700 font-semibold py-2 rounded-xl text-sm transition shadow-sm">Masuk Kelas</button>
+                            <a href="/classrooms/{{ $class->id }}" class="w-full bg-[#007cc3] border border-[#007cc3] text-white hover:bg-blue-700 font-semibold py-2 rounded-xl text-sm transition shadow-sm flex items-center justify-center">Masuk Kelas</a>
                         </div>
                     </div>
                 </div>
-                
-                <!-- Class 2 -->
-                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden group hover:shadow-md transition">
-                    <div class="h-40 bg-purple-600 relative overflow-hidden">
-                        <div class="absolute top-4 left-4 bg-white/20 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-lg">Semester Ganjil</div>
-                        <div class="absolute bottom-4 left-4 right-4">
-                            <h3 class="font-bold text-white text-xl">Matematika Diskrit</h3>
-                            <p class="text-purple-100 text-sm">Kelas X - IPS 2</p>
-                        </div>
+                @empty
+                <div class="col-span-full bg-white rounded-3xl shadow-sm border border-gray-100 p-12 text-center">
+                    <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-400">
+                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
                     </div>
-                    <div class="p-6">
-                        <div class="flex justify-between items-center mb-6 text-sm text-gray-500">
-                            <div class="flex items-center"><svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg> 28 Murid</div>
-                            <div class="flex items-center"><svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg> 12 Materi</div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-3">
-                            <button class="w-full bg-white border border-[#007cc3] text-[#007cc3] hover:bg-gray-50 font-semibold py-2 rounded-xl text-sm transition">Kelola Materi</button>
-                            <button class="w-full bg-[#007cc3] border border-[#007cc3] text-white hover:bg-blue-700 font-semibold py-2 rounded-xl text-sm transition shadow-sm">Masuk Kelas</button>
-                        </div>
-                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Belum Ada Kelas</h3>
+                    <p class="text-gray-500 mb-6">Anda belum membuat atau mengajar kelas apapun pada semester ini.</p>
+                    <button onclick="openAddClassModal()" class="bg-[#007cc3] hover:bg-blue-700 text-white font-bold py-2.5 px-6 rounded-full shadow-md inline-flex items-center transition">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        Buat Kelas Baru Sekarang
+                    </button>
                 </div>
+                @endforelse
             </div>
             
         </div>
     </main>
 
+    <!-- Modal Buat Kelas -->
+    <div id="addClassModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-3xl w-full max-w-lg shadow-xl overflow-hidden transform scale-95 transition-transform duration-300 relative">
+            <div class="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                <h3 class="text-xl font-bold text-gray-900">Buat Kelas Baru</h3>
+                <button onclick="closeAddClassModal()" class="text-gray-400 hover:text-gray-600 transition">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            
+            <div class="p-8">
+                <form action="/guru/classes" method="POST">
+                    @csrf
+                    <div class="space-y-5">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Nama Kelas</label>
+                            <input type="text" name="name" required class="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:ring-1 focus:ring-[#007cc3]" placeholder="Cth: Matematika Dasar Kelas X">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Deskripsi Kelas (Opsional)</label>
+                            <textarea name="description" rows="3" class="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:ring-1 focus:ring-[#007cc3]" placeholder="Penjelasan singkat mengenai kelas ini..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 flex justify-end gap-3">
+                        <button type="button" onclick="closeAddClassModal()" class="px-5 py-2.5 text-sm font-semibold text-gray-600 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition">Batal</button>
+                        <button type="submit" class="px-5 py-2.5 text-sm font-bold text-white bg-[#007cc3] rounded-xl hover:bg-blue-700 shadow-md transition">Buat Kelas</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script for Modal -->
+    <script>
+        function openAddClassModal() {
+            const modal = document.getElementById('addClassModal');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modal.children[0].classList.remove('scale-95');
+            }, 10);
+        }
+
+        function closeAddClassModal() {
+            const modal = document.getElementById('addClassModal');
+            modal.classList.add('opacity-0');
+            modal.children[0].classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+    </script>
 </body>
 </html>

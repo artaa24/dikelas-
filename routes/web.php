@@ -1,118 +1,59 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
 Route::get('/', function () {
     return view('auth.login');
 });
 
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/logout', [AuthController::class, 'logout']); // Fallback for simple links
 
 Route::get('/register', function () {
     return view('auth.register');
 })->name('register');
 
-Route::get('/dashboard', function () {
-    return view('auth.dashboard');
-});
+Route::middleware('auth')->group(function () {
+    // Murid Routes
+    Route::middleware('role:student')->group(function () {
+        Route::get('/dashboard', [\App\Http\Controllers\StudentController::class, 'dashboard']);
+        Route::get('/courses', [\App\Http\Controllers\StudentController::class, 'courses']);
+        Route::post('/courses/join', [\App\Http\Controllers\StudentController::class, 'joinClass']);
+    });
+    Route::get('/schedule', function () { return view('auth.schedule'); });
+    Route::get('/assignments', [\App\Http\Controllers\StudentController::class, 'assignments']);
+    Route::get('/profile', function () { return view('auth.profile'); });
+    Route::get('/notifications', function () { return view('auth.notifications'); });
+    Route::get('/classrooms/{id}', [\App\Http\Controllers\ClassroomController::class, 'show'])->name('classrooms.show');
+    Route::post('/classrooms/{id}/materials', [\App\Http\Controllers\ClassroomController::class, 'storeMaterial'])->name('classrooms.materials.store');
+    
+    // Assignment Routes
+    Route::post('/classrooms/{id}/assignments', [\App\Http\Controllers\AssignmentController::class, 'store'])->name('classrooms.assignments.store');
+    Route::get('/assignments/{id}', [\App\Http\Controllers\AssignmentController::class, 'show'])->name('assignments.show');
+    Route::post('/assignments/{id}/submit', [\App\Http\Controllers\AssignmentController::class, 'submit'])->name('assignments.submit');
+    Route::post('/submissions/{id}/grade', [\App\Http\Controllers\AssignmentController::class, 'grade'])->name('submissions.grade');
+    
+    // Guru Routes
+    Route::middleware('role:teacher')->group(function () {
+        Route::get('/guru/dashboard', [\App\Http\Controllers\TeacherController::class, 'dashboard']);
+        Route::get('/guru/classes', [\App\Http\Controllers\TeacherController::class, 'classes']);
+        Route::post('/guru/classes', [\App\Http\Controllers\TeacherController::class, 'storeClass']);
+        Route::get('/guru/assignments', [\App\Http\Controllers\TeacherController::class, 'assignments']);
+    });
 
-Route::get('/courses', function () {
-    return view('auth.courses');
-});
+    // Admin Routes
+    Route::middleware('role:super_admin')->group(function () {
+        Route::get('/admin/dashboard', [\App\Http\Controllers\AdminController::class, 'dashboard']);
+        Route::get('/admin/users', [\App\Http\Controllers\AdminController::class, 'users']);
+        Route::post('/admin/users', [\App\Http\Controllers\AdminController::class, 'storeUser']);
+    });
 
-Route::get('/schedule', function () {
-    return view('auth.schedule');
+    // General / Shared Routes
+    Route::get('/bookmarks', function () { return view('auth.bookmarks'); });
+    Route::get('/announcements', function () { return view('auth.announcements'); });
+    Route::get('/edit-profile', function () { return view('auth.edit-profile'); });
+    Route::get('/help-center', function () { return view('auth.help-center'); });
 });
-
-Route::get('/assignments', function () {
-    return view('auth.assignments');
-});
-
-Route::get('/profile', function () {
-    return view('auth.profile');
-});
-
-Route::get('/notifications', function () {
-    return view('auth.notifications');
-});
-
-Route::get('/class-detail', function () {
-    return view('auth.class-detail');
-});
-
-Route::get('/material-detail', function () {
-    return view('auth.material-detail');
-});
-
-Route::get('/assignment-detail', function () {
-    return view('auth.assignment-detail');
-});
-
-Route::get('/grades', function () {
-    return view('auth.grades');
-});
-
-// Guru Routes
-Route::get('/guru/dashboard', function () {
-    return view('auth.guru.dashboard');
-});
-
-Route::get('/guru/classes', function () {
-    return view('auth.guru.classes');
-});
-
-Route::get('/guru/materials', function () {
-    return view('auth.guru.materials');
-});
-
-Route::get('/guru/assignments', function () {
-    return view('auth.guru.assignments');
-});
-
-Route::get('/guru/students', function () {
-    return view('auth.guru.students');
-});
-
-Route::get('/guru/create-material', function () {
-    return view('auth.guru.create-material');
-});
-
-Route::get('/guru/create-assignment', function () {
-    return view('auth.guru.create-assignment');
-});
-
-Route::get('/guru/add-student', function () {
-    return view('auth.guru.add-student');
-});
-
-Route::get('/guru/assignment-preview', function () {
-    return view('auth.guru.assignment-preview');
-});
-
-Route::get('/guru/activity', function () {
-    return view('auth.guru.activity');
-});
-
-Route::get('/guru/settings', function () {
-    return view('auth.guru.settings');
-});
-
-// General / Student Extra Routes
-Route::get('/bookmarks', function () {
-    return view('auth.bookmarks');
-});
-
-Route::get('/announcements', function () {
-    return view('auth.announcements');
-});
-
-Route::get('/edit-profile', function () {
-    return view('auth.edit-profile');
-});
-
-Route::get('/help-center', function () {
-    return view('auth.help-center');
-});
-

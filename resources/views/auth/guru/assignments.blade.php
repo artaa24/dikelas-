@@ -101,59 +101,90 @@
 
             <!-- Task Cards -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Task Card -->
-                <div class="bg-white rounded-3xl shadow-sm border border-red-100 overflow-hidden flex flex-col h-full relative">
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-orange-400"></div>
+                @forelse($assignments as $assignment)
+                @php
+                    $totalStudents = $assignment->classroom->students->count();
+                    $totalSubmissions = $assignment->submissions->count();
+                    $gradedSubmissions = $assignment->submissions->where('status', 'graded')->count();
+                    $pendingGrades = $totalSubmissions - $gradedSubmissions;
+                    
+                    $isLate = now()->gt($assignment->deadline_at);
+                    
+                    if ($totalStudents > 0) {
+                        $progressPercent = ($gradedSubmissions / $totalStudents) * 100;
+                    } else {
+                        $progressPercent = 0;
+                    }
+                    
+                    if ($pendingGrades > 0) {
+                        $statusBadge = '<span class="bg-yellow-50 text-yellow-600 px-3 py-1 rounded-full text-xs font-bold border border-yellow-100 uppercase tracking-wider">Perlu Dinilai</span>';
+                        $borderColor = 'border-yellow-100';
+                        $lineColor = 'from-yellow-400 to-orange-400';
+                        $progressColor = 'bg-yellow-400';
+                    } elseif ($isLate) {
+                        $statusBadge = '<span class="bg-red-50 text-red-600 px-3 py-1 rounded-full text-xs font-bold border border-red-100 uppercase tracking-wider">Tenggat Lewat</span>';
+                        $borderColor = 'border-red-100';
+                        $lineColor = 'from-red-500 to-orange-400';
+                        $progressColor = 'bg-[#007cc3]';
+                    } else {
+                        $statusBadge = '<span class="bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-xs font-bold border border-blue-100 uppercase tracking-wider">Aktif</span>';
+                        $borderColor = 'border-gray-100';
+                        $lineColor = 'bg-white'; // No top line if not urgent
+                        $progressColor = 'bg-[#007cc3]';
+                    }
+                    
+                    if ($gradedSubmissions == $totalStudents && $totalStudents > 0) {
+                        $statusBadge = '<span class="bg-green-50 text-green-600 px-3 py-1 rounded-full text-xs font-bold border border-green-100 uppercase tracking-wider">Selesai</span>';
+                        $borderColor = 'border-green-100';
+                        $lineColor = 'from-green-400 to-emerald-400';
+                        $progressColor = 'bg-green-500';
+                    }
+                @endphp
+                <div class="bg-white rounded-3xl shadow-sm border {{ $borderColor }} overflow-hidden flex flex-col h-full relative">
+                    @if($lineColor != 'bg-white')
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r {{ $lineColor }}"></div>
+                    @endif
                     <div class="p-6 flex-1">
                         <div class="flex justify-between items-start mb-4">
-                            <span class="bg-red-50 text-red-600 px-3 py-1 rounded-full text-xs font-bold border border-red-100 uppercase tracking-wider">Tenggat Lewat</span>
-                            <div class="bg-gray-100 px-3 py-1 rounded-full text-xs font-bold text-gray-600">X IPA 1</div>
+                            {!! $statusBadge !!}
+                            <div class="bg-gray-100 px-3 py-1 rounded-full text-xs font-bold text-gray-600">{{ $assignment->classroom->name }}</div>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Tugas Praktik 1: Implementasi Array</h3>
-                        <p class="text-sm text-gray-500 line-clamp-2 mb-4">Instruksi: Buatlah sebuah program sederhana menggunakan bahasa C++ yang mengimplementasikan array 2 dimensi.</p>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $assignment->title }}</h3>
+                        <p class="text-sm text-gray-500 line-clamp-2 mb-4">{{ $assignment->description }}</p>
                         
                         <div class="bg-gray-50 rounded-xl p-4 mt-auto">
                             <div class="flex justify-between text-sm mb-2">
-                                <span class="font-medium text-gray-600">Progress Pengumpulan</span>
-                                <span class="font-bold text-gray-900">12 / 32</span>
+                                <span class="font-medium text-gray-600">Progress Penilaian</span>
+                                <span class="font-bold text-gray-900">{{ $gradedSubmissions }} / {{ $totalStudents }}</span>
                             </div>
                             <div class="w-full bg-gray-200 rounded-full h-2">
-                                <div class="bg-[#007cc3] h-2 rounded-full" style="width: 37%"></div>
+                                <div class="{{ $progressColor }} h-2 rounded-full" style="width: {{ $progressPercent }}%"></div>
                             </div>
-                            <p class="text-xs text-red-500 mt-2 font-medium">12 Siswa belum dinilai!</p>
+                            @if($pendingGrades > 0)
+                                <p class="text-xs text-red-500 mt-2 font-medium">{{ $pendingGrades }} Siswa belum dinilai!</p>
+                            @elseif($gradedSubmissions == $totalStudents && $totalStudents > 0)
+                                <p class="text-xs text-green-600 mt-2 font-medium">Semua siswa sudah dinilai.</p>
+                            @else
+                                <p class="text-xs text-gray-500 mt-2 font-medium">Menunggu pengumpulan...</p>
+                            @endif
                         </div>
                     </div>
                     <div class="px-6 py-4 border-t border-gray-50 flex gap-3">
-                        <button class="flex-1 bg-white border border-[#007cc3] text-[#007cc3] font-semibold py-2 rounded-xl text-sm hover:bg-blue-50 transition">Edit Tugas</button>
-                        <a href="/guru/assignment-preview" class="flex-1 bg-red-50 border border-red-100 text-red-600 font-semibold py-2 rounded-xl text-sm hover:bg-red-100 transition text-center">Nilai Sekarang</a>
+                        <a href="{{ route('classrooms.show', $assignment->classroom_id) }}" class="flex-1 text-center bg-white border border-[#007cc3] text-[#007cc3] font-semibold py-2 rounded-xl text-sm hover:bg-blue-50 transition">Buka Kelas</a>
+                        <a href="{{ route('assignments.show', $assignment->id) }}" class="flex-1 bg-red-50 border border-red-100 text-red-600 font-semibold py-2 rounded-xl text-sm hover:bg-red-100 transition text-center">
+                            {{ $pendingGrades > 0 ? 'Nilai Sekarang' : 'Lihat Rekap' }}
+                        </a>
                     </div>
                 </div>
-                
-                <!-- Task Card 2 -->
-                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-full">
-                    <div class="p-6 flex-1">
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-xs font-bold border border-blue-100 uppercase tracking-wider">Aktif</span>
-                            <div class="bg-gray-100 px-3 py-1 rounded-full text-xs font-bold text-gray-600">X IPS 2</div>
-                        </div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Tugas Merangkum: Teori Himpunan</h3>
-                        <p class="text-sm text-gray-500 line-clamp-2 mb-4">Buatlah rangkuman mengenai teori himpunan, diagram venn, dan operasinya. Minimal 2 halaman folio.</p>
-                        
-                        <div class="bg-gray-50 rounded-xl p-4 mt-auto">
-                            <div class="flex justify-between text-sm mb-2">
-                                <span class="font-medium text-gray-600">Progress Pengumpulan</span>
-                                <span class="font-bold text-gray-900">28 / 28</span>
-                            </div>
-                            <div class="w-full bg-gray-200 rounded-full h-2">
-                                <div class="bg-green-500 h-2 rounded-full" style="width: 100%"></div>
-                            </div>
-                            <p class="text-xs text-green-600 mt-2 font-medium">Semua siswa sudah dinilai.</p>
-                        </div>
+                @empty
+                <div class="col-span-full text-center py-12">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
+                        <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
                     </div>
-                    <div class="px-6 py-4 border-t border-gray-50">
-                        <a href="/guru/assignment-preview" class="w-full inline-block text-center bg-white border border-gray-200 text-gray-600 font-semibold py-2 rounded-xl text-sm hover:bg-gray-50 transition">Lihat Rekap Nilai</a>
-                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Belum ada tugas</h3>
+                    <p class="text-gray-500">Anda belum membuat tugas apapun di kelas Anda.</p>
                 </div>
+                @endforelse
 
             </div>
             

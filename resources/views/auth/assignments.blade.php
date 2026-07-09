@@ -112,89 +112,91 @@
             <!-- List of Assignments -->
             <div class="space-y-4">
                 
-                <!-- Assignment 1 (Urgent) -->
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-red-100 hover:shadow-md transition-shadow flex flex-col md:flex-row md:items-center justify-between gap-6 relative overflow-hidden">
-                    <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-red-500"></div>
+                @forelse($assignments as $assignment)
+                @php
+                    $sub = $assignment->submissions->first();
+                    $isLate = now()->gt($assignment->deadline_at);
+                    
+                    if ($sub && $sub->status == 'graded') {
+                        $borderColor = 'border-green-100 bg-gray-50 opacity-75';
+                        $lineColor = 'bg-green-500';
+                        $iconBg = 'bg-green-100 text-green-600';
+                        $statusText = 'Dinilai';
+                        $statusBg = 'bg-green-100 text-green-700 border-green-200';
+                    } elseif ($sub) {
+                        $borderColor = 'border-blue-100 bg-white';
+                        $lineColor = 'bg-[#007cc3]';
+                        $iconBg = 'bg-blue-50 text-[#007cc3]';
+                        $statusText = 'Terkumpul';
+                        $statusBg = 'bg-blue-100 text-blue-700 border-blue-200';
+                    } elseif ($isLate) {
+                        $borderColor = 'border-red-100 bg-white';
+                        $lineColor = 'bg-red-500';
+                        $iconBg = 'bg-red-50 text-red-600';
+                        $statusText = 'Terlambat';
+                        $statusBg = 'bg-red-100 text-red-700 border-red-200';
+                    } else {
+                        $borderColor = 'border-yellow-100 bg-white hover:shadow-md';
+                        $lineColor = 'bg-yellow-400';
+                        $iconBg = 'bg-yellow-50 text-yellow-600';
+                        $statusText = 'Belum Dikerjakan';
+                        $statusBg = 'bg-yellow-100 text-yellow-700 border-yellow-200';
+                    }
+                @endphp
+                <div class="rounded-2xl p-6 shadow-sm border {{ $borderColor }} transition-shadow flex flex-col md:flex-row md:items-center justify-between gap-6 relative overflow-hidden">
+                    <div class="absolute left-0 top-0 bottom-0 w-1.5 {{ $lineColor }}"></div>
                     
                     <div class="flex items-start gap-5 flex-1 pl-2">
-                        <div class="bg-red-50 text-red-600 p-3.5 rounded-xl">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <div class="{{ $iconBg }} p-3.5 rounded-xl">
+                            @if($sub && $sub->status == 'graded')
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            @else
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                            @endif
                         </div>
                         <div>
                             <div class="flex items-center gap-2 mb-1">
-                                <span class="bg-blue-100 text-[#007cc3] text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wide">Algoritma</span>
-                                <span class="text-xs font-semibold text-red-500 flex items-center"><svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Hari Ini, 23:59</span>
+                                <span class="bg-gray-100 text-gray-700 text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wide">{{ $assignment->classroom->name }}</span>
+                                <span class="text-xs font-semibold {{ $isLate && !$sub ? 'text-red-500 flex items-center' : 'text-gray-500' }}">
+                                    @if($isLate && !$sub)
+                                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    @endif
+                                    Tenggat: {{ \Carbon\Carbon::parse($assignment->deadline_at)->format('d M Y, H:i') }}
+                                </span>
                             </div>
-                            <h3 class="text-lg font-bold text-gray-900 mb-1">Tugas Pemrograman 1: Struktur Data Array</h3>
-                            <p class="text-sm text-gray-500">Buatlah program sederhana yang mengimplementasikan array multi-dimensi menggunakan bahasa C++.</p>
+                            <h3 class="text-lg font-bold {{ $sub && $sub->status == 'graded' ? 'text-gray-700 line-through' : 'text-gray-900' }} mb-1">{{ $assignment->title }}</h3>
+                            <p class="text-sm text-gray-500 line-clamp-2">{{ $assignment->description }}</p>
                         </div>
                     </div>
                     
                     <div class="flex flex-col md:items-end gap-3 min-w-[140px]">
-                        <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Status</span>
-                        <span class="px-3 py-1 bg-gray-100 text-gray-600 text-xs font-bold rounded-full">Belum Dikerjakan</span>
-                        <a href="/assignment-detail" class="mt-2 bg-[#007cc3] hover:bg-blue-700 text-white text-sm font-semibold py-2 px-5 rounded-xl shadow-sm shadow-blue-500/20 transition-all w-full md:w-auto text-center block">
-                            Kerjakan
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Assignment 2 -->
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow flex flex-col md:flex-row md:items-center justify-between gap-6 relative overflow-hidden">
-                    <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-yellow-400"></div>
-                    
-                    <div class="flex items-start gap-5 flex-1 pl-2">
-                        <div class="bg-yellow-50 text-yellow-600 p-3.5 rounded-xl">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
-                        </div>
-                        <div>
-                            <div class="flex items-center gap-2 mb-1">
-                                <span class="bg-purple-100 text-purple-700 text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wide">Bisnis</span>
-                                <span class="text-xs font-medium text-gray-500">16 Okt 2026, 15:00 WIB</span>
+                        @if($sub && $sub->status == 'graded')
+                            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Nilai</span>
+                            <div class="flex items-end text-green-600 font-black">
+                                <span class="text-3xl leading-none">{{ $sub->score }}</span>
+                                <span class="text-sm pb-0.5">/{{ $assignment->max_score }}</span>
                             </div>
-                            <h3 class="text-lg font-bold text-gray-900 mb-1">Studi Kasus: Komunikasi Interpersonal</h3>
-                            <p class="text-sm text-gray-500">Analisis studi kasus mengenai konflik komunikasi di perusahaan XYZ dan berikan solusinya.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="flex flex-col md:items-end gap-3 min-w-[140px]">
-                        <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Status</span>
-                        <span class="px-3 py-1 bg-yellow-100 text-yellow-700 text-xs font-bold rounded-full border border-yellow-200">Sedang Dikerjakan</span>
-                        <a href="/assignment-detail" class="mt-2 bg-white border border-[#007cc3] text-[#007cc3] hover:bg-gray-50 text-sm font-semibold py-2 px-5 rounded-xl transition-all w-full md:w-auto text-center block">
-                            Lanjutkan
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Assignment 3 (Completed) -->
-                <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-6 relative overflow-hidden opacity-75">
-                    <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-green-500"></div>
-                    
-                    <div class="flex items-start gap-5 flex-1 pl-2">
-                        <div class="bg-green-100 text-green-600 p-3.5 rounded-xl">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                        </div>
-                        <div>
-                            <div class="flex items-center gap-2 mb-1">
-                                <span class="bg-indigo-100 text-indigo-700 text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wide">Sejarah</span>
-                                <span class="text-xs font-medium text-gray-500">Dikumpulkan: 10 Okt 2026</span>
-                            </div>
-                            <h3 class="text-lg font-bold text-gray-700 mb-1 line-through">Esai: Revolusi Industri</h3>
-                            <p class="text-sm text-gray-500">Buatlah esai 1000 kata mengenai dampak revolusi industri terhadap struktur sosial eropa.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="flex flex-col md:items-end gap-3 min-w-[140px]">
-                        <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Nilai</span>
-                        <div class="flex items-end text-green-600 font-black">
-                            <span class="text-3xl leading-none">95</span>
-                            <span class="text-sm pb-0.5">/100</span>
-                        </div>
-                        <a href="/grades" class="mt-2 text-[#007cc3] text-sm font-semibold hover:underline text-center block">
-                            Lihat Feedback
-                        </a>
+                            <a href="{{ route('assignments.show', $assignment->id) }}" class="mt-2 text-[#007cc3] text-sm font-semibold hover:underline text-center block">
+                                Lihat Feedback
+                            </a>
+                        @else
+                            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Status</span>
+                            <span class="px-3 py-1 text-xs font-bold rounded-full border {{ $statusBg }}">{{ $statusText }}</span>
+                            <a href="{{ route('assignments.show', $assignment->id) }}" class="mt-2 bg-[#007cc3] hover:bg-blue-700 text-white text-sm font-semibold py-2 px-5 rounded-xl shadow-sm transition-all w-full md:w-auto text-center block">
+                                {{ $sub ? 'Lihat Tugas' : 'Kerjakan' }}
+                            </a>
+                        @endif
                     </div>
                 </div>
+                @empty
+                <div class="text-center py-10">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
+                        <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Belum ada tugas</h3>
+                    <p class="text-gray-500">Hore! Belum ada tugas yang diberikan oleh guru.</p>
+                </div>
+                @endforelse
 
             </div>
         </div>

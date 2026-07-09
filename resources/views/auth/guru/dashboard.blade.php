@@ -90,8 +90,8 @@
                 <a href="#" class="flex items-center cursor-pointer">
                     <img class="h-10 w-10 rounded-full object-cover border-2 border-gray-100 shadow-sm" src="https://i.pravatar.cc/150?img=32" alt="Teacher Avatar">
                     <div class="ml-3 hidden md:block">
-                        <p class="text-sm font-semibold text-gray-700">Prof. Dr. Agus</p>
-                        <p class="text-xs text-gray-500">Guru Matematika</p>
+                        <p class="text-sm font-semibold text-gray-700">{{ auth()->user()->name }}</p>
+                        <p class="text-xs text-gray-500">Guru / Pengajar</p>
                     </div>
                 </a>
             </div>
@@ -105,7 +105,7 @@
                 <div class="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium text-gray-500 mb-1">Total Kelas</p>
-                        <h3 class="text-3xl font-bold text-gray-900">4</h3>
+                        <h3 class="text-3xl font-bold text-gray-900">{{ $totalClasses }}</h3>
                     </div>
                     <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center">
                         <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
@@ -115,7 +115,7 @@
                 <div class="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium text-gray-500 mb-1">Total Murid</p>
-                        <h3 class="text-3xl font-bold text-gray-900">128</h3>
+                        <h3 class="text-3xl font-bold text-gray-900">{{ $totalStudents }}</h3>
                     </div>
                     <div class="w-14 h-14 rounded-2xl bg-green-50 text-green-600 flex items-center justify-center">
                         <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
@@ -125,7 +125,7 @@
                 <div class="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium text-gray-500 mb-1">Materi Terupload</p>
-                        <h3 class="text-3xl font-bold text-gray-900">32</h3>
+                        <h3 class="text-3xl font-bold text-gray-900">{{ $totalMaterials }}</h3>
                     </div>
                     <div class="w-14 h-14 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center">
                         <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
@@ -135,7 +135,7 @@
                 <div class="bg-white rounded-3xl p-6 border border-red-100 shadow-sm flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium text-red-500 mb-1">Perlu Dinilai</p>
-                        <h3 class="text-3xl font-bold text-red-600">14</h3>
+                        <h3 class="text-3xl font-bold text-red-600">{{ $pendingGrades }}</h3>
                     </div>
                     <div class="w-14 h-14 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center">
                         <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
@@ -246,7 +246,7 @@
                             </div>
                             <h4 class="font-bold text-gray-800 group-hover:text-[#007cc3] transition">Tugas Algoritma #1</h4>
                             <p class="text-xs text-gray-500 mt-1">Kelas X - IPA 1</p>
-                            <a href="/guru/assignment-preview" class="mt-3 block text-center w-full bg-red-50 text-red-600 font-semibold text-xs py-2 rounded-xl group-hover:bg-red-500 group-hover:text-white transition">
+                            <a href="/guru/assignments" class="mt-3 block text-center w-full bg-red-50 text-red-600 font-semibold text-xs py-2 rounded-xl group-hover:bg-red-500 group-hover:text-white transition">
                                 Nilai Sekarang
                             </a>
                         </div>

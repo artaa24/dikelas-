@@ -39,7 +39,19 @@
             <h2 class="text-3xl font-bold text-center text-gray-900 mb-3 tracking-tight">Selamat Datang di DIKELAS</h2>
             <p class="text-center text-gray-500 mb-10 text-sm">Masuk untuk melanjutkan proses belajar mengajar Anda.</p>
 
-            <form action="/dashboard" method="GET">
+            <form action="{{ route('login') }}" method="POST">
+                @csrf
+                
+                @if ($errors->any())
+                <div class="mb-6 bg-red-50 text-red-600 border border-red-200 rounded-xl p-4 text-sm font-medium">
+                    <ul class="list-disc pl-5">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+
                 <div class="mb-5">
                     <label class="block text-gray-700 text-sm font-medium mb-2" for="email">Email</label>
                     <div class="relative">
@@ -48,7 +60,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                             </svg>
                         </div>
-                        <input class="w-full pl-11 pr-4 py-3.5 rounded-full border border-gray-200 focus:outline-none focus:border-[#0275B1] focus:ring-1 focus:ring-[#0275B1] bg-gray-50/50 transition-colors" id="email" type="email" name="email" placeholder="nama@institusi.ac.id" required>
+                        <input class="w-full pl-11 pr-4 py-3.5 rounded-full border {{ $errors->has('email') ? 'border-red-500 ring-1 ring-red-500' : 'border-gray-200 focus:border-[#0275B1] focus:ring-[#0275B1]' }} focus:outline-none focus:ring-1 bg-gray-50/50 transition-colors" id="email" type="email" name="email" placeholder="nama@institusi.ac.id" value="{{ old('email') }}" required autofocus>
                     </div>
                 </div>
 
@@ -60,7 +72,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                             </svg>
                         </div>
-                        <input class="w-full pl-11 pr-12 py-3.5 rounded-full border border-gray-200 focus:outline-none focus:border-[#0275B1] focus:ring-1 focus:ring-[#0275B1] bg-gray-50/50 transition-colors" id="password" type="password" name="password" placeholder="••••••••" required>
+                        <input class="w-full pl-11 pr-12 py-3.5 rounded-full border {{ $errors->has('password') ? 'border-red-500 ring-1 ring-red-500' : 'border-gray-200 focus:border-[#0275B1] focus:ring-[#0275B1]' }} focus:outline-none focus:ring-1 bg-gray-50/50 transition-colors" id="password" type="password" name="password" placeholder="••••••••" required>
                         <div class="absolute inset-y-0 right-0 pr-4 flex items-center cursor-pointer hover:text-gray-600 transition-colors">
                             <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>

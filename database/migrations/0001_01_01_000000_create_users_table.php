@@ -13,12 +13,26 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('role_id')->constrained('roles');
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('avatar', 500)->nullable();
+            $table->text('bio')->nullable();
+            $table->string('nis', 50)->nullable();
+            $table->string('nip', 50)->nullable();
+            $table->string('phone', 20)->nullable();
+            $table->boolean('is_active')->default(true);
+            $table->timestamp('last_login_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
+
+            $table->index('role_id', 'idx_users_role');
+            $table->index('email', 'idx_users_email');
+            $table->index('nis', 'idx_users_nis');
+            $table->index('nip', 'idx_users_nip');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
