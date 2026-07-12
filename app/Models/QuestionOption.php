@@ -6,5 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class QuestionOption extends Model
 {
-    //
+    protected $fillable = [
+        'question_id', 'label', 'content', 'is_correct', 'sort_order'
+    ];
+
+    public function question() { return $this->belongsTo(Question::class); }
 }

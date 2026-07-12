@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jadwal - DIKELAS</title>
+    <title>Jadwal Akademik - DIKELAS</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -15,126 +15,79 @@
 <body class="bg-[#F8FAFC] flex h-screen overflow-hidden text-gray-800">
 
     <!-- Left Sidebar -->
-    <aside class="w-64 bg-white border-r border-gray-100 flex flex-col justify-between h-full flex-shrink-0">
-        <div>
-            <div class="p-8 pb-6">
-                <h1 class="text-2xl font-bold text-[#0A4B7D]">DIKELAS</h1>
-                <p class="text-xs text-gray-500 uppercase tracking-widest mt-1">Professional LMS</p>
-            </div>
-            <nav class="px-4 space-y-2">
-                <a href="/dashboard" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl font-medium transition-colors">
-                    <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
-                    Dashboard
-                </a>
-                <a href="/courses" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl font-medium transition-colors">
-                    <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                    Kursus Saya
-                </a>
-                <a href="/schedule" class="flex items-center px-4 py-3 bg-[#9AE6F1] text-[#0A4B7D] rounded-xl font-medium transition-colors">
-                    <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                    Jadwal
-                </a>
-                <a href="/assignments" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl font-medium transition-colors">
-                    <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
-                    Tugasku
-                </a>
-                <a href="/edit-profile" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl font-medium transition-colors">
-                    <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                    Pengaturan
-                </a>
-            </nav>
-        </div>
-        <div class="p-4 mb-4">
-            <div class="h-px bg-gray-100 mb-4 w-full"></div>
-            <a href="/help-center" class="flex items-center px-4 py-2 text-gray-600 hover:text-gray-900 transition-colors mb-2">
-                <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                Pusat Bantuan
-            </a>
-            <a href="/login" class="flex items-center px-4 py-2 text-gray-600 hover:text-red-600 transition-colors">
-                <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                Keluar
-            </a>
-        </div>
-    </aside>
+    @include('components.sidebar-student', ['active' => 'schedule'])
 
-    <!-- Main Content Area -->
     <main class="flex-1 flex flex-col h-full overflow-hidden">
         
-        <!-- Header -->
-        <header class="h-20 bg-white flex items-center justify-between px-8 border-b border-gray-100">
-            <h2 class="text-xl font-bold text-gray-900">Jadwal & Kalender</h2>
-            
-            <div class="flex items-center space-x-6 ml-6">
-                <a href="/announcements" class="text-gray-400 hover:text-gray-600 relative">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-                    <span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-white"></span>
-                </a>
-                <div class="h-8 w-px bg-gray-200"></div>
-                <a href="/edit-profile" class="flex items-center cursor-pointer">
-                    <img class="h-10 w-10 rounded-full object-cover border-2 border-white shadow-sm" src="https://i.pravatar.cc/150?img=11" alt="User Avatar">
-                </a>
-            </div>
+        <header class="h-20 bg-white flex items-center justify-between px-8 border-b border-gray-100 flex-shrink-0">
+            <h2 class="text-2xl font-bold text-gray-900">Jadwal Akademik</h2>
         </header>
 
-        <!-- Scrollable Content -->
         <div class="flex-1 overflow-auto hide-scrollbar p-8">
-            <div class="flex flex-col lg:flex-row gap-8">
-                <!-- Kalender -->
-                <div class="flex-1 bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="font-bold text-gray-900 text-lg">Oktober 2026</h3>
-                        <div class="flex space-x-2">
-                            <button class="p-2 bg-gray-50 text-gray-500 rounded-lg hover:bg-gray-100"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
-                            <button class="p-2 bg-gray-50 text-gray-500 rounded-lg hover:bg-gray-100"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></button>
+            <div class="max-w-5xl mx-auto">
+                
+                <h3 class="text-xl font-bold text-gray-900 mb-6">Tenggat Waktu Mendatang</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Assignments -->
+                    @forelse($assignments as $assignment)
+                        <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 relative overflow-hidden group hover:border-[#007cc3] transition">
+                            <div class="absolute top-0 right-0 bg-[#007cc3] text-white px-3 py-1 rounded-bl-xl text-xs font-bold flex items-center">
+                                Tugas
+                            </div>
+                            <div class="w-12 h-12 bg-blue-50 text-[#007cc3] rounded-2xl flex items-center justify-center mb-4">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                            </div>
+                            <h4 class="font-bold text-gray-900 text-lg line-clamp-1 mb-1">{{ $assignment->title }}</h4>
+                            <p class="text-sm text-gray-500 mb-4">{{ $assignment->classroom->name }}</p>
+                            
+                            <div class="flex items-center text-sm font-semibold text-red-500 bg-red-50 p-3 rounded-xl mb-4">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                {{ \Carbon\Carbon::parse($assignment->deadline_at)->format('d M Y, H:i') }}
+                            </div>
+                            
+                            <a href="{{ route('assignments.show', $assignment->id) }}" class="block text-center w-full bg-gray-50 text-gray-700 hover:bg-[#007cc3] hover:text-white font-medium py-2.5 rounded-xl transition">
+                                Kerjakan Tugas
+                            </a>
                         </div>
-                    </div>
-                    
-                    <div class="grid grid-cols-7 gap-2 text-center text-xs font-bold text-gray-400 mb-4">
-                        <div>M</div><div>S</div><div>S</div><div>R</div><div>K</div><div>J</div><div>S</div>
-                    </div>
-                    <div class="grid grid-cols-7 gap-2 text-center text-sm">
-                        <!-- Empty slots -->
-                        <div class="p-3 text-gray-300">27</div><div class="p-3 text-gray-300">28</div><div class="p-3 text-gray-300">29</div><div class="p-3 text-gray-300">30</div>
-                        <!-- Days -->
-                        <div class="p-3 text-gray-700 hover:bg-blue-50 rounded-xl cursor-pointer font-bold">1</div>
-                        <div class="p-3 text-gray-700 hover:bg-blue-50 rounded-xl cursor-pointer font-bold">2</div>
-                        <div class="p-3 text-gray-700 hover:bg-blue-50 rounded-xl cursor-pointer font-bold">3</div>
-                        <div class="p-3 text-gray-700 hover:bg-blue-50 rounded-xl cursor-pointer font-bold relative">
-                            4 <span class="absolute bottom-1.5 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+                    @empty
+                    @endforelse
+
+                    <!-- Quizzes -->
+                    @forelse($quizzes as $quiz)
+                        <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 relative overflow-hidden group hover:border-purple-500 transition">
+                            <div class="absolute top-0 right-0 bg-purple-500 text-white px-3 py-1 rounded-bl-xl text-xs font-bold flex items-center">
+                                Kuis
+                            </div>
+                            <div class="w-12 h-12 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center mb-4">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </div>
+                            <h4 class="font-bold text-gray-900 text-lg line-clamp-1 mb-1">{{ $quiz->title }}</h4>
+                            <p class="text-sm text-gray-500 mb-4">{{ $quiz->classroom->name }}</p>
+                            
+                            <div class="flex items-center text-sm font-semibold text-gray-600 bg-gray-50 p-3 rounded-xl mb-4">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                Durasi: {{ $quiz->duration_minutes }} Menit
+                            </div>
+                            
+                            <a href="{{ route('quizzes.show', $quiz->id) }}" class="block text-center w-full bg-gray-50 text-gray-700 hover:bg-purple-600 hover:text-white font-medium py-2.5 rounded-xl transition">
+                                Buka Kuis
+                            </a>
                         </div>
-                        <div class="p-3 text-gray-700 hover:bg-blue-50 rounded-xl cursor-pointer font-bold">5</div>
-                        <div class="p-3 text-gray-700 hover:bg-blue-50 rounded-xl cursor-pointer font-bold">6</div>
-                        <div class="p-3 text-gray-700 hover:bg-blue-50 rounded-xl cursor-pointer font-bold">7</div>
-                        <div class="p-3 text-white bg-[#007cc3] shadow-md rounded-xl cursor-pointer font-bold relative">8</div>
-                        <div class="p-3 text-gray-700 hover:bg-blue-50 rounded-xl cursor-pointer font-bold">9</div>
-                        <div class="p-3 text-gray-700 hover:bg-blue-50 rounded-xl cursor-pointer font-bold relative">
-                            10 <span class="absolute bottom-1.5 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
+                    @empty
+                    @endforelse
+
+                    @if(count($assignments) == 0 && count($quizzes) == 0)
+                        <div class="col-span-full bg-white rounded-3xl p-12 text-center border border-gray-100 shadow-sm">
+                            <div class="w-20 h-20 bg-gray-50 text-gray-400 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">Tidak Ada Jadwal Mendesak</h3>
+                            <p class="text-gray-500">Bagus! Semua tugas dan kuis Anda sudah diselesaikan atau belum ada yang diberikan.</p>
                         </div>
-                    </div>
+                    @endif
                 </div>
 
-                <!-- Agenda List -->
-                <div class="w-full lg:w-96 flex flex-col space-y-4">
-                    <h3 class="font-bold text-gray-900 text-lg mb-2">Agenda Mendatang</h3>
-                    
-                    <a href="/class-detail" class="bg-white p-5 rounded-2xl shadow-sm border border-l-4 border-l-[#007cc3] border-gray-100 hover:shadow-md transition group">
-                        <div class="flex justify-between items-start mb-2">
-                            <span class="text-xs font-bold text-[#007cc3] bg-blue-50 px-2 py-1 rounded">Kelas</span>
-                            <span class="text-xs text-gray-500">10:00 - 11:30 WIB</span>
-                        </div>
-                        <h4 class="font-bold text-gray-900 group-hover:text-[#007cc3]">Algoritma & Pemrograman Dasar</h4>
-                        <p class="text-sm text-gray-500 mt-1">Ruang Lab 2.04</p>
-                    </a>
-
-                    <a href="/assignment-detail" class="bg-white p-5 rounded-2xl shadow-sm border border-l-4 border-l-red-500 border-gray-100 hover:shadow-md transition group">
-                        <div class="flex justify-between items-start mb-2">
-                            <span class="text-xs font-bold text-red-600 bg-red-50 px-2 py-1 rounded">Tugas</span>
-                            <span class="text-xs text-gray-500">23:59 WIB</span>
-                        </div>
-                        <h4 class="font-bold text-gray-900 group-hover:text-red-500">Tugas Praktik 1: Array</h4>
-                        <p class="text-sm text-gray-500 mt-1">Tenggat Waktu Pengumpulan</p>
-                    </a>
-                </div>
             </div>
         </div>
     </main>

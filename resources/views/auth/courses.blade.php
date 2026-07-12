@@ -15,49 +15,7 @@
 <body class="bg-[#F8FAFC] flex h-screen overflow-hidden text-gray-800">
 
     <!-- Left Sidebar -->
-    <aside class="w-64 bg-white border-r border-gray-100 flex flex-col justify-between h-full flex-shrink-0">
-        <div>
-            <div class="p-8 pb-6">
-                <h1 class="text-2xl font-bold text-[#0A4B7D]">DIKELAS</h1>
-                <p class="text-xs text-gray-500 uppercase tracking-widest mt-1">Professional LMS</p>
-            </div>
-            <nav class="px-4 space-y-2">
-                <a href="/dashboard" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl font-medium transition-colors">
-                    <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
-                    Dashboard
-                </a>
-                <!-- Active Link -->
-                <a href="/courses" class="flex items-center px-4 py-3 bg-[#9AE6F1] text-[#0A4B7D] rounded-xl font-medium transition-colors">
-                    <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                    Kursus Saya
-                </a>
-                <a href="/schedule" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl font-medium transition-colors">
-                    <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                    Jadwal
-                </a>
-                <a href="/assignments" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl font-medium transition-colors">
-                    <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
-                    Tugasku
-                </a>
-                <a href="/edit-profile" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl font-medium transition-colors">
-                    <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                    Pengaturan
-                </a>
-            </nav>
-        </div>
-
-        <div class="p-4 mb-4">
-            <div class="h-px bg-gray-100 mb-4 w-full"></div>
-            <a href="/help-center" class="flex items-center px-4 py-2 text-gray-600 hover:text-gray-900 transition-colors mb-2">
-                <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                Pusat Bantuan
-            </a>
-            <a href="/login" class="flex items-center px-4 py-2 text-gray-600 hover:text-red-600 transition-colors">
-                <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                Keluar
-            </a>
-        </div>
-    </aside>
+    @include('components.sidebar-student', ['active' => 'courses'])
 
     <!-- Main Content Area -->
     <main class="flex-1 flex flex-col h-full overflow-hidden">
@@ -85,7 +43,7 @@
                 </button>
                 <div class="h-8 w-px bg-gray-200"></div>
                 <a href="/edit-profile" class="flex items-center cursor-pointer">
-                    <img class="h-10 w-10 rounded-full object-cover border-2 border-white shadow-sm" src="https://i.pravatar.cc/150?img=11" alt="User Avatar">
+                    <img class="h-10 w-10 rounded-full object-cover border-2 border-white shadow-sm" src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=0D8ABC&color=fff' }}" alt="User Avatar">
                 </a>
             </div>
         </header>
@@ -117,9 +75,10 @@
                 </div>
                 <div class="flex gap-3 items-center">
                     <!-- Filtering -->
-                    <div class="flex bg-white rounded-full p-1 border border-gray-200 shadow-sm">
-                        <button class="px-6 py-2 rounded-full bg-[#007cc3] text-white text-sm font-semibold shadow-sm transition">Semua</button>
-                        <button class="px-6 py-2 rounded-full text-gray-600 hover:bg-gray-100 text-sm font-semibold transition">Sedang Berjalan</button>
+                    <div class="flex bg-white rounded-full p-1 border border-gray-200 shadow-sm" id="courseFilter">
+                        <button data-filter="all" class="filter-btn px-6 py-2 rounded-full bg-[#007cc3] text-white text-sm font-semibold shadow-sm transition">Semua</button>
+                        <button data-filter="ongoing" class="filter-btn px-6 py-2 rounded-full text-gray-600 hover:bg-gray-100 text-sm font-semibold transition">Sedang Berjalan</button>
+                        <button data-filter="completed" class="filter-btn px-6 py-2 rounded-full text-gray-600 hover:bg-gray-100 text-sm font-semibold transition">Selesai</button>
                     </div>
                     <button id="openJoinModalBtn" class="bg-[#007cc3] hover:bg-blue-700 text-white font-bold py-2.5 px-5 rounded-full shadow-md flex items-center transition">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
@@ -133,7 +92,7 @@
                 
                 @forelse($classrooms as $index => $class)
                 <!-- Course Card -->
-                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden flex flex-col group hover:shadow-md transition-shadow">
+                <div class="course-card bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden flex flex-col group hover:shadow-md transition-shadow" data-status="ongoing">
                     <div class="h-48 {{ ['bg-blue-600', 'bg-purple-600', 'bg-green-600', 'bg-orange-600'][$index % 4] }} relative overflow-hidden">
                         <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-gray-800 text-xs font-bold px-3 py-1.5 rounded-lg shadow-sm flex items-center">
                             {{ $class->code }}
@@ -151,8 +110,8 @@
                         
                         <div class="mt-auto">
                             <div class="flex items-center justify-between text-xs text-gray-500 mb-5 font-medium border-t border-gray-100 pt-4">
-                                <div class="flex items-center"><svg class="w-4 h-4 mr-1.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg> Materi</div>
-                                <div class="flex items-center"><svg class="w-4 h-4 mr-1.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg> Tugas</div>
+                                <div class="flex items-center"><svg class="w-4 h-4 mr-1.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg> {{ $class->materials_count ?? 0 }} Materi</div>
+                                <div class="flex items-center"><svg class="w-4 h-4 mr-1.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg> {{ $class->assignments_count ?? 0 }} Tugas</div>
                             </div>
                             
                             <a href="/classrooms/{{ $class->id }}" class="w-full bg-white border border-[#007cc3] text-[#007cc3] hover:bg-[#007cc3] hover:text-white font-semibold py-2.5 rounded-xl flex items-center justify-center transition-colors text-sm text-center block">
@@ -174,6 +133,12 @@
                     </button>
                 </div>
                 @endforelse
+
+                <!-- Pesan saat filter kosong -->
+                <div id="emptyFilterState" class="col-span-full bg-white rounded-3xl shadow-sm border border-gray-100 p-12 text-center mt-8" style="display: none;">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Tidak Ada Kursus</h3>
+                    <p class="text-gray-500">Tidak ada kursus yang sesuai dengan kategori yang dipilih.</p>
+                </div>
 
                 </div>
 
@@ -235,6 +200,43 @@
         if (openBtn) openBtn.addEventListener('click', () => toggleModal(true));
         if (closeBtn) closeBtn.addEventListener('click', () => toggleModal(false));
         if (cancelBtn) cancelBtn.addEventListener('click', () => toggleModal(false));
+
+        // Logika Filter Kursus
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const courseCards = document.querySelectorAll('.course-card');
+        const emptyState = document.getElementById('emptyFilterState');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // 1. Reset gaya semua tombol
+                filterBtns.forEach(b => {
+                    b.classList.remove('bg-[#007cc3]', 'text-white', 'shadow-sm');
+                    b.classList.add('text-gray-600', 'hover:bg-gray-100');
+                });
+                
+                // 2. Beri gaya aktif pada tombol yang diklik
+                btn.classList.remove('text-gray-600', 'hover:bg-gray-100');
+                btn.classList.add('bg-[#007cc3]', 'text-white', 'shadow-sm');
+
+                const filterValue = btn.getAttribute('data-filter');
+                let visibleCount = 0;
+
+                // 3. Tampilkan/Sembunyikan kartu
+                courseCards.forEach(card => {
+                    if (filterValue === 'all' || card.getAttribute('data-status') === filterValue) {
+                        card.style.display = 'flex';
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                // 4. Tampilkan pesan kosong jika diperlukan
+                if (emptyState) {
+                    emptyState.style.display = (visibleCount === 0 && courseCards.length > 0) ? 'block' : 'none';
+                }
+            });
+        });
     </script>
 </body>
 </html>

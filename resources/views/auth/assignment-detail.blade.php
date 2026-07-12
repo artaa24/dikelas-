@@ -15,45 +15,13 @@
 <body class="bg-[#F8FAFC] flex h-screen overflow-hidden text-gray-800">
 
     <!-- Left Sidebar -->
-    <aside class="w-20 lg:w-64 bg-white border-r border-gray-100 flex flex-col justify-between h-full flex-shrink-0">
-        <div>
-            <div class="p-4 lg:p-8 pb-6 flex justify-center lg:justify-start">
-                <h1 class="text-2xl font-bold text-[#0A4B7D] hidden lg:block">DIKELAS</h1>
-                <div class="lg:hidden w-10 h-10 bg-[#0A4B7D] text-white rounded-xl flex items-center justify-center font-bold text-xl">D</div>
-            </div>
-            <nav class="px-3 lg:px-4 space-y-2">
-                @if(auth()->user()->role->name == 'teacher')
-                <a href="/guru/dashboard" class="flex items-center justify-center lg:justify-start px-3 lg:px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition-colors">
-                    <svg class="w-5 h-5 lg:mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
-                    <span class="hidden lg:block">Dashboard</span>
-                </a>
-                <a href="/guru/classes" class="flex items-center justify-center lg:justify-start px-3 lg:px-4 py-3 bg-[#9AE6F1] text-[#0A4B7D] rounded-xl font-medium transition-colors">
-                    <svg class="w-5 h-5 lg:mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-                    <span class="hidden lg:block">Kelasku</span>
-                </a>
-                @else
-                <a href="/dashboard" class="flex items-center justify-center lg:justify-start px-3 lg:px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl font-medium transition-colors">
-                    <svg class="w-5 h-5 lg:mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
-                    <span class="hidden lg:block">Dashboard</span>
-                </a>
-                <a href="/courses" class="flex items-center justify-center lg:justify-start px-3 lg:px-4 py-3 bg-[#9AE6F1] text-[#0A4B7D] rounded-xl font-medium transition-colors">
-                    <svg class="w-5 h-5 lg:mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                    <span class="hidden lg:block">Kursus Saya</span>
-                </a>
-                @endif
-            </nav>
-        </div>
-        <div class="p-4 mb-4">
-            <div class="h-px bg-gray-100 mb-4"></div>
-            <form method="POST" action="/logout">
-                @csrf
-                <button type="submit" class="flex items-center px-4 py-2 text-gray-600 hover:text-red-600 transition-colors w-full">
-                    <svg class="w-5 h-5 lg:mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                    <span class="hidden lg:block">Keluar</span>
-                </button>
-            </form>
-        </div>
-    </aside>
+        @if(auth()->check() && auth()->user()->role_id == 1)
+        @include('components.sidebar-admin', ['active' => 'courses'])
+    @elseif(auth()->check() && auth()->user()->role_id == 2)
+        @include('components.sidebar-guru', ['active' => 'courses'])
+    @else
+        @include('components.sidebar-student', ['active' => 'courses'])
+    @endif
 
     <!-- Main Content Area -->
     <main class="flex-1 flex flex-col h-full overflow-hidden">
@@ -137,7 +105,7 @@
                                 </div>
                                 @if($sub)
                                     <div class="flex items-center gap-3">
-                                        <a href="{{ Storage::url($sub->file_path) }}" target="_blank" class="text-xs text-[#007cc3] font-semibold hover:underline">Unduh</a>
+                                        <a href="{{ route('submissions.download', $sub->id) }}" class="text-xs text-[#007cc3] font-semibold hover:underline">Unduh</a>
                                         @if($sub->status == 'graded')
                                             <span class="text-xs font-bold text-green-600 bg-green-50 px-2 py-1 rounded-lg">Nilai: {{ $sub->score }}</span>
                                         @else
@@ -210,7 +178,7 @@
                         @if($submission)
                         <div class="mb-4 p-3 bg-gray-50 rounded-xl border border-gray-100">
                             <p class="text-xs text-gray-500 mb-1">File terakhir:</p>
-                            <a href="{{ Storage::url($submission->file_path) }}" target="_blank" class="text-sm font-semibold text-[#007cc3] hover:underline">{{ $submission->file_name }}</a>
+                            <a href="{{ route('submissions.download', $submission->id) }}" class="text-sm font-semibold text-[#007cc3] hover:underline">{{ $submission->file_name }}</a>
                         </div>
                         @endif
                         <div class="mb-4">

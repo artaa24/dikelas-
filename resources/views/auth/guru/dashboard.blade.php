@@ -15,47 +15,7 @@
 <body class="bg-[#F8FAFC] flex h-screen overflow-hidden text-gray-800">
 
     <!-- Left Sidebar -->
-    <aside class="w-64 bg-white border-r border-gray-100 flex flex-col justify-between h-full flex-shrink-0">
-        <div>
-            <!-- Logo -->
-            <div class="p-8 pb-6">
-                <h1 class="text-2xl font-bold text-[#0A4B7D]">DIKELAS</h1>
-                <p class="text-xs text-gray-500 uppercase tracking-widest mt-1">Teacher Dashboard</p>
-            </div>
-
-            <!-- Navigation -->
-            <nav class="px-4 space-y-2">
-                <a href="/guru/dashboard" class="flex items-center px-4 py-3 bg-[#9AE6F1] text-[#0A4B7D] rounded-xl font-medium transition-colors">
-                    <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
-                    Dashboard
-                </a>
-                <a href="/guru/classes" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl font-medium transition-colors">
-                    <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                    Kelasku
-                </a>
-                <a href="/guru/materials" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl font-medium transition-colors">
-                    <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path></svg>
-                    Manajemen Materi
-                </a>
-                <a href="/guru/assignments" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl font-medium transition-colors">
-                    <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
-                    Daftar Tugas
-                </a>
-                <a href="/guru/grades" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl font-medium transition-colors">
-                    <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    Penilaian
-                </a>
-            </nav>
-        </div>
-
-        <div class="p-4 mb-4">
-            <div class="h-px bg-gray-100 mb-4 w-full"></div>
-            <a href="/login" class="flex items-center px-4 py-2 text-gray-600 hover:text-red-600 transition-colors">
-                <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                Keluar
-            </a>
-        </div>
-    </aside>
+    @include('components.sidebar-guru', ['active' => 'dashboard'])
 
     <!-- Main Content Area -->
     <main class="flex-1 flex flex-col h-full overflow-hidden">
@@ -80,7 +40,7 @@
                 </a>
                 <div class="h-8 w-px bg-gray-200"></div>
                 <a href="/edit-profile" class="flex items-center cursor-pointer">
-                    <img class="h-10 w-10 rounded-full object-cover border-2 border-white shadow-sm" src="https://i.pravatar.cc/150?img=68" alt="Teacher Avatar">
+                    <img class="h-10 w-10 rounded-full object-cover border-2 border-white shadow-sm" src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=0D8ABC&color=fff' }}" alt="User Avatar">
                 </a>
             </div>
         </header>
@@ -99,7 +59,7 @@
                         Selamat Pagi, Guru Hebat! 👋
                     </h2>
                     <p class="text-blue-50 text-lg mb-8 max-w-2xl relative z-10 opacity-90">
-                        Hari ini Anda memiliki 3 jadwal kelas dan 45 tugas murid yang perlu diperiksa. Terus menginspirasi anak bangsa!
+                        Anda saat ini mengelola {{ $totalClasses ?? 0 }} kelas. Total tugas yang perlu dinilai saat ini berjumlah {{ $pendingGrades ?? 0 }} tugas. Terus menginspirasi anak bangsa!
                     </p>
                     <a href="/guru/classes" class="bg-white text-[#0A4B7D] px-6 py-3 rounded-full font-semibold shadow hover:bg-gray-50 transition relative z-10 inline-block text-center text-sm">
                         Kelola Kelas Sekarang
@@ -159,42 +119,30 @@
                             </tr>
                         </thead>
                         <tbody class="text-sm">
+                            @forelse($activeClasses as $c)
                             <tr class="border-b border-gray-50 hover:bg-gray-50/50 transition">
                                 <td class="p-4">
                                     <div class="flex items-center">
                                         <div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-bold mr-3">
-                                            XI
+                                            {{ strtoupper(substr($c->name, 0, 2)) }}
                                         </div>
                                         <div>
-                                            <p class="font-bold text-gray-900">Matematika Wajib - XI IPA 1</p>
-                                            <p class="text-xs text-gray-500">Kode: MTK-XI-1</p>
+                                            <p class="font-bold text-gray-900">{{ $c->name }}</p>
+                                            <p class="text-xs text-gray-500">Kode: {{ $c->code }}</p>
                                         </div>
                                     </div>
                                 </td>
-                                <td class="p-4 text-gray-600">Senin, 08:00 WIB</td>
-                                <td class="p-4 text-gray-600">32 Siswa</td>
+                                <td class="p-4 text-gray-600">-</td>
+                                <td class="p-4 text-gray-600">{{ $c->students_count }} Siswa</td>
                                 <td class="p-4 text-right">
-                                    <a href="/guru/classes" class="inline-block px-4 py-2 bg-gray-100 text-gray-700 hover:bg-gray-200 rounded-lg font-medium text-xs transition">Masuk Kelas</a>
+                                    <a href="{{ route('classrooms.show', $c->id) }}" class="inline-block px-4 py-2 bg-gray-100 text-gray-700 hover:bg-gray-200 rounded-lg font-medium text-xs transition">Masuk Kelas</a>
                                 </td>
                             </tr>
-                            <tr class="border-b border-gray-50 hover:bg-gray-50/50 transition">
-                                <td class="p-4">
-                                    <div class="flex items-center">
-                                        <div class="w-10 h-10 rounded-lg bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold mr-3">
-                                            XI
-                                        </div>
-                                        <div>
-                                            <p class="font-bold text-gray-900">Matematika Wajib - XI IPA 2</p>
-                                            <p class="text-xs text-gray-500">Kode: MTK-XI-2</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="p-4 text-gray-600">Selasa, 10:00 WIB</td>
-                                <td class="p-4 text-gray-600">30 Siswa</td>
-                                <td class="p-4 text-right">
-                                    <a href="/guru/classes" class="inline-block px-4 py-2 bg-gray-100 text-gray-700 hover:bg-gray-200 rounded-lg font-medium text-xs transition">Masuk Kelas</a>
-                                </td>
+                            @empty
+                            <tr>
+                                <td colspan="4" class="p-8 text-center text-gray-500">Belum ada kelas aktif.</td>
                             </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
@@ -211,22 +159,24 @@
                     </div>
                     
                     <div class="space-y-4">
+                        @forelse($recentAssignments as $assignment)
+                        @php
+                            $totalStudents = $assignment->classroom ? $assignment->classroom->students()->count() : 0;
+                            $submittedCount = $assignment->submissions->count();
+                        @endphp
                         <div class="p-4 border border-gray-100 rounded-2xl hover:border-blue-100 transition">
-                            <h4 class="font-bold text-gray-900 text-sm mb-1">Tugas Persamaan Kuadrat</h4>
-                            <p class="text-xs text-gray-500 mb-3">XI IPA 1 • Deadline: Kemarin</p>
+                            <h4 class="font-bold text-gray-900 text-sm mb-1">{{ $assignment->title }}</h4>
+                            <p class="text-xs text-gray-500 mb-3">{{ $assignment->classroom->name ?? '-' }} • Deadline: {{ \Carbon\Carbon::parse($assignment->deadline_at)->diffForHumans() }}</p>
                             <div class="flex justify-between items-center">
-                                <span class="text-xs font-medium text-orange-500 bg-orange-50 px-2.5 py-1 rounded-full">28/32 Kumpul</span>
-                                <a href="/guru/grades" class="text-xs font-bold text-[#007cc3] hover:underline">Nilai Sekarang</a>
+                                <span class="text-xs font-medium text-orange-500 bg-orange-50 px-2.5 py-1 rounded-full">{{ $submittedCount }}/{{ $totalStudents }} Kumpul</span>
+                                <a href="/guru/grades?assignment_id={{ $assignment->id }}" class="text-xs font-bold text-[#007cc3] hover:underline">Pantau</a>
                             </div>
                         </div>
-                        <div class="p-4 border border-gray-100 rounded-2xl hover:border-blue-100 transition">
-                            <h4 class="font-bold text-gray-900 text-sm mb-1">Tugas Matriks Dasar</h4>
-                            <p class="text-xs text-gray-500 mb-3">XI IPA 2 • Deadline: Hari ini</p>
-                            <div class="flex justify-between items-center">
-                                <span class="text-xs font-medium text-orange-500 bg-orange-50 px-2.5 py-1 rounded-full">15/30 Kumpul</span>
-                                <a href="/guru/grades" class="text-xs font-bold text-[#007cc3] hover:underline">Pantau</a>
-                            </div>
+                        @empty
+                        <div class="p-4 border border-gray-100 rounded-2xl text-center text-gray-500 text-sm">
+                            Tidak ada tugas terbaru.
                         </div>
+                        @endforelse
                     </div>
                 </div>
             </div>

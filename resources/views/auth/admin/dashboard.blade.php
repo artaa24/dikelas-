@@ -12,37 +12,7 @@
 </head>
 <body class="flex h-screen overflow-hidden">
     <!-- Sidebar -->
-    <aside class="w-72 bg-white border-r border-gray-100 flex flex-col h-full flex-shrink-0 relative z-20">
-        <div class="h-20 flex items-center px-8 border-b border-gray-100">
-            <div class="flex items-center gap-2">
-                <div class="bg-[#007cc3] text-white p-1.5 rounded-lg">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                </div>
-                <span class="text-xl font-extrabold text-[#007cc3] tracking-tight">DIKELAS</span>
-            </div>
-        </div>
-
-        <div class="flex-1 overflow-y-auto py-6 px-4">
-            <p class="px-4 text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Menu Admin</p>
-            <nav class="space-y-1.5">
-                <a href="/admin/dashboard" class="flex items-center px-4 py-3 bg-[#007cc3]/10 text-[#007cc3] rounded-xl font-bold transition-colors">
-                    <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
-                    Ringkasan
-                </a>
-                <a href="/admin/users" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl font-medium transition-colors">
-                    <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                    Manajemen Pengguna
-                </a>
-            </nav>
-        </div>
-
-        <div class="p-4 mb-4">
-            <a href="/login" class="flex items-center px-4 py-2 text-gray-600 hover:text-red-600 transition-colors">
-                <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                Keluar
-            </a>
-        </div>
-    </aside>
+    @include('components.sidebar-student', ['active' => 'dashboard'])
 
     <!-- Main Content -->
     <main class="flex-1 flex flex-col h-full overflow-hidden relative">
@@ -52,9 +22,7 @@
             </div>
             <div class="flex items-center gap-6">
                 <div class="flex items-center">
-                    <div class="w-10 h-10 bg-[#007cc3] text-white rounded-full flex items-center justify-center font-bold text-sm shadow-sm">
-                        AD
-                    </div>
+                    <img class="h-10 w-10 rounded-full object-cover shadow-sm" src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=0D8ABC&color=fff' }}" alt="User Avatar">
                     <div class="ml-3 hidden md:block">
                         <p class="text-sm font-bold text-gray-900">{{ auth()->user()->name ?? 'Super Admin' }}</p>
                         <p class="text-xs text-gray-500">Administrator</p>

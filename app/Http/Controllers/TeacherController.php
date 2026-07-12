@@ -37,7 +37,23 @@ class TeacherController extends Controller
             ->where('status', 'submitted')
             ->count();
 
-        return view('auth.guru.dashboard', compact('totalClasses', 'totalStudents', 'totalMaterials', 'pendingGrades'));
+        // Get active classes for table
+        $activeClasses = Classroom::withCount('students')
+            ->where('teacher_id', $teacher->id)
+            ->orderBy('created_at', 'desc')
+            ->limit(3)
+            ->get();
+            
+        // Get recent assignments that might need grading
+        $recentAssignments = \App\Models\Assignment::with(['classroom', 'submissions' => function($q) {
+                $q->where('status', 'submitted');
+            }])
+            ->whereIn('classroom_id', $classroomIds)
+            ->orderBy('deadline_at', 'desc')
+            ->limit(4)
+            ->get();
+
+        return view('auth.guru.dashboard', compact('totalClasses', 'totalStudents', 'totalMaterials', 'pendingGrades', 'activeClasses', 'recentAssignments'));
     }
 
     /**
@@ -275,5 +291,105 @@ class TeacherController extends Controller
         $material = \App\Models\Material::findOrFail($id);
         $material->delete();
         return redirect('/guru/materials')->with('success', 'Materi berhasil dihapus!');
+    }
+
+    public function grades(\Illuminate\Http\Request $request)
+    {
+        $teacher = auth()->user();
+        $classroomIds = \App\Models\Classroom::where('teacher_id', $teacher->id)->pluck('id');
+        
+        $assignments = \App\Models\Assignment::with('classroom')
+            ->whereIn('classroom_id', $classroomIds)
+            ->orderBy('created_at', 'desc')
+            ->get();
+            
+        $selectedAssignmentId = $request->get('assignment_id');
+        if (!$selectedAssignmentId && $assignments->count() > 0) {
+            $selectedAssignmentId = $assignments->first()->id;
+        }
+        
+        $selectedAssignment = null;
+        $submissions = collect();
+        
+        if ($selectedAssignmentId) {
+            $selectedAssignment = \App\Models\Assignment::with('classroom.students')->find($selectedAssignmentId);
+            if ($selectedAssignment) {
+                $students = $selectedAssignment->classroom->students;
+                $existingSubmissions = \App\Models\Submission::where('assignment_id', $selectedAssignmentId)
+                    ->get()
+                    ->keyBy('student_id');
+                    
+                foreach ($students as $student) {
+                    $submissions->push((object)[
+                        'student' => $student,
+                        'submission' => $existingSubmissions->get($student->id)
+                    ]);
+                }
+            }
+        }
+
+        return view('auth.guru.grades', compact('assignments', 'selectedAssignment', 'submissions', 'selectedAssignmentId'));
+    }
+
+    /**
+     * Export nilai tugas ke PDF
+     */
+    public function exportGrades(Request $request)
+    {
+        $teacher = auth()->user();
+        $classroomIds = Classroom::where('teacher_id', $teacher->id)->pluck('id');
+        
+        $selectedAssignmentId = $request->get('assignment_id');
+        
+        $selectedAssignment = null;
+        $submissions = collect();
+        
+        if ($selectedAssignmentId) {
+            $selectedAssignment = \App\Models\Assignment::with('classroom.students')->whereIn('classroom_id', $classroomIds)->find($selectedAssignmentId);
+            if ($selectedAssignment) {
+                $students = $selectedAssignment->classroom->students;
+                $existingSubmissions = \App\Models\Submission::where('assignment_id', $selectedAssignmentId)
+                    ->get()
+                    ->keyBy('student_id');
+                    
+                foreach ($students as $student) {
+                    $submissions->push((object)[
+                        'student' => $student,
+                        'submission' => $existingSubmissions->get($student->id)
+                    ]);
+                }
+            }
+        }
+        
+        if (!$selectedAssignment) {
+            return redirect()->back()->with('error', 'Tugas tidak ditemukan untuk diekspor.');
+        }
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.grades', compact('selectedAssignment', 'submissions'));
+        return $pdf->download('Nilai_Tugas_' . \Illuminate\Support\Str::slug($selectedAssignment->title) . '.pdf');
+    }
+
+    /**
+     * Tampilkan jadwal akademik (Tugas & Kuis) yang dibuat oleh Guru.
+     */
+    public function schedule()
+    {
+        $teacher = auth()->user();
+        
+        $classroomIds = Classroom::where('teacher_id', $teacher->id)->pluck('id');
+            
+        $assignments = \App\Models\Assignment::with('classroom')
+            ->whereIn('classroom_id', $classroomIds)
+            ->where('deadline_at', '>', now())
+            ->orderBy('deadline_at', 'asc')
+            ->get();
+            
+        $quizzes = \App\Models\Quiz::with('classroom')
+            ->whereIn('classroom_id', $classroomIds)
+            ->where('created_at', '>', now()->subDays(30))
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('auth.guru.schedule', compact('assignments', 'quizzes'));
     }
 }

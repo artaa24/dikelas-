@@ -37,7 +37,10 @@ class ClassroomController extends Controller
         // Ambil tugas (segera di Fase 7, sementara kosongkan atau biarkan)
         $assignments = \App\Models\Assignment::where('classroom_id', $id)->orderBy('deadline_at', 'asc')->get();
 
-        return view('auth.class-detail', compact('classroom', 'materials', 'assignments'));
+        // Ambil kuis
+        $quizzes = \App\Models\Quiz::where('classroom_id', $id)->orderBy('created_at', 'desc')->get();
+
+        return view('auth.class-detail', compact('classroom', 'materials', 'assignments', 'quizzes'));
     }
 
     /**

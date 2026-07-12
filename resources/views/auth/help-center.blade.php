@@ -15,32 +15,7 @@
 <body class="bg-[#F8FAFC] flex h-screen overflow-hidden text-gray-800">
 
     <!-- Sidebar (General Context) -->
-    <aside class="w-64 bg-white border-r border-gray-100 flex flex-col justify-between h-full flex-shrink-0 transition-all duration-300">
-        <div>
-            <div class="p-8 pb-6 border-b border-gray-100">
-                <a href="javascript:history.back()" class="inline-flex items-center text-sm font-semibold text-gray-500 hover:text-[#007cc3] transition mb-4">
-                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
-                    Kembali
-                </a>
-                <h1 class="text-2xl font-bold text-[#0A4B7D]">DIKELAS</h1>
-                <p class="text-xs text-gray-500 uppercase tracking-widest mt-1">Pusat Bantuan</p>
-            </div>
-            <nav class="p-4 space-y-2">
-                <a href="#" class="flex items-center px-4 py-3 bg-blue-50 text-[#007cc3] rounded-xl font-medium transition-colors">
-                    FAQ Umum
-                </a>
-                <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl font-medium transition-colors">
-                    Panduan Murid
-                </a>
-                <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl font-medium transition-colors">
-                    Panduan Guru
-                </a>
-                <a href="#" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl font-medium transition-colors">
-                    Kendala Teknis
-                </a>
-            </nav>
-        </div>
-    </aside>
+    @include('components.sidebar-student', ['active' => ''])
 
     <!-- Main Content Area -->
     <main class="flex-1 flex flex-col h-full overflow-hidden bg-white">

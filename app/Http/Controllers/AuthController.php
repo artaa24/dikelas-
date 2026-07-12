@@ -24,6 +24,17 @@ class AuthController extends Controller
 
             $user = Auth::user();
 
+            // Cek apakah akun aktif
+            if (!$user->is_active) {
+                Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+
+                return back()->withErrors([
+                    'email' => 'Akun Anda telah dinonaktifkan. Silakan hubungi administrator.',
+                ])->onlyInput('email');
+            }
+
             // Update last_login_at
             $user->last_login_at = now();
             $user->save();
@@ -44,6 +55,30 @@ class AuthController extends Controller
         ])->onlyInput('email');
     }
 
+    public function register(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+            'role' => 'required|in:murid,guru',
+        ]);
+
+        $role_id = $request->role === 'guru' ? 2 : 3;
+
+        $user = \App\Models\User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => \Illuminate\Support\Facades\Hash::make($request->password),
+            'role_id' => $role_id,
+            'nis' => $request->role === 'murid' ? rand(100000, 999999) : null,
+            'nip' => $request->role === 'guru' ? rand(10000000, 99999999) : null,
+            'is_active' => true,
+        ]);
+
+        return redirect()->route('login')->with('success', 'Akun berhasil dibuat. Silakan login.');
+    }
+
     public function logout(Request $request)
     {
         Auth::logout();
@@ -52,5 +87,19 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/login');
+    }
+
+    public function requestReset(Request $request)
+    {
+        $request->validate([
+            'identifier' => 'required|string|max:255',
+        ]);
+
+        \App\Models\PasswordResetRequest::create([
+            'identifier' => $request->identifier,
+            'status' => 'pending',
+        ]);
+
+        return back()->with('success', 'Permintaan reset password untuk ' . $request->identifier . ' telah dikirim ke Admin. Silakan hubungi Tata Usaha untuk konfirmasi.');
     }
 }

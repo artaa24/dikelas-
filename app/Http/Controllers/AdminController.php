@@ -22,8 +22,10 @@ class AdminController extends Controller
         
         // Karena kita Opsi B (Single-School), kita bisa set total sekolah menjadi 1 atau hilangkan saja, tapi kita kirim 1 sebagai dummy jika dibutuhkan di view.
         $totalSchools = 1;
+        
+        $pendingResets = \App\Models\PasswordResetRequest::where('status', 'pending')->count();
 
-        return view('auth.admin.dashboard', compact('totalTeachers', 'totalStudents', 'totalSchools'));
+        return view('auth.admin.dashboard', compact('totalTeachers', 'totalStudents', 'totalSchools', 'pendingResets'));
     }
 
     /**
@@ -34,8 +36,9 @@ class AdminController extends Controller
         // Ambil semua pengguna beserta relasi role-nya
         $users = User::with('role')->orderBy('created_at', 'desc')->paginate(10);
         $roles = Role::all();
+        $pendingResets = \App\Models\PasswordResetRequest::where('status', 'pending')->orderBy('created_at', 'desc')->get();
         
-        return view('auth.admin.users', compact('users', 'roles'));
+        return view('auth.admin.users', compact('users', 'roles', 'pendingResets'));
     }
 
     /**
@@ -63,5 +66,54 @@ class AdminController extends Controller
         ]);
 
         return redirect('/admin/users')->with('success', 'Pengguna baru berhasil ditambahkan!');
+    }
+
+    /**
+     * Proses pembaruan data pengguna.
+     */
+    public function updateUser(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,'.$id,
+            'role_id' => 'required|exists:roles,id',
+            'nip' => 'nullable|string',
+            'nis' => 'nullable|string',
+        ]);
+
+        $data = $request->except('password');
+        if ($request->filled('password')) {
+            $request->validate(['password' => 'string|min:8']);
+            $data['password'] = Hash::make($request->password);
+        }
+
+        $user->update($data);
+
+        return redirect('/admin/users')->with('success', 'Data pengguna berhasil diperbarui!');
+    }
+
+    /**
+     * Hapus pengguna.
+     */
+    public function destroyUser($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return redirect('/admin/users')->with('success', 'Pengguna berhasil dihapus!');
+    }
+
+    /**
+     * Tandai permintaan reset password sebagai selesai.
+     */
+    public function resolveReset($id)
+    {
+        $resetReq = \App\Models\PasswordResetRequest::findOrFail($id);
+        $resetReq->status = 'resolved';
+        $resetReq->save();
+        
+        return redirect()->back()->with('success', 'Permintaan reset atas nama ' . $resetReq->identifier . ' telah ditandai selesai.');
     }
 }

@@ -35,9 +35,26 @@ class StudentController extends Controller
             })
             ->count();
             
-        $gpa = "0.00";
+        $submissions = \App\Models\Submission::where('student_id', $student->id)
+            ->whereNotNull('score')
+            ->get();
+            
+        $completedAssignments = $submissions->count();
+        $averageScore = $completedAssignments > 0 ? number_format($submissions->avg('score'), 1) : "0";
 
-        return view('auth.dashboard', compact('totalClasses', 'activeAssignments', 'gpa', 'classrooms'));
+        // Get upcoming assignments for right sidebar
+        $upcomingAssignments = \App\Models\Assignment::with('classroom')
+            ->whereIn('classroom_id', $classroomIds)
+            ->whereNotIn('id', function($query) use ($student) {
+                $query->select('assignment_id')
+                    ->from('submissions')
+                    ->where('student_id', $student->id);
+            })
+            ->orderBy('deadline_at', 'asc')
+            ->limit(4)
+            ->get();
+
+        return view('auth.dashboard', compact('totalClasses', 'activeAssignments', 'averageScore', 'classrooms', 'upcomingAssignments', 'completedAssignments'));
     }
 
     /**
@@ -47,10 +64,10 @@ class StudentController extends Controller
     {
         $student = auth()->user();
         
-        // Ambil kelas yang diikuti beserta data gurunya
+        // Ambil kelas yang diikuti beserta data gurunya dan jumlah materi/tugas
         $classrooms = Classroom::whereHas('students', function ($query) use ($student) {
             $query->where('student_id', $student->id);
-        })->with('teacher')->get(); // Pastikan ada relasi teacher di model Classroom
+        })->with('teacher')->withCount(['materials', 'assignments'])->get();
         
         return view('auth.courses', compact('classrooms'));
     }
@@ -115,5 +132,47 @@ class StudentController extends Controller
             ->get();
             
         return view('auth.assignments', compact('assignments'));
+    }
+
+    /**
+     * Tampilkan jadwal akademik (Tugas & Kuis yang akan datang).
+     */
+    public function schedule()
+    {
+        $student = auth()->user();
+        
+        $classroomIds = DB::table('classroom_student')
+            ->where('student_id', $student->id)
+            ->pluck('classroom_id');
+            
+        $assignments = \App\Models\Assignment::with('classroom')
+            ->whereIn('classroom_id', $classroomIds)
+            ->where('deadline_at', '>', now())
+            ->orderBy('deadline_at', 'asc')
+            ->get();
+            
+        $quizzes = \App\Models\Quiz::with('classroom')
+            ->whereIn('classroom_id', $classroomIds)
+            ->where('created_at', '>', now()->subDays(30)) // just show recent or upcoming
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('auth.schedule', compact('assignments', 'quizzes'));
+    }
+
+    /**
+     * Tampilkan halaman nilai untuk Murid
+     */
+    public function grades()
+    {
+        $student = auth()->user();
+        
+        $submissions = \App\Models\Submission::with(['assignment.classroom'])
+            ->where('student_id', $student->id)
+            ->whereNotNull('score')
+            ->orderBy('updated_at', 'desc')
+            ->get();
+            
+        return view('auth.grades', compact('submissions'));
     }
 }

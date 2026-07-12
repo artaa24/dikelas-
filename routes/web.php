@@ -11,10 +11,12 @@ Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/logout', [AuthController::class, 'logout']); // Fallback for simple links
+Route::post('/password-reset-request', [AuthController::class, 'requestReset'])->name('password.reset.request');
 
 Route::get('/register', function () {
     return view('auth.register');
 })->name('register');
+Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
 
 Route::middleware('auth')->group(function () {
     // Murid Routes
@@ -22,11 +24,16 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard', [\App\Http\Controllers\StudentController::class, 'dashboard']);
         Route::get('/courses', [\App\Http\Controllers\StudentController::class, 'courses']);
         Route::post('/courses/join', [\App\Http\Controllers\StudentController::class, 'joinClass']);
+        Route::get('/schedule', [\App\Http\Controllers\StudentController::class, 'schedule'])->name('schedule');
+        Route::get('/grades', [\App\Http\Controllers\StudentController::class, 'grades'])->name('grades.index');
     });
-    Route::get('/schedule', function () { return view('auth.schedule'); });
-    Route::get('/assignments', [\App\Http\Controllers\StudentController::class, 'assignments']);
-    Route::get('/profile', function () { return view('auth.profile'); });
+
+    Route::get('/assignments', [\App\Http\Controllers\StudentController::class, 'assignments'])->name('assignments.index');
+    Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'index'])->name('profile');
+    Route::get('/edit-profile', [\App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
     Route::get('/notifications', function () { return view('auth.notifications'); });
+    Route::get('/announcements', [\App\Http\Controllers\AnnouncementController::class, 'index'])->name('announcements.index');
     Route::get('/classrooms/{id}', [\App\Http\Controllers\ClassroomController::class, 'show'])->name('classrooms.show');
     Route::post('/classrooms/{id}/materials', [\App\Http\Controllers\ClassroomController::class, 'storeMaterial'])->name('classrooms.materials.store');
     
@@ -35,6 +42,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/assignments/{id}', [\App\Http\Controllers\AssignmentController::class, 'show'])->name('assignments.show');
     Route::post('/assignments/{id}/submit', [\App\Http\Controllers\AssignmentController::class, 'submit'])->name('assignments.submit');
     Route::post('/submissions/{id}/grade', [\App\Http\Controllers\AssignmentController::class, 'grade'])->name('submissions.grade');
+    Route::get('/submissions/{id}/download', [\App\Http\Controllers\AssignmentController::class, 'download'])->name('submissions.download');
+    
+    // Quiz Routes
+    Route::post('/classrooms/{id}/quizzes', [\App\Http\Controllers\QuizController::class, 'store'])->name('classrooms.quizzes.store');
+    Route::get('/quizzes/{id}', [\App\Http\Controllers\QuizController::class, 'show'])->name('quizzes.show');
+    Route::post('/quizzes/{id}/attempt', [\App\Http\Controllers\QuizController::class, 'startAttempt'])->name('quizzes.attempt.start');
+    Route::post('/quizzes/attempt/{attempt_id}/submit', [\App\Http\Controllers\QuizController::class, 'submitAttempt'])->name('quizzes.attempt.submit');
     
     // Guru Routes
     Route::middleware('role:teacher')->group(function () {
@@ -53,8 +67,14 @@ Route::middleware('auth')->group(function () {
         Route::post('/guru/materials', [\App\Http\Controllers\TeacherController::class, 'storeMaterial']);
         Route::put('/guru/materials/{id}', [\App\Http\Controllers\TeacherController::class, 'updateMaterial']);
         Route::delete('/guru/materials/{id}', [\App\Http\Controllers\TeacherController::class, 'destroyMaterial']);
+        
+        Route::get('/guru/quizzes/{id}', [\App\Http\Controllers\QuizController::class, 'showTeacher'])->name('guru.quizzes.show');
+        Route::post('/guru/quizzes/{id}/questions', [\App\Http\Controllers\QuizController::class, 'storeQuestion'])->name('guru.quizzes.questions.store');
 
-        Route::get('/guru/grades', function () { return view('auth.guru.grades'); });
+        Route::get('/guru/grades', [\App\Http\Controllers\TeacherController::class, 'grades']);
+        Route::get('/guru/grades/export', [\App\Http\Controllers\TeacherController::class, 'exportGrades'])->name('guru.grades.export');
+        
+        Route::get('/guru/schedule', [\App\Http\Controllers\TeacherController::class, 'schedule']);
     });
 
     // Admin Routes
@@ -62,11 +82,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin/dashboard', [\App\Http\Controllers\AdminController::class, 'dashboard']);
         Route::get('/admin/users', [\App\Http\Controllers\AdminController::class, 'users']);
         Route::post('/admin/users', [\App\Http\Controllers\AdminController::class, 'storeUser']);
+        Route::put('/admin/users/{id}', [\App\Http\Controllers\AdminController::class, 'updateUser']);
+        Route::delete('/admin/users/{id}', [\App\Http\Controllers\AdminController::class, 'destroyUser']);
+        Route::post('/admin/resolve-reset/{id}', [\App\Http\Controllers\AdminController::class, 'resolveReset'])->name('admin.resolve-reset');
     });
 
     // General / Shared Routes
     Route::get('/bookmarks', function () { return view('auth.bookmarks'); });
     Route::get('/announcements', function () { return view('auth.announcements'); });
-    Route::get('/edit-profile', function () { return view('auth.edit-profile'); });
     Route::get('/help-center', function () { return view('auth.help-center'); });
 });

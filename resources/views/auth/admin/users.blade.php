@@ -12,37 +12,7 @@
 </head>
 <body class="flex h-screen overflow-hidden">
     <!-- Sidebar -->
-    <aside class="w-72 bg-white border-r border-gray-100 flex flex-col h-full flex-shrink-0 relative z-20">
-        <div class="h-20 flex items-center px-8 border-b border-gray-100">
-            <div class="flex items-center gap-2">
-                <div class="bg-[#007cc3] text-white p-1.5 rounded-lg">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                </div>
-                <span class="text-xl font-extrabold text-[#007cc3] tracking-tight">DIKELAS</span>
-            </div>
-        </div>
-
-        <div class="flex-1 overflow-y-auto py-6 px-4">
-            <p class="px-4 text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Menu Admin</p>
-            <nav class="space-y-1.5">
-                <a href="/admin/dashboard" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl font-medium transition-colors">
-                    <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
-                    Ringkasan
-                </a>
-                <a href="/admin/users" class="flex items-center px-4 py-3 bg-[#007cc3]/10 text-[#007cc3] rounded-xl font-bold transition-colors">
-                    <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                    Manajemen Pengguna
-                </a>
-            </nav>
-        </div>
-
-        <div class="p-4 mb-4">
-            <a href="/login" class="flex items-center px-4 py-2 text-gray-600 hover:text-red-600 transition-colors">
-                <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                Keluar
-            </a>
-        </div>
-    </aside>
+    @include('components.sidebar-student', ['active' => 'users'])
 
     <!-- Main Content -->
     <main class="flex-1 flex flex-col h-full overflow-hidden relative">
@@ -54,9 +24,7 @@
             </div>
             <div class="flex items-center gap-6">
                 <div class="flex items-center">
-                    <div class="w-10 h-10 bg-[#007cc3] text-white rounded-full flex items-center justify-center font-bold text-sm shadow-sm">
-                        AD
-                    </div>
+                    <img class="h-10 w-10 rounded-full object-cover shadow-sm" src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=0D8ABC&color=fff' }}" alt="User Avatar">
                     <div class="ml-3 hidden md:block">
                         <p class="text-sm font-bold text-gray-900">{{ auth()->user()->name ?? 'Super Admin' }}</p>
                         <p class="text-xs text-gray-500">Administrator</p>
@@ -80,6 +48,33 @@
                         <li>{{ $error }}</li>
                     @endforeach
                 </ul>
+            </div>
+            @endif
+            
+            @if(isset($pendingResets) && count($pendingResets) > 0)
+            <div class="mb-8 bg-red-50 border border-red-100 rounded-3xl p-6 shadow-sm">
+                <h3 class="text-lg font-bold text-red-800 mb-4 flex items-center">
+                    <span class="w-3 h-3 bg-red-500 rounded-full mr-3 animate-pulse"></span>
+                    Permintaan Reset Password ({{ count($pendingResets) }})
+                </h3>
+                <p class="text-sm text-red-600 mb-4">Pengguna berikut melaporkan lupa kata sandi. Silakan ubah password mereka secara manual melalui tombol <span class="font-bold">Edit</span> di tabel bawah, lalu tandai permintaan ini selesai.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    @foreach($pendingResets as $reset)
+                    <div class="bg-white border border-red-200 rounded-2xl p-5 flex flex-col">
+                        <p class="text-xs text-red-400 font-bold uppercase tracking-wider mb-1">NIP/NIS/Email</p>
+                        <h4 class="text-xl font-black text-gray-900 mb-4 break-all">{{ $reset->identifier }}</h4>
+                        <div class="mt-auto">
+                            <form action="{{ route('admin.resolve-reset', $reset->id) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="w-full bg-red-100 text-red-700 hover:bg-red-600 hover:text-white font-bold py-2 rounded-xl text-sm transition shadow-sm">
+                                    Tandai Selesai
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
             </div>
             @endif
             
@@ -132,10 +127,10 @@
                                 <span class="px-3 py-1 text-xs font-bold rounded-full bg-blue-100 text-blue-700">Aktif</span>
                             </td>
                             <td class="py-4 px-6 text-right">
-                                <button class="text-gray-400 hover:text-[#007cc3] transition p-2">
+                                <button onclick="openEditUserModal({{ $user->id }}, '{{ addslashes($user->name) }}', '{{ addslashes($user->email) }}', {{ $user->role_id }}, '{{ addslashes($user->nip) }}', '{{ addslashes($user->nis) }}')" class="text-gray-400 hover:text-[#007cc3] transition p-2">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                                 </button>
-                                <button class="text-gray-400 hover:text-red-500 transition p-2">
+                                <button onclick="openDeleteUserModal({{ $user->id }})" class="text-gray-400 hover:text-red-500 transition p-2">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                 </button>
                             </td>
@@ -205,6 +200,80 @@
         </div>
     </div>
 
+    <!-- Modal Edit Pengguna -->
+    <div id="editUserModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-3xl w-full max-w-lg shadow-xl overflow-hidden transform scale-95 transition-transform duration-300 relative">
+            <div class="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                <h3 class="text-xl font-bold text-gray-900">Edit Pengguna</h3>
+                <button onclick="closeEditUserModal()" class="text-gray-400 hover:text-gray-600 transition">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            
+            <div class="p-8 max-h-[80vh] overflow-y-auto">
+                <form id="editUserForm" action="" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="space-y-5">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Nama Lengkap</label>
+                            <input type="text" name="name" id="edit_name" required class="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:ring-1 focus:ring-[#007cc3]">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                            <input type="email" name="email" id="edit_email" required class="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:ring-1 focus:ring-[#007cc3]">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Password Baru (Biarkan kosong jika tidak ingin mengubah)</label>
+                            <input type="password" name="password" class="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:ring-1 focus:ring-[#007cc3]">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Peran Pengguna (Role)</label>
+                            <select name="role_id" id="edit_role_id" required class="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:ring-1 focus:ring-[#007cc3]">
+                                @foreach($roles as $role)
+                                    <option value="{{ $role->id }}">{{ ucfirst($role->name) }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">NIP (Khusus Guru)</label>
+                                <input type="text" name="nip" id="edit_nip" class="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:ring-1 focus:ring-[#007cc3]">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">NIS (Khusus Murid)</label>
+                                <input type="text" name="nis" id="edit_nis" class="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 px-4 text-sm focus:outline-none focus:ring-1 focus:ring-[#007cc3]">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 flex justify-end gap-3">
+                        <button type="button" onclick="closeEditUserModal()" class="px-5 py-2.5 text-sm font-semibold text-gray-600 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition">Batal</button>
+                        <button type="submit" class="px-5 py-2.5 text-sm font-bold text-white bg-[#007cc3] rounded-xl hover:bg-blue-700 shadow-md transition">Simpan Perubahan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Hapus Pengguna -->
+    <div id="deleteUserModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-3xl w-full max-w-sm shadow-xl overflow-hidden transform scale-95 transition-transform duration-300 relative p-8 text-center">
+            <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-5">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Hapus Pengguna</h3>
+            <p class="text-gray-500 mb-8">Apakah Anda yakin ingin menghapus pengguna ini? Tindakan ini tidak dapat dibatalkan.</p>
+            
+            <form id="deleteUserForm" action="" method="POST" class="flex justify-center gap-3">
+                @csrf
+                @method('DELETE')
+                <button type="button" onclick="closeDeleteUserModal()" class="px-6 py-2.5 text-sm font-semibold text-gray-600 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition">Batal</button>
+                <button type="submit" class="px-6 py-2.5 text-sm font-bold text-white bg-red-500 rounded-xl hover:bg-red-600 shadow-md transition">Ya, Hapus</button>
+            </form>
+        </div>
+    </div>
+
     <script>
         function openAddUserModal() {
             const modal = document.getElementById('addUserModal');
@@ -217,6 +286,52 @@
 
         function closeAddUserModal() {
             const modal = document.getElementById('addUserModal');
+            modal.classList.add('opacity-0');
+            modal.children[0].classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        function openEditUserModal(id, name, email, roleId, nip, nis) {
+            document.getElementById('edit_name').value = name;
+            document.getElementById('edit_email').value = email;
+            document.getElementById('edit_role_id').value = roleId;
+            document.getElementById('edit_nip').value = nip;
+            document.getElementById('edit_nis').value = nis;
+            
+            document.getElementById('editUserForm').action = '/admin/users/' + id;
+
+            const modal = document.getElementById('editUserModal');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modal.children[0].classList.remove('scale-95');
+            }, 10);
+        }
+
+        function closeEditUserModal() {
+            const modal = document.getElementById('editUserModal');
+            modal.classList.add('opacity-0');
+            modal.children[0].classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        function openDeleteUserModal(id) {
+            document.getElementById('deleteUserForm').action = '/admin/users/' + id;
+
+            const modal = document.getElementById('deleteUserModal');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modal.children[0].classList.remove('scale-95');
+            }, 10);
+        }
+
+        function closeDeleteUserModal() {
+            const modal = document.getElementById('deleteUserModal');
             modal.classList.add('opacity-0');
             modal.children[0].classList.add('scale-95');
             setTimeout(() => {

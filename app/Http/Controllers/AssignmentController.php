@@ -134,4 +134,30 @@ class AssignmentController extends Controller
 
         return redirect()->route('assignments.show', $submission->assignment_id)->with('success', 'Nilai berhasil disimpan!');
     }
+
+    /**
+     * Unduh file tugas (Guru/Murid terkait)
+     */
+    public function download($submissionId)
+    {
+        $submission = Submission::findOrFail($submissionId);
+        $user = auth()->user();
+        
+        // Cek izin: Hanya murid yang mengumpulkan ATAU guru kelas yang bisa unduh
+        $isTeacher = $submission->assignment->classroom->teacher_id == $user->id;
+        $isOwner = $submission->student_id == $user->id;
+        
+        if (!$isTeacher && !$isOwner) {
+            abort(403, 'Anda tidak memiliki akses ke file ini.');
+        }
+
+        if (!\Illuminate\Support\Facades\Storage::disk('public')->exists($submission->file_path)) {
+            abort(404, 'File tidak ditemukan di server.');
+        }
+
+        return \Illuminate\Support\Facades\Storage::disk('public')->download(
+            $submission->file_path,
+            $submission->file_name
+        );
+    }
 }
