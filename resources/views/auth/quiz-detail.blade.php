@@ -35,10 +35,18 @@
                 <h2 class="text-3xl font-bold text-gray-900 mb-2">{{ $quiz->title }}</h2>
                 <p class="text-gray-500 mb-8">{{ $quiz->description }}</p>
 
+                @php
+                    $questionCount = $quiz->questions()->count();
+                @endphp
                 <div class="flex justify-center gap-6 mb-8 border-y border-gray-100 py-6">
                     <div class="text-center">
                         <p class="text-xs text-gray-400 font-bold uppercase mb-1">Durasi</p>
                         <p class="text-xl font-bold text-gray-900">{{ $quiz->duration_minutes }} Menit</p>
+                    </div>
+                    <div class="w-px bg-gray-200"></div>
+                    <div class="text-center">
+                        <p class="text-xs text-gray-400 font-bold uppercase mb-1">Jumlah Soal</p>
+                        <p class="text-xl font-bold text-gray-900">{{ $questionCount }}</p>
                     </div>
                     <div class="w-px bg-gray-200"></div>
                     <div class="text-center">
@@ -55,13 +63,23 @@
                         <p class="text-sm font-bold text-green-700/60 mt-1 uppercase">Nilai Anda</p>
                     </div>
                 @else
-                    <form action="{{ route('quizzes.attempt.start', $quiz->id) }}" method="POST">
-                        @csrf
-                        <button type="submit" class="w-full sm:w-auto bg-[#007cc3] hover:bg-blue-700 text-white font-bold py-4 px-12 rounded-xl shadow-lg shadow-blue-500/30 transition-all text-lg">
-                            Mulai Kerjakan Kuis
-                        </button>
-                    </form>
-                    <p class="text-xs text-gray-400 mt-4">*Pastikan koneksi internet Anda stabil sebelum memulai.</p>
+                    @if($questionCount > 0)
+                        <form action="{{ route('quizzes.attempt.start', $quiz->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="w-full sm:w-auto bg-[#007cc3] hover:bg-blue-700 text-white font-bold py-4 px-12 rounded-xl shadow-lg shadow-blue-500/30 transition-all text-lg">
+                                Mulai Kerjakan Kuis
+                            </button>
+                        </form>
+                        <p class="text-xs text-gray-400 mt-4">*Pastikan koneksi internet Anda stabil sebelum memulai.</p>
+                    @else
+                        <div class="bg-yellow-50 border border-yellow-200 rounded-2xl p-6">
+                            <div class="flex items-center justify-center mb-3">
+                                <svg class="w-8 h-8 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"></path></svg>
+                            </div>
+                            <h3 class="text-lg font-bold text-yellow-800 mb-1">Kuis Belum Tersedia</h3>
+                            <p class="text-sm text-yellow-700">Guru belum menambahkan soal untuk kuis ini. Silakan coba lagi nanti.</p>
+                        </div>
+                    @endif
                 @endif
             </div>
 

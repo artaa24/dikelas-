@@ -69,7 +69,7 @@ class QuizController extends Controller
         }
 
         $request->validate([
-            'type' => 'required|in:multiple_choice,essay',
+            'type' => 'required|in:multiple_choice',
             'content' => 'required|string',
             'points' => 'required|integer|min:1',
         ]);
@@ -142,6 +142,11 @@ class QuizController extends Controller
         $quiz = Quiz::findOrFail($quizId);
         $user = auth()->user();
 
+        // Pastikan kuis memiliki soal
+        if ($quiz->questions()->count() === 0) {
+            return redirect()->route('quizzes.show', $quiz->id)->with('error', 'Kuis ini belum memiliki soal.');
+        }
+
         // Pastikan belum ada attempt
         $attempt = QuizAttempt::where('quiz_id', $quiz->id)->where('student_id', $user->id)->first();
         if ($attempt) {
@@ -179,15 +184,10 @@ class QuizController extends Controller
             $isCorrect = false;
             $score = 0;
 
-            if ($question->type == 'multiple_choice') {
-                $option = $question->options->where('id', $answer)->first();
-                if ($option && $option->is_correct) {
-                    $isCorrect = true;
-                    $score = $question->points;
-                }
-            } elseif ($question->type == 'essay') {
-                // Untuk esai, nilai manual nanti. Sementara 0.
-                $isCorrect = null; 
+            $option = $question->options->where('id', $answer)->first();
+            if ($option && $option->is_correct) {
+                $isCorrect = true;
+                $score = $question->points;
             }
 
             QuizAnswer::create([
