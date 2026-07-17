@@ -53,7 +53,7 @@ class AssignmentController extends Controller
         if ($user->role->name == 'student') {
             $isEnrolled = $assignment->classroom->students()->where('users.id', $user->id)->exists();
             if (!$isEnrolled) {
-                return redirect()->route('courses')->with('error', 'Akses ditolak.');
+                return redirect('/courses')->with('error', 'Akses ditolak.');
             }
             
             // Ambil submission milik murid ini
@@ -64,7 +64,7 @@ class AssignmentController extends Controller
             return view('auth.assignment-detail', compact('assignment', 'submission'));
         } elseif ($user->role->name == 'teacher') {
             if ($assignment->classroom->teacher_id != $user->id) {
-                return redirect()->route('guru.classes')->with('error', 'Akses ditolak.');
+                return redirect('/guru/assignments')->with('error', 'Akses ditolak.');
             }
             
             // Ambil semua submissions dari murid-murid di kelas ini
@@ -87,7 +87,7 @@ class AssignmentController extends Controller
         $user = auth()->user();
 
         $request->validate([
-            'file' => 'required|file|max:10240', // Max 10MB
+            'file' => 'required|file|max:10240|mimes:pdf,doc,docx,ppt,pptx,xls,xlsx,jpg,jpeg,png,zip,rar,txt',
         ]);
 
         $file = $request->file('file');
@@ -116,9 +116,13 @@ class AssignmentController extends Controller
      */
     public function grade(Request $request, $submissionId)
     {
-        $submission = Submission::findOrFail($submissionId);
+        $submission = Submission::with('assignment.classroom')->findOrFail($submissionId);
         
-        // Validasi guru (diabaikan sementara asumsi route dilindungi middleware role:teacher)
+        // Validasi bahwa guru ini adalah pemilik kelas
+        $user = auth()->user();
+        if ($submission->assignment->classroom->teacher_id !== $user->id) {
+            abort(403, 'Anda tidak berhak menilai submission dari kelas lain.');
+        }
 
         $request->validate([
             'score' => 'required|numeric|min:0|max:100',
@@ -151,11 +155,11 @@ class AssignmentController extends Controller
             abort(403, 'Anda tidak memiliki akses ke file ini.');
         }
 
-        if (!\Illuminate\Support\Facades\Storage::disk('public')->exists($submission->file_path)) {
+        if (!Storage::disk('public')->exists($submission->file_path)) {
             abort(404, 'File tidak ditemukan di server.');
         }
 
-        return \Illuminate\Support\Facades\Storage::disk('public')->download(
+        return Storage::disk('public')->download(
             $submission->file_path,
             $submission->file_name
         );

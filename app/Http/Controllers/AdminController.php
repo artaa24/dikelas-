@@ -14,11 +14,12 @@ class AdminController extends Controller
      */
     public function dashboard()
     {
-        // Hitung total guru (role_id = 2)
-        $totalTeachers = User::where('role_id', 2)->count();
-        
-        // Hitung total murid (role_id = 3)
-        $totalStudents = User::where('role_id', 3)->count();
+        // Hitung total guru berdasarkan nama role
+        $teacherRole = Role::where('name', 'teacher')->first();
+        $studentRole = Role::where('name', 'student')->first();
+
+        $totalTeachers = $teacherRole ? User::where('role_id', $teacherRole->id)->count() : 0;
+        $totalStudents = $studentRole ? User::where('role_id', $studentRole->id)->count() : 0;
         
         // Karena kita Opsi B (Single-School), kita bisa set total sekolah menjadi 1 atau hilangkan saja, tapi kita kirim 1 sebagai dummy jika dibutuhkan di view.
         $totalSchools = 1;
@@ -100,6 +101,12 @@ class AdminController extends Controller
     public function destroyUser($id)
     {
         $user = User::findOrFail($id);
+        
+        // Jangan izinkan menghapus diri sendiri
+        if ($user->id === auth()->id()) {
+            return redirect('/admin/users')->with('error', 'Anda tidak bisa menghapus akun sendiri.');
+        }
+
         $user->delete();
 
         return redirect('/admin/users')->with('success', 'Pengguna berhasil dihapus!');

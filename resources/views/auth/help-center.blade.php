@@ -14,8 +14,14 @@
 </head>
 <body class="bg-[#F8FAFC] flex h-screen overflow-hidden text-gray-800">
 
-    <!-- Sidebar (General Context) -->
-    @include('components.sidebar-student', ['active' => ''])
+    <!-- Sidebar -->
+    @if(auth()->user()->isAdmin())
+        @include('components.sidebar-admin', ['active' => ''])
+    @elseif(auth()->user()->isTeacher())
+        @include('components.sidebar-guru', ['active' => ''])
+    @else
+        @include('components.sidebar-student', ['active' => ''])
+    @endif
 
     <!-- Main Content Area -->
     <main class="flex-1 flex flex-col h-full overflow-hidden bg-white">

@@ -14,10 +14,9 @@
 </head>
 <body class="bg-[#F8FAFC] flex h-screen overflow-hidden text-gray-800">
 
-    <!-- Left Sidebar -->
-        @if(auth()->check() && auth()->user()->role_id == 1)
+    @if(auth()->user()->isAdmin())
         @include('components.sidebar-admin', ['active' => ''])
-    @elseif(auth()->check() && auth()->user()->role_id == 2)
+    @elseif(auth()->user()->isTeacher())
         @include('components.sidebar-guru', ['active' => ''])
     @else
         @include('components.sidebar-student', ['active' => ''])

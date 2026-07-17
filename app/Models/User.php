@@ -36,4 +36,31 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
+
+    /**
+     * Role helper methods — menghindari hardcoded role_id di seluruh codebase.
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role->name === 'super_admin';
+    }
+
+    public function isTeacher(): bool
+    {
+        return $this->role->name === 'teacher';
+    }
+
+    public function isStudent(): bool
+    {
+        return $this->role->name === 'student';
+    }
+
+    /**
+     * Get the user's bookmarked materials.
+     */
+    public function bookmarks()
+    {
+        return $this->belongsToMany(Material::class, 'bookmarks', 'user_id', 'material_id')
+                    ->withTimestamps();
+    }
 }

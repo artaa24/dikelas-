@@ -14,13 +14,12 @@
 </head>
 <body class="bg-[#F8FAFC] flex h-screen overflow-hidden text-gray-800">
 
-    <!-- Left Sidebar -->
-        @if(auth()->check() && auth()->user()->role_id == 1)
-        @include('components.sidebar-admin', ['active' => 'courses'])
-    @elseif(auth()->check() && auth()->user()->role_id == 2)
-        @include('components.sidebar-guru', ['active' => 'courses'])
+    @if(auth()->user()->isAdmin())
+        @include('components.sidebar-admin', ['active' => ''])
+    @elseif(auth()->user()->isTeacher())
+        @include('components.sidebar-guru', ['active' => ''])
     @else
-        @include('components.sidebar-student', ['active' => 'courses'])
+        @include('components.sidebar-student', ['active' => ''])
     @endif
 
     <!-- Main Content Area -->

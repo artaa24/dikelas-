@@ -14,10 +14,9 @@
 </head>
 <body class="bg-[#F8FAFC] flex h-screen overflow-hidden text-gray-800">
 
-    <!-- Left Sidebar -->
-        @if(auth()->check() && auth()->user()->role_id == 1)
+    @if(auth()->user()->isAdmin())
         @include('components.sidebar-admin', ['active' => 'profile'])
-    @elseif(auth()->check() && auth()->user()->role_id == 2)
+    @elseif(auth()->user()->isTeacher())
         @include('components.sidebar-guru', ['active' => 'profile'])
     @else
         @include('components.sidebar-student', ['active' => 'profile'])
@@ -42,8 +41,8 @@
                 <div class="ml-6">
                     <h2 class="text-2xl font-bold text-gray-900">{{ $user->name }}</h2>
                     <p class="text-gray-500">
-                        @if($user->role_id == 1) Administrator
-                        @elseif($user->role_id == 2) Guru - NIP: {{ $user->nip ?? '-' }}
+                        @if($user->isAdmin()) Administrator
+                        @elseif($user->isTeacher()) Guru - NIP: {{ $user->nip ?? '-' }}
                         @else Siswa - NISN: {{ $user->nis ?? '-' }}
                         @endif
                     </p>

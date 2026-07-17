@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Role;
 
 class AuthController extends Controller
 {
@@ -39,19 +40,20 @@ class AuthController extends Controller
             $user->last_login_at = now();
             $user->save();
 
-            // Redirect based on role
-            // 1: Super Admin, 2: Guru, 3: Murid
-            if ($user->role_id == 1) {
+            // Redirect berdasarkan role — menggunakan nama role, bukan hardcoded ID
+            $roleName = $user->role->name;
+
+            if ($roleName === 'super_admin') {
                 return redirect()->intended('/admin/dashboard');
-            } elseif ($user->role_id == 2) {
+            } elseif ($roleName === 'teacher') {
                 return redirect()->intended('/guru/dashboard');
             } else {
-                return redirect()->intended('/dashboard'); // Murid dashboard
+                return redirect()->intended('/dashboard');
             }
         }
 
         return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
+            'email' => 'Email atau password yang Anda masukkan salah.',
         ])->onlyInput('email');
     }
 
@@ -64,15 +66,15 @@ class AuthController extends Controller
             'role' => 'required|in:murid,guru',
         ]);
 
-        $role_id = $request->role === 'guru' ? 2 : 3;
+        // Ambil role berdasarkan nama, bukan hardcoded ID
+        $roleName = $request->role === 'guru' ? 'teacher' : 'student';
+        $role = Role::where('name', $roleName)->firstOrFail();
 
         $user = \App\Models\User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => \Illuminate\Support\Facades\Hash::make($request->password),
-            'role_id' => $role_id,
-            'nis' => $request->role === 'murid' ? rand(100000, 999999) : null,
-            'nip' => $request->role === 'guru' ? rand(10000000, 99999999) : null,
+            'role_id' => $role->id,
             'is_active' => true,
         ]);
 

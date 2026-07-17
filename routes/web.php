@@ -8,15 +8,15 @@ Route::get('/', function () {
 });
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/logout', [AuthController::class, 'logout']); // Fallback for simple links
-Route::post('/password-reset-request', [AuthController::class, 'requestReset'])->name('password.reset.request');
+Route::post('/password-reset-request', [AuthController::class, 'requestReset'])->name('password.reset.request')->middleware('throttle:3,5');
 
 Route::get('/register', function () {
     return view('auth.register');
 })->name('register');
-Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
+Route::post('/register', [AuthController::class, 'register'])->name('register.submit')->middleware('throttle:5,1');
 
 Route::middleware('auth')->group(function () {
     // Murid Routes
@@ -32,8 +32,23 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'index'])->name('profile');
     Route::get('/edit-profile', [\App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
-    Route::get('/notifications', function () { return view('auth.notifications'); });
+    
+    // Notifications (Dinamis)
+    Route::get('/notifications', [\App\Http\Controllers\NotificationController::class, 'index'])->name('notifications.index');
+    Route::post('/notifications/mark-all-read', [\App\Http\Controllers\NotificationController::class, 'markAllRead'])->name('notifications.markAllRead');
+    Route::post('/notifications/{id}/mark-read', [\App\Http\Controllers\NotificationController::class, 'markRead'])->name('notifications.markRead');
+    
+    // Announcements (Dinamis — single route, tidak duplikat)
     Route::get('/announcements', [\App\Http\Controllers\AnnouncementController::class, 'index'])->name('announcements.index');
+    
+    // Bookmarks (Dinamis)
+    Route::get('/bookmarks', [\App\Http\Controllers\BookmarkController::class, 'index'])->name('bookmarks.index');
+    Route::post('/bookmarks/{materialId}/toggle', [\App\Http\Controllers\BookmarkController::class, 'toggle'])->name('bookmarks.toggle');
+    Route::delete('/bookmarks/{materialId}', [\App\Http\Controllers\BookmarkController::class, 'destroy'])->name('bookmarks.destroy');
+    
+    // Help Center (via Controller)
+    Route::get('/help-center', [\App\Http\Controllers\HelpCenterController::class, 'index'])->name('help-center');
+    
     Route::get('/classrooms/{id}', [\App\Http\Controllers\ClassroomController::class, 'show'])->name('classrooms.show');
     Route::post('/classrooms/{id}/materials', [\App\Http\Controllers\ClassroomController::class, 'storeMaterial'])->name('classrooms.materials.store');
     
@@ -86,9 +101,4 @@ Route::middleware('auth')->group(function () {
         Route::delete('/admin/users/{id}', [\App\Http\Controllers\AdminController::class, 'destroyUser']);
         Route::post('/admin/resolve-reset/{id}', [\App\Http\Controllers\AdminController::class, 'resolveReset'])->name('admin.resolve-reset');
     });
-
-    // General / Shared Routes
-    Route::get('/bookmarks', function () { return view('auth.bookmarks'); });
-    Route::get('/announcements', function () { return view('auth.announcements'); });
-    Route::get('/help-center', function () { return view('auth.help-center'); });
 });

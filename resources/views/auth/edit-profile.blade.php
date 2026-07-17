@@ -14,13 +14,12 @@
 </head>
 <body class="bg-[#F8FAFC] flex h-screen overflow-hidden text-gray-800">
 
-    <!-- Left Sidebar -->
-        @if(auth()->check() && auth()->user()->role_id == 1)
-        @include('components.sidebar-admin', ['active' => 'profile'])
-    @elseif(auth()->check() && auth()->user()->role_id == 2)
-        @include('components.sidebar-guru', ['active' => 'profile'])
+    @if(auth()->user()->isAdmin())
+        @include('components.sidebar-admin', ['active' => ''])
+    @elseif(auth()->user()->isTeacher())
+        @include('components.sidebar-guru', ['active' => ''])
     @else
-        @include('components.sidebar-student', ['active' => 'profile'])
+        @include('components.sidebar-student', ['active' => ''])
     @endif
 
     <!-- Main Content Area -->
@@ -99,11 +98,11 @@
                                 <input type="text" name="name" value="{{ old('name', $user->name) }}" class="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 px-4 focus:outline-none focus:ring-2 focus:ring-[#007cc3]/50 focus:border-[#007cc3] transition">
                             </div>
                             <div>
-                                @if($user->role_id == 2)
+                                @if($user->isTeacher())
                                     <label class="block text-sm font-semibold text-gray-700 mb-2">NIP</label>
                                     <input type="text" value="{{ $user->nip }}" disabled class="w-full bg-gray-100 text-gray-400 border border-gray-200 rounded-xl py-3 px-4 cursor-not-allowed">
                                     <p class="text-[10px] text-gray-400 mt-1">*NIP tidak dapat diubah sendiri.</p>
-                                @elseif($user->role_id == 3)
+                                @elseif($user->isStudent())
                                     <label class="block text-sm font-semibold text-gray-700 mb-2">NISN</label>
                                     <input type="text" value="{{ $user->nis }}" disabled class="w-full bg-gray-100 text-gray-400 border border-gray-200 rounded-xl py-3 px-4 cursor-not-allowed">
                                     <p class="text-[10px] text-gray-400 mt-1">*NISN tidak dapat diubah oleh murid.</p>

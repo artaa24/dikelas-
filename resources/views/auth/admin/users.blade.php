@@ -12,7 +12,7 @@
 </head>
 <body class="flex h-screen overflow-hidden">
     <!-- Sidebar -->
-    @include('components.sidebar-student', ['active' => 'users'])
+    @include('components.sidebar-admin', ['active' => 'users'])
 
     <!-- Main Content -->
     <main class="flex-1 flex flex-col h-full overflow-hidden relative">
@@ -117,10 +117,10 @@
                             <td class="py-4 px-6 text-sm text-gray-600">{{ $user->email }}</td>
                             <td class="py-4 px-6">
                                 <span class="px-3 py-1 text-xs font-bold rounded-full 
-                                    @if($user->role_id == 1) bg-red-100 text-red-700 
-                                    @elseif($user->role_id == 2) bg-purple-100 text-purple-700 
+                                    @if($user->role && $user->role->name === 'super_admin') bg-red-100 text-red-700 
+                                    @elseif($user->role && $user->role->name === 'teacher') bg-purple-100 text-purple-700 
                                     @else bg-green-100 text-green-700 @endif">
-                                    {{ $user->role->name ?? 'Student' }}
+                                    {{ $user->role->display_name ?? 'User' }}
                                 </span>
                             </td>
                             <td class="py-4 px-6 text-center">
