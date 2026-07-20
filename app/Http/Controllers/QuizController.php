@@ -104,6 +104,133 @@ class QuizController extends Controller
     }
 
     /**
+     * Import soal dari file PDF ke kuis (Guru).
+     */
+    public function importQuestions(Request $request, $quizId)
+    {
+        $quiz = Quiz::findOrFail($quizId);
+
+        if (auth()->user()->id != $quiz->classroom->teacher_id) {
+            return abort(403, 'Akses ditolak.');
+        }
+
+        $request->validate([
+            'import_file' => 'required|file|mimes:pdf|max:5120',
+        ]);
+
+        $file = $request->file('import_file');
+
+        try {
+            $parser = new \Smalot\PdfParser\Parser();
+            $pdf    = $parser->parseFile($file->getRealPath());
+            $text = $pdf->getText();
+            
+            // Bersihkan teks: normalisasi enter
+            $text = str_replace(["\r\n", "\r"], "\n", $text);
+            
+            $blocks = explode('Soal:', $text);
+            array_shift($blocks); // Hapus bagian sebelum 'Soal:' pertama
+
+            DB::beginTransaction();
+            $imported = 0;
+            
+            foreach ($blocks as $block) {
+                $block = trim($block);
+                if (empty($block)) continue;
+                
+                $lines = explode("\n", $block);
+                $questionContent = trim($lines[0]); // Baris pertama setelah 'Soal:' adalah pertanyaan
+                $points = 10;
+                $options = [];
+                $answer = '';
+                
+                for ($i = 1; $i < count($lines); $i++) {
+                    $line = trim($lines[$i]);
+                    if (empty($line)) continue;
+                    
+                    if (stripos($line, 'Poin:') === 0) {
+                        $points = (int) trim(substr($line, 5));
+                    } elseif (preg_match('/^([A-D])\s*[:\.]\s*(.+)/i', $line, $matches)) {
+                        $label = strtoupper($matches[1]);
+                        $options[$label] = trim($matches[2]);
+                    } elseif (stripos($line, 'Jawaban:') === 0) {
+                        $answer = strtoupper(trim(substr($line, 8)));
+                    }
+                }
+                
+                if (empty($questionContent) || empty($options) || empty($answer)) {
+                    continue; // Skip jika format tidak lengkap
+                }
+                
+                $question = Question::create([
+                    'quiz_id' => $quiz->id,
+                    'type' => 'multiple_choice',
+                    'content' => $questionContent,
+                    'points' => $points,
+                    'sort_order' => $quiz->questions()->count() + $imported,
+                ]);
+
+                $labels = ['A', 'B', 'C', 'D'];
+                foreach ($labels as $label) {
+                    if (isset($options[$label])) {
+                        QuestionOption::create([
+                            'question_id' => $question->id,
+                            'label' => $label,
+                            'content' => $options[$label],
+                            'is_correct' => ($answer === $label),
+                        ]);
+                    }
+                }
+                
+                $imported++;
+            }
+
+            DB::commit();
+            return back()->with('success', "$imported soal berhasil diimport dari PDF!");
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Gagal mengimport soal: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Export soal kuis ke JSON (untuk backup/sharing).
+     */
+    public function exportQuestions($quizId)
+    {
+        $quiz = Quiz::with('questions.options')->findOrFail($quizId);
+
+        if (auth()->user()->id != $quiz->classroom->teacher_id) {
+            return abort(403, 'Akses ditolak.');
+        }
+
+        $exportData = [];
+        foreach ($quiz->questions as $question) {
+            $options = [];
+            $answer = '';
+            foreach ($question->options as $option) {
+                $options[$option->label] = $option->content;
+                if ($option->is_correct) {
+                    $answer = $option->label;
+                }
+            }
+
+            $exportData[] = [
+                'question' => $question->content,
+                'points' => $question->points,
+                'options' => $options,
+                'answer' => $answer,
+            ];
+        }
+
+        $fileName = 'quiz_' . \Illuminate\Support\Str::slug($quiz->title) . '_export.json';
+        
+        return response()->json($exportData)
+            ->header('Content-Disposition', 'attachment; filename="' . $fileName . '"')
+            ->header('Content-Type', 'application/json');
+    }
+
+    /**
      * Tampilkan detail kuis untuk Murid.
      */
     public function show($id)

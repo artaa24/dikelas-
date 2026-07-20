@@ -63,4 +63,12 @@ class User extends Authenticatable
         return $this->belongsToMany(Material::class, 'bookmarks', 'user_id', 'material_id')
                     ->withTimestamps();
     }
+
+    /**
+     * Get the user's certificates.
+     */
+    public function certificates()
+    {
+        return $this->hasMany(Certificate::class, 'student_id');
+    }
 }

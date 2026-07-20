@@ -26,7 +26,7 @@ class StudentController extends Controller
         
         $classroomIds = $classrooms->pluck('id');
         
-        // Tugas aktif = tugas dari kelas murid ini, yang belum dilewati deadlinenya, dan belum disubmit (atau biarkan semua yang belum disubmit).
+        // Tugas dan Kuis aktif (belum disubmit/dikerjakan dan belum melewati batas waktu)
         $activeAssignments = \App\Models\Assignment::whereIn('classroom_id', $classroomIds)
             ->whereNotIn('id', function($query) use ($student) {
                 $query->select('assignment_id')
@@ -35,12 +35,31 @@ class StudentController extends Controller
             })
             ->count();
             
+        $activeQuizzes = \App\Models\Quiz::whereIn('classroom_id', $classroomIds)
+            ->whereNotIn('id', function($query) use ($student) {
+                $query->select('quiz_id')
+                      ->from('quiz_attempts')
+                      ->where('student_id', $student->id)
+                      ->where('status', 'completed');
+            })
+            ->count();
+            
+        $activeAssignments = $activeAssignments + $activeQuizzes; // Gabungkan total tugas aktif
+
+        // Tugas yang sudah selesai
         $submissions = \App\Models\Submission::where('student_id', $student->id)
             ->whereNotNull('score')
             ->get();
             
-        $completedAssignments = $submissions->count();
-        $averageScore = $completedAssignments > 0 ? number_format($submissions->avg('score'), 1) : "0";
+        $completedQuizzes = \App\Models\QuizAttempt::where('student_id', $student->id)
+            ->where('status', 'completed')
+            ->whereNotNull('total_score')
+            ->get();
+            
+        $completedAssignments = $submissions->count() + $completedQuizzes->count();
+        
+        $totalScore = $submissions->sum('score') + $completedQuizzes->sum('total_score');
+        $averageScore = $completedAssignments > 0 ? number_format($totalScore / $completedAssignments, 1) : "0";
 
         // Get upcoming assignments for right sidebar
         $upcomingAssignments = \App\Models\Assignment::with('classroom')
@@ -88,6 +107,16 @@ class StudentController extends Controller
 
         if (!$classroom) {
             return back()->withErrors(['class_code' => 'Kode kelas tidak ditemukan. Silakan periksa kembali.']);
+        }
+
+        // Cek apakah kelas aktif
+        if (!$classroom->is_active) {
+            return back()->withErrors(['class_code' => 'Kelas ini sedang tidak menerima murid baru.']);
+        }
+
+        // Cek apakah kelas sudah penuh
+        if ($classroom->isFull()) {
+            return back()->withErrors(['class_code' => 'Kelas ini sudah penuh (batas: ' . $classroom->max_students . ' murid).']);
         }
 
         // Cek apakah murid sudah terdaftar di kelas ini

@@ -6,6 +6,7 @@ use App\Models\Classroom;
 use App\Models\Material;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class ClassroomController extends Controller
@@ -23,18 +24,18 @@ class ClassroomController extends Controller
         if ($user->role->name == 'student') {
             $isEnrolled = $classroom->students()->where('users.id', $user->id)->exists();
             if (!$isEnrolled) {
-                return redirect()->route('courses')->with('error', 'Anda tidak terdaftar di kelas ini.');
+                return redirect('/courses')->with('error', 'Anda tidak terdaftar di kelas ini.');
             }
         } elseif ($user->role->name == 'teacher') {
             if ($classroom->teacher_id != $user->id) {
-                return redirect()->route('guru.classes')->with('error', 'Anda tidak memiliki akses ke kelas ini.');
+                return redirect('/guru/classes')->with('error', 'Anda tidak memiliki akses ke kelas ini.');
             }
         }
 
         // Ambil materi
         $materials = Material::where('classroom_id', $id)->orderBy('created_at', 'desc')->get();
         
-        // Ambil tugas (segera di Fase 7, sementara kosongkan atau biarkan)
+        // Ambil tugas
         $assignments = \App\Models\Assignment::where('classroom_id', $id)->orderBy('deadline_at', 'asc')->get();
 
         // Ambil kuis
@@ -87,5 +88,41 @@ class ClassroomController extends Controller
         ]);
 
         return redirect()->route('classrooms.show', $id)->with('success', 'Materi berhasil diunggah!');
+    }
+
+    /**
+     * Keluarkan murid dari kelas (Khusus Guru pemilik kelas).
+     */
+    public function removeStudent(Request $request, $classroomId, $studentId)
+    {
+        $classroom = Classroom::where('teacher_id', auth()->id())->findOrFail($classroomId);
+
+        // Hapus relasi murid dari kelas
+        DB::table('classroom_student')
+            ->where('classroom_id', $classroomId)
+            ->where('student_id', $studentId)
+            ->delete();
+
+        return redirect()->route('classrooms.show', $classroomId)->with('success', 'Murid berhasil dikeluarkan dari kelas.');
+    }
+
+    /**
+     * Update pengaturan kelas (max students, is_active).
+     */
+    public function updateSettings(Request $request, $id)
+    {
+        $classroom = Classroom::where('teacher_id', auth()->id())->findOrFail($id);
+
+        $request->validate([
+            'max_students' => 'nullable|integer|min:1|max:999',
+            'is_active' => 'required|boolean',
+        ]);
+
+        $classroom->update([
+            'max_students' => $request->max_students,
+            'is_active' => $request->is_active,
+        ]);
+
+        return redirect()->route('classrooms.show', $id)->with('success', 'Pengaturan kelas berhasil diperbarui.');
     }
 }

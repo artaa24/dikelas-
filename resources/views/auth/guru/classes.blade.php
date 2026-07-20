@@ -174,12 +174,18 @@
                                 <textarea name="description" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-[#007cc3] focus:border-[#007cc3] outline-none transition" placeholder="Tuliskan deskripsi singkat tentang kelas ini..."></textarea>
                             </div>
                             
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Mata Pelajaran</label>
-                                <select name="subject_id" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-[#007cc3] focus:border-[#007cc3] outline-none transition text-gray-700">
-                                    <option value="1">Matematika Umum</option>
-                                    <option value="4">Bahasa</option>
-                                </select>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Mata Pelajaran</label>
+                                    <select name="subject_id" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-[#007cc3] focus:border-[#007cc3] outline-none transition text-gray-700">
+                                        <option value="1">Matematika Umum</option>
+                                        <option value="4">Bahasa</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Batas Murid (Opsional)</label>
+                                    <input type="number" name="max_students" min="1" max="999" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-[#007cc3] focus:border-[#007cc3] outline-none transition" placeholder="Contoh: 40">
+                                </div>
                             </div>
                         </div>
                     </div>

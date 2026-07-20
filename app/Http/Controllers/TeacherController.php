@@ -19,13 +19,12 @@ class TeacherController extends Controller
         // Total Kelas yang diajar
         $totalClasses = Classroom::where('teacher_id', $teacher->id)->count();
         
-        // Total Murid di semua kelasnya
-        // Karena relasi murid ada di tabel classroom_student, kita bisa hitung via relasi
-        // (Untuk MVP ini kita hitung kasar dari kelas yang ada, atau kita ambil count dari query)
+        // Total Murid unik di semua kelasnya
         $totalStudents = \DB::table('classroom_student')
             ->join('classrooms', 'classroom_student.classroom_id', '=', 'classrooms.id')
             ->where('classrooms.teacher_id', $teacher->id)
-            ->count();
+            ->distinct('classroom_student.student_id')
+            ->count('classroom_student.student_id');
             
         // Total Materi dari semua kelas guru ini
         $classroomIds = Classroom::where('teacher_id', $teacher->id)->pluck('id');
@@ -34,7 +33,7 @@ class TeacherController extends Controller
         // Tugas yang perlu dinilai (submission yang belum dinilai)
         $assignmentIds = \App\Models\Assignment::whereIn('classroom_id', $classroomIds)->pluck('id');
         $pendingGrades = \App\Models\Submission::whereIn('assignment_id', $assignmentIds)
-            ->where('status', 'submitted')
+            ->whereNull('score')
             ->count();
 
         // Get active classes for table
@@ -76,6 +75,7 @@ class TeacherController extends Controller
             'name' => 'required|string|max:255',
             'subject_id' => 'nullable', // Dihapus exists:subjects,id untuk MVP
             'description' => 'nullable|string',
+            'max_students' => 'nullable|integer|min:1|max:999',
         ]);
 
         // Generate unique class code
@@ -113,6 +113,7 @@ class TeacherController extends Controller
             'description' => $request->description,
             'cover_image' => null,
             'is_active' => true,
+            'max_students' => $request->max_students,
         ]);
 
         return redirect('/guru/classes')->with('success', 'Kelas baru berhasil dibuat!');
@@ -126,12 +127,14 @@ class TeacherController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'max_students' => 'nullable|integer|min:1|max:999',
         ]);
         
         $classroom = Classroom::where('teacher_id', auth()->id())->findOrFail($id);
         $classroom->update([
             'name' => $request->name,
             'description' => $request->description,
+            'max_students' => $request->max_students,
         ]);
         
         return redirect('/guru/classes')->with('success', 'Kelas berhasil diupdate!');

@@ -26,6 +26,9 @@ Route::middleware('auth')->group(function () {
         Route::post('/courses/join', [\App\Http\Controllers\StudentController::class, 'joinClass']);
         Route::get('/schedule', [\App\Http\Controllers\StudentController::class, 'schedule'])->name('schedule');
         Route::get('/grades', [\App\Http\Controllers\StudentController::class, 'grades'])->name('grades.index');
+        
+        // Sertifikat (Murid)
+        Route::get('/certificates', [\App\Http\Controllers\CertificateController::class, 'index'])->name('certificates.index');
     });
 
     Route::get('/assignments', [\App\Http\Controllers\StudentController::class, 'assignments'])->name('assignments.index');
@@ -49,8 +52,15 @@ Route::middleware('auth')->group(function () {
     // Help Center (via Controller)
     Route::get('/help-center', [\App\Http\Controllers\HelpCenterController::class, 'index'])->name('help-center');
     
+    // Classroom Routes
     Route::get('/classrooms/{id}', [\App\Http\Controllers\ClassroomController::class, 'show'])->name('classrooms.show');
     Route::post('/classrooms/{id}/materials', [\App\Http\Controllers\ClassroomController::class, 'storeMaterial'])->name('classrooms.materials.store');
+    Route::delete('/classrooms/{classroomId}/students/{studentId}', [\App\Http\Controllers\ClassroomController::class, 'removeStudent'])->name('classrooms.students.remove');
+    Route::put('/classrooms/{id}/settings', [\App\Http\Controllers\ClassroomController::class, 'updateSettings'])->name('classrooms.settings.update');
+    
+    // Certificate Routes (shared — download/preview accessible to student, teacher, admin)
+    Route::get('/certificates/{id}/download', [\App\Http\Controllers\CertificateController::class, 'download'])->name('certificates.download');
+    Route::get('/certificates/{id}/preview', [\App\Http\Controllers\CertificateController::class, 'preview'])->name('certificates.preview');
     
     // Assignment Routes
     Route::post('/classrooms/{id}/assignments', [\App\Http\Controllers\AssignmentController::class, 'store'])->name('classrooms.assignments.store');
@@ -85,11 +95,17 @@ Route::middleware('auth')->group(function () {
         
         Route::get('/guru/quizzes/{id}', [\App\Http\Controllers\QuizController::class, 'showTeacher'])->name('guru.quizzes.show');
         Route::post('/guru/quizzes/{id}/questions', [\App\Http\Controllers\QuizController::class, 'storeQuestion'])->name('guru.quizzes.questions.store');
+        Route::post('/guru/quizzes/{id}/import', [\App\Http\Controllers\QuizController::class, 'importQuestions'])->name('guru.quizzes.import');
+        Route::get('/guru/quizzes/{id}/export', [\App\Http\Controllers\QuizController::class, 'exportQuestions'])->name('guru.quizzes.export');
 
         Route::get('/guru/grades', [\App\Http\Controllers\TeacherController::class, 'grades']);
         Route::get('/guru/grades/export', [\App\Http\Controllers\TeacherController::class, 'exportGrades'])->name('guru.grades.export');
         
         Route::get('/guru/schedule', [\App\Http\Controllers\TeacherController::class, 'schedule']);
+        
+        // Sertifikat (Guru - manajemen)
+        Route::get('/guru/certificates/{classroomId}', [\App\Http\Controllers\CertificateController::class, 'manage'])->name('guru.certificates.manage');
+        Route::post('/guru/certificates/{classroomId}/issue', [\App\Http\Controllers\CertificateController::class, 'issue'])->name('guru.certificates.issue');
     });
 
     // Admin Routes

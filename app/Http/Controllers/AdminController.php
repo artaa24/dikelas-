@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Classroom;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -21,12 +22,32 @@ class AdminController extends Controller
         $totalTeachers = $teacherRole ? User::where('role_id', $teacherRole->id)->count() : 0;
         $totalStudents = $studentRole ? User::where('role_id', $studentRole->id)->count() : 0;
         
-        // Karena kita Opsi B (Single-School), kita bisa set total sekolah menjadi 1 atau hilangkan saja, tapi kita kirim 1 sebagai dummy jika dibutuhkan di view.
-        $totalSchools = 1;
+        // Total Kelas Aktif
+        $totalClasses = Classroom::where('is_active', true)->count();
+        
+        // Total Sertifikat yang telah diterbitkan
+        $totalCertificates = \App\Models\Certificate::count();
         
         $pendingResets = \App\Models\PasswordResetRequest::where('status', 'pending')->count();
 
-        return view('auth.admin.dashboard', compact('totalTeachers', 'totalStudents', 'totalSchools', 'pendingResets'));
+        // Kelas terbaru
+        $recentClasses = Classroom::with(['teacher', 'students'])
+            ->withCount('students')
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+
+        // Aktivitas terbaru (user registrations)
+        $recentUsers = User::with('role')
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+
+        return view('auth.admin.dashboard', compact(
+            'totalTeachers', 'totalStudents', 'totalClasses', 
+            'totalCertificates', 'pendingResets',
+            'recentClasses', 'recentUsers'
+        ));
     }
 
     /**

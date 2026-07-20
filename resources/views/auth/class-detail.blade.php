@@ -85,6 +85,17 @@
             
             <!-- Main Content (Modules) -->
             <div class="flex-1 px-8 xl:px-10 py-8">
+                @if(session('success'))
+                <div class="mb-6 bg-green-50 text-green-700 border border-green-200 rounded-xl p-4 text-sm font-medium">
+                    {{ session('success') }}
+                </div>
+                @endif
+                @if(session('error'))
+                <div class="mb-6 bg-red-50 text-red-600 border border-red-200 rounded-xl p-4 text-sm font-medium">
+                    {{ session('error') }}
+                </div>
+                @endif
+                
                 <!-- Navigation Tabs -->
                 <div class="flex border-b border-gray-200 mb-8 space-x-8" id="classTabs">
                     <button onclick="switchTab('materi')" id="btn-materi" class="pb-4 font-bold text-[#007cc3] border-b-2 border-[#007cc3]">Modul Materi</button>
@@ -213,20 +224,93 @@
                     </div>
                     <div class="flex items-center text-sm">
                         <svg class="w-5 h-5 text-gray-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                        <span class="text-gray-600">{{ $classroom->students->count() }} Murid terdaftar</span>
+                        <span class="text-gray-600">{{ $classroom->students->count() }}{{ $classroom->max_students ? '/' . $classroom->max_students : '' }} Murid terdaftar</span>
+                    </div>
+                    <div class="flex items-center text-sm">
+                        <svg class="w-5 h-5 text-gray-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span class="text-gray-600">Status: <span class="font-semibold {{ $classroom->is_active ? 'text-green-600' : 'text-red-600' }}">{{ $classroom->is_active ? 'Aktif' : 'Nonaktif' }}</span></span>
                     </div>
                 </div>
 
                 <hr class="border-gray-100 mb-6">
 
-                <h3 class="font-bold text-gray-900 mb-4">Teman Kelas</h3>
-                <div class="flex flex-wrap gap-2 mb-6">
-                    @foreach($classroom->students->take(8) as $student)
-                        <div class="h-10 w-10 rounded-full object-cover border-2 border-white shadow-sm bg-[#007cc3] text-white font-bold flex items-center justify-center text-sm" title="{{ $student->name }}">
-                            {{ strtoupper(substr($student->name, 0, 1)) }}
+                @if(auth()->user()->role->name == 'teacher' && $classroom->teacher_id == auth()->id())
+                    <!-- Teacher: Class Settings -->
+                    <div class="mb-6">
+                        <h3 class="font-bold text-gray-900 mb-3 flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            Pengaturan Kelas
+                        </h3>
+                        <form action="{{ route('classrooms.settings.update', $classroom->id) }}" method="POST" class="space-y-3">
+                            @csrf
+                            @method('PUT')
+                            <div>
+                                <label class="block text-xs font-medium text-gray-500 mb-1">Batas Murid (kosongkan = tanpa batas)</label>
+                                <input type="number" name="max_students" value="{{ $classroom->max_students }}" min="1" max="999" class="w-full bg-gray-50 border border-gray-200 rounded-lg py-2 px-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#007cc3]" placeholder="Contoh: 40">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-500 mb-1">Status Kelas</label>
+                                <select name="is_active" class="w-full bg-gray-50 border border-gray-200 rounded-lg py-2 px-3 text-sm focus:outline-none focus:ring-1 focus:ring-[#007cc3]">
+                                    <option value="1" {{ $classroom->is_active ? 'selected' : '' }}>Aktif (Menerima Murid)</option>
+                                    <option value="0" {{ !$classroom->is_active ? 'selected' : '' }}>Nonaktif (Ditutup)</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="w-full bg-gray-100 text-gray-700 hover:bg-[#007cc3] hover:text-white font-medium py-2 rounded-lg text-sm transition">Simpan Pengaturan</button>
+                        </form>
+                    </div>
+
+                    <hr class="border-gray-100 mb-6">
+
+                    <!-- Teacher: Certificate Link -->
+                    <a href="{{ route('guru.certificates.manage', $classroom->id) }}" class="mb-6 flex items-center p-3 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl hover:from-blue-100 hover:to-cyan-100 transition group">
+                        <div class="w-10 h-10 bg-[#007cc3] rounded-xl flex items-center justify-center mr-3 group-hover:scale-110 transition">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
                         </div>
-                    @endforeach
-                </div>
+                        <div>
+                            <p class="text-sm font-bold text-gray-900">Terbitkan Sertifikat</p>
+                            <p class="text-xs text-gray-500">Buat sertifikat untuk murid kelas ini</p>
+                        </div>
+                    </a>
+
+                    <hr class="border-gray-100 mb-6">
+
+                    <!-- Teacher: Student Management -->
+                    <h3 class="font-bold text-gray-900 mb-3">Daftar Murid ({{ $classroom->students->count() }})</h3>
+                    <div class="space-y-2 max-h-80 overflow-y-auto">
+                        @forelse($classroom->students as $student)
+                        <div class="flex items-center justify-between p-2 rounded-xl hover:bg-gray-50 transition group">
+                            <div class="flex items-center">
+                                <div class="h-8 w-8 rounded-full bg-[#007cc3] text-white font-bold flex items-center justify-center text-xs mr-2">
+                                    {{ strtoupper(substr($student->name, 0, 1)) }}
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900 leading-tight">{{ $student->name }}</p>
+                                    <p class="text-[10px] text-gray-500">{{ $student->nis ?? $student->email }}</p>
+                                </div>
+                            </div>
+                            <form action="{{ route('classrooms.students.remove', [$classroom->id, $student->id]) }}" method="POST" onsubmit="return confirm('Keluarkan {{ addslashes($student->name) }} dari kelas?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="p-1.5 text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition" title="Keluarkan murid">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                </button>
+                            </form>
+                        </div>
+                        @empty
+                        <p class="text-sm text-gray-500 text-center py-4">Belum ada murid di kelas ini.</p>
+                        @endforelse
+                    </div>
+                @else
+                    <!-- Student: Classmates view -->
+                    <h3 class="font-bold text-gray-900 mb-4">Teman Kelas</h3>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        @foreach($classroom->students->take(8) as $student)
+                            <div class="h-10 w-10 rounded-full object-cover border-2 border-white shadow-sm bg-[#007cc3] text-white font-bold flex items-center justify-center text-sm" title="{{ $student->name }}">
+                                {{ strtoupper(substr($student->name, 0, 1)) }}
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
             </div>
         </div>
     </main>

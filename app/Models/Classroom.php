@@ -15,6 +15,7 @@ class Classroom extends Model
         'description',
         'cover_image',
         'is_active',
+        'max_students',
     ];
 
     public function students()
@@ -35,5 +36,26 @@ class Classroom extends Model
     public function materials()
     {
         return $this->hasMany(Material::class);
+    }
+
+    public function quizzes()
+    {
+        return $this->hasMany(Quiz::class);
+    }
+
+    public function certificates()
+    {
+        return $this->hasMany(Certificate::class);
+    }
+
+    /**
+     * Cek apakah kelas sudah penuh.
+     */
+    public function isFull(): bool
+    {
+        if (is_null($this->max_students)) {
+            return false; // Tidak ada batas
+        }
+        return $this->students()->count() >= $this->max_students;
     }
 }
