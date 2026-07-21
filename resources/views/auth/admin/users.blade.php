@@ -124,7 +124,11 @@
                                 </span>
                             </td>
                             <td class="py-4 px-6 text-center">
-                                <span class="px-3 py-1 text-xs font-bold rounded-full bg-blue-100 text-blue-700">Aktif</span>
+                                @if($user->is_active ?? true)
+                                    <span class="px-3 py-1 text-xs font-bold rounded-full bg-blue-100 text-blue-700">Aktif</span>
+                                @else
+                                    <span class="px-3 py-1 text-xs font-bold rounded-full bg-gray-100 text-gray-600">Nonaktif</span>
+                                @endif
                             </td>
                             <td class="py-4 px-6 text-right">
                                 <button onclick="openEditUserModal({{ $user->id }}, '{{ addslashes($user->name) }}', '{{ addslashes($user->email) }}', {{ $user->role_id }}, '{{ addslashes($user->nip) }}', '{{ addslashes($user->nis) }}')" class="text-gray-400 hover:text-[#007cc3] transition p-2">

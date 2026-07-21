@@ -39,7 +39,7 @@
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path></svg>
                 </a>
                 <div class="flex items-center space-x-4">
-                    <button class="text-white bg-black/20 hover:bg-black/40 p-2 rounded-full backdrop-blur-sm transition">
+                    <button onclick="copyClassLink(this)" class="relative text-white bg-black/20 hover:bg-black/40 p-2 rounded-full backdrop-blur-sm transition" title="Bagikan Kelas">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
                     </button>
                 </div>
@@ -56,13 +56,29 @@
                 </div>
                 
                 @if(auth()->user()->role->name == 'student')
+                @php
+                    $studentId = auth()->id();
+                    $totalTasks = $assignments->count() + $quizzes->count();
+                    $completedTasks = 0;
+                    if ($totalTasks > 0) {
+                        $completedAssignments = \App\Models\Submission::where('student_id', $studentId)
+                            ->whereIn('assignment_id', $assignments->pluck('id'))->count();
+                        $completedQuizzes = \App\Models\QuizAttempt::where('student_id', $studentId)
+                            ->whereIn('quiz_id', $quizzes->pluck('id'))
+                            ->where('status', 'completed')->count();
+                        $completedTasks = $completedAssignments + $completedQuizzes;
+                        $progressPercentage = round(($completedTasks / $totalTasks) * 100);
+                    } else {
+                        $progressPercentage = 0;
+                    }
+                @endphp
                 <div class="bg-white/10 rounded-2xl p-4 border border-white/20 w-full md:w-64 backdrop-blur-sm">
                     <div class="flex justify-between items-end mb-2">
                         <span class="text-white/80 text-sm font-medium">Progress Belajar</span>
-                        <span class="text-white font-bold text-lg">0%</span>
+                        <span class="text-white font-bold text-lg">{{ $progressPercentage }}%</span>
                     </div>
                     <div class="w-full bg-black/20 rounded-full h-2">
-                        <div class="bg-white h-2 rounded-full" style="width: 0%"></div>
+                        <div class="bg-white h-2 rounded-full" style="width: {{ $progressPercentage }}%"></div>
                     </div>
                 </div>
                 @else
@@ -85,7 +101,7 @@
         </div>
 
         <!-- Scrollable Content Area -->
-        <div class="flex-1 overflow-auto hide-scrollbar flex flex-col xl:flex-row">
+        <div class="flex-1 overflow-y-auto min-h-0 flex flex-col xl:flex-row">
             
             <!-- Main Content (Modules) -->
             <div class="flex-1 px-8 xl:px-10 py-8">
@@ -109,10 +125,10 @@
                 </div>
 
                 <div class="space-y-6" id="tab-materi">
-                    <h3 class="text-xl font-bold text-gray-900 mb-4">Silabus Pembelajaran</h3>
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Pembelajaran</h3>
                     <!-- Modul Materi (Dinamis) -->
-                    <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-                        <div class="p-5 flex items-center justify-between cursor-pointer bg-gray-50/50 hover:bg-gray-50 transition border-b border-gray-100">
+                    <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col">
+                        <div class="p-5 flex items-center justify-between cursor-pointer bg-gray-50/50 hover:bg-gray-50 transition border-b border-gray-100 flex-shrink-0">
                             <div class="flex items-center">
                                 <div class="bg-[#007cc3] text-white rounded-full p-2 mr-4">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
@@ -125,8 +141,10 @@
                         </div>
                         <div class="p-2 bg-white">
                             @forelse($materials as $material)
-                            <a href="{{ Storage::url($material->file_path) }}" target="_blank" class="flex items-center px-4 py-3 hover:bg-gray-50 rounded-xl transition group border-b border-gray-50 last:border-0">
-                                @if($material->file_type == 'pdf')
+                            <a href="{{ $material->file_type == 'link' ? $material->file_path : Storage::url($material->file_path) }}" target="_blank" class="flex items-center px-4 py-3 hover:bg-gray-50 rounded-xl transition group border-b border-gray-50 last:border-0">
+                                @if($material->file_type == 'link')
+                                <svg class="w-5 h-5 text-blue-500 group-hover:text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                                @elseif($material->file_type == 'pdf')
                                 <svg class="w-5 h-5 text-red-500 group-hover:text-red-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
                                 @elseif($material->file_type == 'video')
                                 <svg class="w-5 h-5 text-purple-500 group-hover:text-purple-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
@@ -137,7 +155,9 @@
                                     <span class="text-sm font-bold text-gray-800 block">{{ $material->title }}</span>
                                     <span class="text-xs text-gray-500 line-clamp-1">{{ $material->description }}</span>
                                 </div>
-                                <span class="text-xs font-semibold text-gray-400 bg-gray-100 px-2 py-1 rounded-md">{{ number_format($material->file_size / 1024, 0) }} KB</span>
+                                <span class="text-xs font-semibold text-gray-400 bg-gray-100 px-2 py-1 rounded-md">
+                                    {{ $material->file_type == 'link' ? 'Tautan' : number_format($material->file_size / 1024, 0) . ' KB' }}
+                                </span>
                             </a>
                             @empty
                             <div class="p-8 text-center text-gray-500">
@@ -220,7 +240,7 @@
             </div>
 
             <!-- Right Sidebar Info -->
-            <div class="w-full xl:w-80 bg-white border-l border-gray-100 p-8 flex flex-col hide-scrollbar overflow-y-auto">
+            <div class="w-full xl:w-80 bg-white border-l border-gray-100 p-8 flex flex-col">
                 <h3 class="font-bold text-gray-900 mb-4">Informasi Kelas</h3>
                 
                 <div class="mb-6 space-y-3">
@@ -454,7 +474,7 @@
                                         <div class="flex text-sm text-gray-600 justify-center">
                                             <label for="file-upload" class="relative cursor-pointer bg-white rounded-md font-medium text-[#007cc3] hover:text-blue-500 focus-within:outline-none">
                                                 <span>Upload a file</span>
-                                                <input id="file-upload" name="file" type="file" class="sr-only" required onchange="document.getElementById('file-name').textContent = this.files[0].name">
+                                                <input id="file-upload" name="file" type="file" class="sr-only" onchange="document.getElementById('file-name').textContent = this.files[0].name; document.getElementById('link-url').value = '';">
                                             </label>
                                             <p class="pl-1">or drag and drop</p>
                                         </div>
@@ -462,6 +482,18 @@
                                         <p id="file-name" class="text-sm font-bold text-[#0A4B7D] mt-2"></p>
                                     </div>
                                 </div>
+                            </div>
+                            
+                            <div class="relative flex items-center py-2">
+                                <div class="flex-grow border-t border-gray-200"></div>
+                                <span class="flex-shrink-0 mx-4 text-gray-400 text-xs font-bold uppercase">ATAU</span>
+                                <div class="flex-grow border-t border-gray-200"></div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Tautan / Link Video (YouTube, Website)</label>
+                                <input type="url" name="link_url" id="link-url" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-[#007cc3] focus:border-[#007cc3] outline-none transition" placeholder="Contoh: https://youtube.com/watch?v=..." oninput="if(this.value) { document.getElementById('file-upload').value = ''; document.getElementById('file-name').textContent = ''; }">
+                                <p class="text-xs text-gray-500 mt-1">Gunakan ini jika Anda tidak ingin mengunggah file. (Pilih salah satu: File atau Link)</p>
                             </div>
                         </div>
                     </div>
@@ -534,6 +566,59 @@
             // Activate selected tab
             document.getElementById('btn-' + tabName).className = 'pb-4 font-bold text-[#007cc3] border-b-2 border-[#007cc3]';
             document.getElementById('tab-' + tabName).classList.remove('hidden');
+        }
+
+        // Small Floating Text Notification
+        function showToast(btn, message) {
+            let oldTooltip = document.getElementById('copy-tooltip');
+            if(oldTooltip) oldTooltip.remove();
+
+            let tooltip = document.createElement('span');
+            tooltip.id = 'copy-tooltip';
+            // Styling teks kecil yang melayang
+            tooltip.className = 'absolute -top-8 left-1/2 transform -translate-x-1/2 bg-black/80 text-white text-[10px] font-bold px-2.5 py-1 rounded backdrop-blur-sm transition-all duration-500 opacity-0 translate-y-2 pointer-events-none whitespace-nowrap tracking-wide';
+            tooltip.innerText = message;
+            
+            btn.appendChild(tooltip);
+
+            // Munculkan
+            setTimeout(() => {
+                tooltip.classList.remove('opacity-0', 'translate-y-2');
+            }, 10);
+
+            // Hilangkan ke atas
+            setTimeout(() => {
+                tooltip.classList.add('opacity-0', '-translate-y-4');
+                setTimeout(() => {
+                    if (tooltip.parentNode === btn) {
+                        btn.removeChild(tooltip);
+                    }
+                }, 500);
+            }, 1500);
+        }
+
+        // Copy Class Link Logic
+        function copyClassLink(btn) {
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    showToast(btn, 'Tersalin!');
+                }).catch(err => {
+                    showToast(btn, 'Gagal');
+                });
+            } else {
+                // Fallback untuk HTTP lokal
+                let tempInput = document.createElement("input");
+                tempInput.value = window.location.href;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                try {
+                    document.execCommand("copy");
+                    showToast(btn, 'Tersalin!');
+                } catch (err) {
+                    showToast(btn, 'Gagal');
+                }
+                document.body.removeChild(tempInput);
+            }
         }
     </script>
 </body>

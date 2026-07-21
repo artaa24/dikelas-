@@ -58,23 +58,34 @@ class ClassroomController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'file' => 'required|file|max:10240', // Max 10MB
+            'file' => 'nullable|file|max:10240', // Max 10MB
+            'link_url' => 'nullable|url|max:500'
         ]);
 
-        $file = $request->file('file');
-        $fileName = $file->getClientOriginalName();
-        $fileSize = $file->getSize();
-        $mimeType = $file->getMimeType();
-        
-        // Ekstrak tipe dasar (pdf, video, document, dll)
-        $extension = strtolower($file->getClientOriginalExtension());
-        $fileType = 'document';
-        if (in_array($extension, ['pdf'])) $fileType = 'pdf';
-        elseif (in_array($extension, ['mp4', 'mkv', 'avi'])) $fileType = 'video';
-        elseif (in_array($extension, ['ppt', 'pptx'])) $fileType = 'presentation';
+        if (!$request->hasFile('file') && empty($request->link_url)) {
+            return back()->with('error', 'Anda harus mengunggah file atau memasukkan link URL.');
+        }
 
-        // Simpan file ke folder storage/app/public/materials
-        $filePath = $file->storeAs('materials/' . $classroom->id, time() . '_' . Str::slug($request->title) . '.' . $extension, 'public');
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $fileName = $file->getClientOriginalName();
+            $fileSize = $file->getSize();
+            $mimeType = $file->getMimeType();
+            
+            $extension = strtolower($file->getClientOriginalExtension());
+            $fileType = 'document';
+            if (in_array($extension, ['pdf'])) $fileType = 'pdf';
+            elseif (in_array($extension, ['mp4', 'mkv', 'avi'])) $fileType = 'video';
+            elseif (in_array($extension, ['ppt', 'pptx'])) $fileType = 'presentation';
+
+            $filePath = $file->storeAs('materials/' . $classroom->id, time() . '_' . Str::slug($request->title) . '.' . $extension, 'public');
+        } else {
+            $filePath = $request->link_url;
+            $fileName = 'Tautan Eksternal';
+            $fileType = 'link';
+            $fileSize = 0;
+            $mimeType = 'text/uri-list';
+        }
 
         Material::create([
             'classroom_id' => $classroom->id,
@@ -87,7 +98,7 @@ class ClassroomController extends Controller
             'mime_type' => $mimeType,
         ]);
 
-        return redirect()->route('classrooms.show', $id)->with('success', 'Materi berhasil diunggah!');
+        return redirect()->route('classrooms.show', $id)->with('success', 'Materi berhasil ditambahkan!');
     }
 
     /**

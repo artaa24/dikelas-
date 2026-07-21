@@ -12,6 +12,10 @@ class GradeController extends Controller
     {
         $classroom = Classroom::with('students')->findOrFail($classroomId);
         
+        if (auth()->user()->role->name == 'student') {
+            return redirect()->route('grades.index');
+        }
+        
         // Logika rekapitulasi nilai untuk semua murid di kelas ini
         $grades = Grade::where('classroom_id', $classroomId)->get();
         
