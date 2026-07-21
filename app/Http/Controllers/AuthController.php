@@ -40,6 +40,18 @@ class AuthController extends Controller
             $user->last_login_at = now();
             $user->save();
 
+            // Tambahkan notifikasi login
+            \App\Models\Notification::create([
+                'id' => (string) \Illuminate\Support\Str::uuid(),
+                'type' => 'App\Notifications\LoginActivity',
+                'notifiable_type' => 'App\Models\User',
+                'notifiable_id' => $user->id,
+                'data' => [
+                    'title' => 'Aktivitas Login',
+                    'message' => 'Anda berhasil login pada ' . now()->translatedFormat('d F Y') . ' pukul ' . now()->format('H:i') . '.',
+                ],
+            ]);
+
             // Redirect berdasarkan role — menggunakan nama role, bukan hardcoded ID
             $roleName = $user->role->name;
 

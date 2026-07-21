@@ -53,7 +53,11 @@
                 @forelse($classrooms as $classroom)
                 <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden flex flex-col group relative">
                     <div class="h-40 bg-gray-200 relative">
-                        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" alt="Course Image">
+                        @if($classroom->banner_image)
+                            <img src="{{ asset('storage/' . $classroom->banner_image) }}" class="w-full h-full object-cover" alt="Course Image">
+                        @else
+                            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" alt="Course Image">
+                        @endif
                         <div class="absolute top-4 right-4 flex space-x-2">
                             <div class="bg-white/90 backdrop-blur-sm text-[#007cc3] text-xs font-bold px-3 py-1 rounded-full">{{ $classroom->is_active ? 'Aktif' : 'Nonaktif' }}</div>
                         </div>
@@ -108,7 +112,7 @@
                     <div class="absolute inset-0 bg-gray-900/50 backdrop-blur-sm" onclick="document.getElementById('editClassModal{{ $classroom->id }}').classList.add('hidden')"></div>
                     <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
                         <div class="relative bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg w-full">
-                            <form action="/guru/classes/{{ $classroom->id }}" method="POST">
+                            <form action="/guru/classes/{{ $classroom->id }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
                                 <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
@@ -123,7 +127,14 @@
                                         <div>
                                             <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi</label>
                                             <textarea name="description" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-[#007cc3] focus:border-[#007cc3] outline-none transition">{{ $classroom->description }}</textarea>
+                                            <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Banner / Foto Kelas</label>
+                                            <input type="file" name="banner_image" accept="image/*" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-[#007cc3] focus:border-[#007cc3] outline-none transition">
+                                            @if($classroom->banner_image)
+                                                <p class="text-xs text-gray-500 mt-1">Biarkan kosong jika tidak ingin mengubah foto saat ini.</p>
+                                            @endif
                                         </div>
+                                    </div>
                                     </div>
                                 </div>
                                 <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse border-t border-gray-100">
@@ -155,7 +166,7 @@
         <div class="absolute inset-0 bg-gray-900/50 backdrop-blur-sm" onclick="document.getElementById('createClassModal').classList.add('hidden')"></div>
         <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
             <div class="relative bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg w-full">
-                <form action="/guru/classes" method="POST">
+                <form action="/guru/classes" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                         <div class="mb-4">
@@ -172,6 +183,11 @@
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi (Opsional)</label>
                                 <textarea name="description" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-[#007cc3] focus:border-[#007cc3] outline-none transition" placeholder="Tuliskan deskripsi singkat tentang kelas ini..."></textarea>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Banner / Foto Kelas</label>
+                                <input type="file" name="banner_image" accept="image/*" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-[#007cc3] focus:border-[#007cc3] outline-none transition">
                             </div>
                             
                             <div class="grid grid-cols-2 gap-4">

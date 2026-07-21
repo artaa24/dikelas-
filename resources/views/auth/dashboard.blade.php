@@ -129,7 +129,11 @@
                     @forelse($classrooms as $classroom)
                     <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
                         <div class="h-44 bg-gray-200 relative">
-                            <img src="{{ $classroom->cover_image ?? 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80' }}" class="w-full h-full object-cover" alt="Course Image">
+                            @if($classroom->banner_image)
+                                <img src="{{ asset('storage/' . $classroom->banner_image) }}" class="w-full h-full object-cover" alt="Course Image">
+                            @else
+                                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" alt="Course Image">
+                            @endif
                             <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm text-[#007cc3] text-xs font-bold px-4 py-1.5 rounded-full shadow-sm">{{ $classroom->code }}</div>
                         </div>
                         <div class="p-6 flex-1 flex flex-col">

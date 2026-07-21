@@ -58,6 +58,21 @@ Route::middleware('auth')->group(function () {
     Route::delete('/classrooms/{classroomId}/students/{studentId}', [\App\Http\Controllers\ClassroomController::class, 'removeStudent'])->name('classrooms.students.remove');
     Route::put('/classrooms/{id}/settings', [\App\Http\Controllers\ClassroomController::class, 'updateSettings'])->name('classrooms.settings.update');
     
+    // Topics (Materi)
+    Route::post('/classrooms/{classroomId}/topics', [\App\Http\Controllers\TopicController::class, 'store'])->name('classrooms.topics.store');
+    Route::delete('/classrooms/{classroomId}/topics/{topicId}', [\App\Http\Controllers\TopicController::class, 'destroy'])->name('classrooms.topics.destroy');
+    
+    // Discussions
+    Route::get('/classrooms/{classroomId}/discussions', [\App\Http\Controllers\DiscussionController::class, 'index'])->name('classrooms.discussions.index');
+    Route::post('/classrooms/{classroomId}/discussions', [\App\Http\Controllers\DiscussionController::class, 'store'])->name('classrooms.discussions.store');
+    Route::get('/classrooms/{classroomId}/discussions/{discussionId}', [\App\Http\Controllers\DiscussionController::class, 'show'])->name('classrooms.discussions.show');
+    Route::post('/classrooms/{classroomId}/discussions/{discussionId}/reply', [\App\Http\Controllers\DiscussionController::class, 'reply'])->name('classrooms.discussions.reply');
+
+    // Grades (Rekap Nilai)
+    Route::get('/classrooms/{classroomId}/grades', [\App\Http\Controllers\GradeController::class, 'index'])->name('classrooms.grades.index');
+    Route::get('/classrooms/{classroomId}/grades/{studentId}', [\App\Http\Controllers\GradeController::class, 'studentGrades'])->name('classrooms.grades.student');
+
+    
     // Certificate Routes (shared — download/preview accessible to student, teacher, admin)
     Route::get('/certificates/{id}/download', [\App\Http\Controllers\CertificateController::class, 'download'])->name('certificates.download');
     Route::get('/certificates/{id}/preview', [\App\Http\Controllers\CertificateController::class, 'preview'])->name('certificates.preview');
@@ -116,5 +131,17 @@ Route::middleware('auth')->group(function () {
         Route::put('/admin/users/{id}', [\App\Http\Controllers\AdminController::class, 'updateUser']);
         Route::delete('/admin/users/{id}', [\App\Http\Controllers\AdminController::class, 'destroyUser']);
         Route::post('/admin/resolve-reset/{id}', [\App\Http\Controllers\AdminController::class, 'resolveReset'])->name('admin.resolve-reset');
+        
+        // Admin: Settings, Logs, Backups, Permissions
+        Route::get('/admin/settings', [\App\Http\Controllers\SettingController::class, 'index'])->name('admin.settings.index');
+        Route::put('/admin/settings', [\App\Http\Controllers\SettingController::class, 'update'])->name('admin.settings.update');
+        
+        Route::get('/admin/logs', [\App\Http\Controllers\ActivityLogController::class, 'index'])->name('admin.logs.index');
+        
+        Route::get('/admin/backups', [\App\Http\Controllers\BackupController::class, 'index'])->name('admin.backups.index');
+        Route::post('/admin/backups', [\App\Http\Controllers\BackupController::class, 'create'])->name('admin.backups.create');
+        
+        Route::get('/admin/permissions', [\App\Http\Controllers\PermissionController::class, 'index'])->name('admin.permissions.index');
+        Route::put('/admin/permissions/roles/{roleId}', [\App\Http\Controllers\PermissionController::class, 'updateRolePermissions'])->name('admin.permissions.update');
     });
 });

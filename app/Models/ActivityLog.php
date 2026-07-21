@@ -6,5 +6,38 @@ use Illuminate\Database\Eloquent\Model;
 
 class ActivityLog extends Model
 {
-    //
+    public $timestamps = false;
+
+    protected $fillable = [
+        'user_id', 'action', 'description', 'subject_type', 'subject_id',
+        'properties', 'ip_address', 'user_agent', 'created_at',
+    ];
+
+    protected $casts = [
+        'properties' => 'array',
+        'created_at' => 'datetime',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Helper untuk mencatat aktivitas.
+     */
+    public static function log(string $action, ?string $description = null, $subject = null, ?array $properties = null): self
+    {
+        return static::create([
+            'user_id' => auth()->id(),
+            'action' => $action,
+            'description' => $description,
+            'subject_type' => $subject ? get_class($subject) : null,
+            'subject_id' => $subject?->id,
+            'properties' => $properties,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+            'created_at' => now(),
+        ]);
+    }
 }

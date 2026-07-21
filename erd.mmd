@@ -1,0 +1,185 @@
+erDiagram
+    ROLES {
+        bigint id PK
+        string name
+        string display_name
+    }
+    USERS {
+        bigint id PK
+        bigint role_id FK
+        string name
+        string email
+        string password
+    }
+    PERMISSIONS {
+        bigint id PK
+        string name
+        string display_name
+    }
+    ROLE_PERMISSION {
+        bigint role_id PK,FK
+        bigint permission_id PK,FK
+    }
+
+    ACADEMIC_YEARS {
+        bigint id PK
+        string name
+        date start_date
+        date end_date
+    }
+    SEMESTERS {
+        bigint id PK
+        bigint academic_year_id FK
+        string name
+        enum type
+    }
+    SUBJECTS {
+        bigint id PK
+        string name
+        string code
+    }
+    CLASSROOMS {
+        bigint id PK
+        bigint teacher_id FK
+        bigint subject_id FK
+        bigint semester_id FK
+        string name
+        string code
+    }
+    CLASSROOM_STUDENT {
+        bigint id PK
+        bigint classroom_id FK
+        bigint student_id FK
+    }
+
+    TOPICS {
+        bigint id PK
+        bigint classroom_id FK
+        string name
+    }
+    MATERIALS {
+        bigint id PK
+        bigint classroom_id FK
+        bigint topic_id FK
+        string title
+        string file_path
+    }
+
+    ASSIGNMENTS {
+        bigint id PK
+        bigint classroom_id FK
+        string title
+        int max_score
+    }
+    ASSIGNMENT_ATTACHMENTS {
+        bigint id PK
+        bigint assignment_id FK
+        string file_path
+    }
+    SUBMISSIONS {
+        bigint id PK
+        bigint assignment_id FK
+        bigint student_id FK
+        string file_path
+        decimal score
+    }
+
+    QUIZZES {
+        bigint id PK
+        bigint classroom_id FK
+        string title
+        int duration_minutes
+    }
+    QUESTIONS {
+        bigint id PK
+        bigint quiz_id FK
+        string type
+        string content
+    }
+    QUESTION_OPTIONS {
+        bigint id PK
+        bigint question_id FK
+        string content
+        boolean is_correct
+    }
+    QUIZ_ATTEMPTS {
+        bigint id PK
+        bigint quiz_id FK
+        bigint student_id FK
+        decimal total_score
+    }
+    QUIZ_ANSWERS {
+        bigint id PK
+        bigint attempt_id FK
+        bigint question_id FK
+        string answer
+        boolean is_correct
+    }
+
+    GRADES {
+        bigint id PK
+        bigint student_id FK
+        bigint classroom_id FK
+        decimal score
+    }
+
+    ANNOUNCEMENTS {
+        bigint id PK
+        bigint user_id FK
+        bigint classroom_id FK
+        string title
+    }
+
+    DISCUSSIONS {
+        bigint id PK
+        bigint classroom_id FK
+        bigint user_id FK
+        string title
+    }
+    DISCUSSION_REPLIES {
+        bigint id PK
+        bigint discussion_id FK
+        bigint user_id FK
+        string content
+    }
+
+    %% Relationships
+    ROLES ||--o{ USERS : "memiliki"
+    ROLES ||--o{ ROLE_PERMISSION : "mempunyai"
+    PERMISSIONS ||--o{ ROLE_PERMISSION : "dimiliki oleh"
+
+    ACADEMIC_YEARS ||--o{ SEMESTERS : "memiliki"
+    SEMESTERS ||--o{ CLASSROOMS : "dilaksanakan pada"
+    SUBJECTS ||--o{ CLASSROOMS : "diajarkan di"
+    USERS ||--o{ CLASSROOMS : "mengajar"
+
+    CLASSROOMS ||--o{ CLASSROOM_STUDENT : "memiliki"
+    USERS ||--o{ CLASSROOM_STUDENT : "terdaftar"
+
+    CLASSROOMS ||--o{ TOPICS : "memiliki"
+    CLASSROOMS ||--o{ MATERIALS : "memiliki"
+    TOPICS ||--o{ MATERIALS : "mengelompokkan"
+
+    CLASSROOMS ||--o{ ASSIGNMENTS : "memiliki"
+    ASSIGNMENTS ||--o{ ASSIGNMENT_ATTACHMENTS : "memiliki lampiran"
+    ASSIGNMENTS ||--o{ SUBMISSIONS : "menerima"
+    USERS ||--o{ SUBMISSIONS : "mengumpulkan"
+
+    CLASSROOMS ||--o{ QUIZZES : "memiliki"
+    QUIZZES ||--o{ QUESTIONS : "berisi"
+    QUESTIONS ||--o{ QUESTION_OPTIONS : "memiliki"
+    QUIZZES ||--o{ QUIZ_ATTEMPTS : "dikerjakan"
+    USERS ||--o{ QUIZ_ATTEMPTS : "mengerjakan"
+    QUIZ_ATTEMPTS ||--o{ QUIZ_ANSWERS : "menjawab"
+    QUESTIONS ||--o{ QUIZ_ANSWERS : "dijawab"
+
+    USERS ||--o{ GRADES : "menerima"
+    CLASSROOMS ||--o{ GRADES : "mencatat"
+
+    CLASSROOMS ||--o{ ANNOUNCEMENTS : "memiliki"
+    USERS ||--o{ ANNOUNCEMENTS : "membuat"
+
+    CLASSROOMS ||--o{ DISCUSSIONS : "memiliki"
+    USERS ||--o{ DISCUSSIONS : "membuat"
+    DISCUSSIONS ||--o{ DISCUSSION_REPLIES : "memiliki"
+    USERS ||--o{ DISCUSSION_REPLIES : "membalas"

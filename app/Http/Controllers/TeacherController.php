@@ -76,6 +76,7 @@ class TeacherController extends Controller
             'subject_id' => 'nullable', // Dihapus exists:subjects,id untuk MVP
             'description' => 'nullable|string',
             'max_students' => 'nullable|integer|min:1|max:999',
+            'banner_image' => 'nullable|image|max:2048',
         ]);
 
         // Generate unique class code
@@ -104,6 +105,11 @@ class TeacherController extends Controller
             ]
         );
 
+        $bannerPath = null;
+        if ($request->hasFile('banner_image')) {
+            $bannerPath = $request->file('banner_image')->store('class_banners', 'public');
+        }
+
         Classroom::create([
             'teacher_id' => auth()->id(),
             'subject_id' => $subject->id,
@@ -112,6 +118,7 @@ class TeacherController extends Controller
             'code' => $code,
             'description' => $request->description,
             'cover_image' => null,
+            'banner_image' => $bannerPath,
             'is_active' => true,
             'max_students' => $request->max_students,
         ]);
@@ -128,9 +135,16 @@ class TeacherController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'max_students' => 'nullable|integer|min:1|max:999',
+            'banner_image' => 'nullable|image|max:2048',
         ]);
         
         $classroom = Classroom::where('teacher_id', auth()->id())->findOrFail($id);
+        
+        if ($request->hasFile('banner_image')) {
+            $bannerPath = $request->file('banner_image')->store('class_banners', 'public');
+            $classroom->banner_image = $bannerPath;
+        }
+        
         $classroom->update([
             'name' => $request->name,
             'description' => $request->description,

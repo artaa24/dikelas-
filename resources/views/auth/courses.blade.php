@@ -93,7 +93,7 @@
                 @forelse($classrooms as $index => $class)
                 <!-- Course Card -->
                 <div class="course-card bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden flex flex-col group hover:shadow-md transition-shadow" data-status="ongoing">
-                    <div class="h-48 {{ ['bg-blue-600', 'bg-purple-600', 'bg-green-600', 'bg-orange-600'][$index % 4] }} relative overflow-hidden">
+                    <div class="h-48 {{ $class->banner_image ? '' : ['bg-blue-600', 'bg-purple-600', 'bg-green-600', 'bg-orange-600'][$index % 4] }} relative overflow-hidden" @if($class->banner_image) style="background-image: url('{{ asset('storage/' . $class->banner_image) }}'); background-size: cover; background-position: center;" @endif>
                         <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-gray-800 text-xs font-bold px-3 py-1.5 rounded-lg shadow-sm flex items-center">
                             {{ $class->code }}
                         </div>
@@ -102,9 +102,13 @@
                         <h3 class="font-bold text-gray-900 text-lg mb-2 line-clamp-2">{{ $class->name }}</h3>
                         
                         <div class="flex items-center mb-5">
-                            <div class="w-8 h-8 rounded-full bg-gray-200 text-gray-500 font-bold flex items-center justify-center mr-2 text-xs border border-gray-300">
-                                {{ strtoupper(substr($class->teacher->name ?? 'G', 0, 1)) }}
-                            </div>
+                            @if($class->teacher && $class->teacher->avatar)
+                                <img src="{{ asset('storage/' . $class->teacher->avatar) }}" alt="{{ $class->teacher->name }}" class="w-8 h-8 rounded-full object-cover mr-2 border border-gray-300">
+                            @else
+                                <div class="w-8 h-8 rounded-full bg-gray-200 text-gray-500 font-bold flex items-center justify-center mr-2 text-xs border border-gray-300">
+                                    {{ strtoupper(substr($class->teacher->name ?? 'G', 0, 1)) }}
+                                </div>
+                            @endif
                             <span class="text-sm text-gray-600 font-medium">{{ $class->teacher->name ?? 'Guru Tidak Diketahui' }}</span>
                         </div>
                         

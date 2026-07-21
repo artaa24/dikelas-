@@ -11,23 +11,9 @@
     </style>
 </head>
 <body class="bg-gray-50 flex items-center justify-center min-h-screen p-4 lg:p-8">
-    <div class="bg-white rounded-3xl shadow-xl overflow-hidden flex flex-col md:flex-row w-full max-w-6xl">
-        <!-- Left Side -->
-        <div class="hidden md:flex md:w-1/2 bg-[#0275B1] text-white p-12 flex-col justify-center items-center text-center relative overflow-hidden">
-            <!-- Decorative circle -->
-            <div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 rounded-full bg-white opacity-5"></div>
-            <div class="absolute bottom-0 left-0 -ml-16 -mb-16 w-48 h-48 rounded-full bg-white opacity-5"></div>
-            
-            <h1 class="text-4xl lg:text-5xl font-bold mb-6 relative z-10 leading-tight">Inovasi Belajar Masa Depan</h1>
-            <p class="text-lg text-blue-100 mb-10 max-w-md relative z-10">Akses ribuan materi pembelajaran interaktif dan kelola jadwal pengajaran Anda dalam satu platform cerdas.</p>
-            
-            <div class="w-full max-w-md bg-white/10 rounded-xl p-3 backdrop-blur-sm relative z-10 border border-white/20 shadow-2xl">
-                 <img src="{{ asset('assets/Home - DIKELAS Professional LMS.png') }}" alt="Dashboard Illustration" class="rounded-lg shadow-lg opacity-90 hover:opacity-100 transition duration-300 w-full h-auto object-cover">
-            </div>
-        </div>
-
-        <!-- Right Side -->
-        <div class="w-full md:w-1/2 p-10 lg:px-20 xl:px-24 flex flex-col justify-center bg-white">
+    <div class="bg-white rounded-3xl shadow-xl overflow-hidden flex flex-col w-full max-w-md">
+        <!-- Login Form -->
+        <div class="w-full p-8 sm:p-10 flex flex-col justify-center bg-white">
             <div class="flex justify-center mb-8">
                 <img src="{{ asset('assets/Logo.png') }}" alt="DIKELAS Logo" class="h-16">
             </div>

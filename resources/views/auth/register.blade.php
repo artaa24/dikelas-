@@ -11,53 +11,8 @@
     </style>
 </head>
 <body class="flex min-h-screen bg-gray-50">
-    <!-- Left Side -->
-    <div class="hidden lg:flex lg:w-5/12 bg-gradient-to-br from-[#29A4E3] to-[#0A88CB] text-white p-12 xl:p-16 flex-col justify-between relative overflow-hidden">
-        <!-- Decorative elements -->
-        <div class="absolute top-0 right-0 -mr-32 -mt-32 w-96 h-96 rounded-full bg-white opacity-10"></div>
-        <div class="absolute bottom-0 left-0 -ml-24 -mb-24 w-72 h-72 rounded-full bg-white opacity-5"></div>
-        
-        <div class="relative z-10">
-            <div class="inline-block px-4 py-1.5 border border-white/30 rounded-full text-xs font-medium mb-10 tracking-wide bg-white/5 backdrop-blur-sm">
-                Edisi Enterprise 2026
-            </div>
-            
-            <h1 class="text-4xl xl:text-5xl font-bold leading-tight mb-6">Mulai Perjalanan Belajar Anda</h1>
-            
-            <p class="text-lg text-blue-50 mb-14 max-w-lg leading-relaxed opacity-90">
-                Bergabunglah dengan ribuan profesional di DIKELAS. Dapatkan akses ke kurikulum eksklusif, mentor berpengalaman, dan komunitas belajar global yang dirancang untuk masa depan karier Anda.
-            </p>
-            
-            <div class="grid grid-cols-2 gap-8">
-                <div>
-                    <div class="w-12 h-12 bg-white/15 rounded-full flex items-center justify-center mb-4 shadow-inner backdrop-blur-md border border-white/10">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    </div>
-                    <h3 class="font-bold text-lg mb-2">Terakreditasi</h3>
-                    <p class="text-sm text-blue-100 opacity-80 leading-relaxed">Sertifikasi resmi yang diakui oleh industri global.</p>
-                </div>
-                <div>
-                    <div class="w-12 h-12 bg-white/15 rounded-full flex items-center justify-center mb-4 shadow-inner backdrop-blur-md border border-white/10">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                    </div>
-                    <h3 class="font-bold text-lg mb-2">Kolaboratif</h3>
-                    <p class="text-sm text-blue-100 opacity-80 leading-relaxed">Belajar bersama melalui proyek nyata dan forum interaktif.</p>
-                </div>
-            </div>
-        </div>
-        
-        <div class="flex items-center mt-12 relative z-10">
-            <div class="flex -space-x-3">
-                <img class="w-10 h-10 rounded-full border-2 border-[#29A4E3] object-cover" src="https://i.pravatar.cc/100?img=1" alt="Avatar">
-                <img class="w-10 h-10 rounded-full border-2 border-[#29A4E3] object-cover" src="https://i.pravatar.cc/100?img=2" alt="Avatar">
-                <img class="w-10 h-10 rounded-full border-2 border-[#29A4E3] object-cover" src="https://i.pravatar.cc/100?img=3" alt="Avatar">
-            </div>
-            <span class="ml-4 text-sm font-medium text-white opacity-90">Bergabung dengan 12k+ pelajar hari ini</span>
-        </div>
-    </div>
-
-    <!-- Right Side -->
-    <div class="w-full lg:w-7/12 flex flex-col justify-center items-center p-6 lg:p-12 relative">
+    <!-- Main Content -->
+    <div class="w-full flex flex-col justify-center items-center p-6 lg:p-12 relative mx-auto">
         <!-- Main Form Card -->
         <div class="bg-white p-8 sm:p-10 lg:p-12 rounded-[2rem] shadow-xl shadow-gray-200/50 w-full max-w-xl border border-gray-100/50 relative z-10">
             <div class="flex justify-center mb-8">

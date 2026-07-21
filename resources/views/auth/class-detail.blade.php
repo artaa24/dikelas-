@@ -27,7 +27,11 @@
         
         <!-- Header Image & Info -->
         <div class="h-64 relative flex-shrink-0">
-            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80" alt="Course Cover" class="w-full h-full object-cover">
+            @if($classroom->banner_image)
+                <img src="{{ asset('storage/' . $classroom->banner_image) }}" alt="Course Cover" class="w-full h-full object-cover">
+            @else
+                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80" alt="Course Cover" class="w-full h-full object-cover">
+            @endif
             <div class="absolute inset-0 bg-gradient-to-t from-[#0A4B7D] via-[#0A4B7D]/70 to-transparent"></div>
             
             <div class="absolute top-0 left-0 w-full p-6 flex justify-between items-center z-10">
@@ -100,6 +104,8 @@
                 <div class="flex border-b border-gray-200 mb-8 space-x-8" id="classTabs">
                     <button onclick="switchTab('materi')" id="btn-materi" class="pb-4 font-bold text-[#007cc3] border-b-2 border-[#007cc3]">Modul Materi</button>
                     <button onclick="switchTab('tugas')" id="btn-tugas" class="pb-4 font-medium text-gray-500 hover:text-gray-700 transition">Tugas & Kuis</button>
+                    <a href="{{ route('classrooms.discussions.index', $classroom->id) }}" class="pb-4 font-medium text-gray-500 hover:text-gray-700 transition">Forum Diskusi</a>
+                    <a href="{{ route('classrooms.grades.index', $classroom->id) }}" class="pb-4 font-medium text-gray-500 hover:text-gray-700 transition">Rekap Nilai</a>
                 </div>
 
                 <div class="space-y-6" id="tab-materi">

@@ -14,6 +14,7 @@ class Classroom extends Model
         'code',
         'description',
         'cover_image',
+        'banner_image',
         'is_active',
         'max_students',
     ];
@@ -46,6 +47,16 @@ class Classroom extends Model
     public function certificates()
     {
         return $this->hasMany(Certificate::class);
+    }
+
+    public function discussions()
+    {
+        return $this->hasMany(Discussion::class);
+    }
+
+    public function grades()
+    {
+        return $this->hasMany(Grade::class);
     }
 
     /**
