@@ -36,6 +36,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/edit-profile', [\App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
     
+    // Pencarian Global
+    Route::get('/search', [\App\Http\Controllers\SearchController::class, 'index'])->name('search');
+    
     // Notifications (Dinamis)
     Route::get('/notifications', [\App\Http\Controllers\NotificationController::class, 'index'])->name('notifications.index');
     Route::post('/notifications/mark-all-read', [\App\Http\Controllers\NotificationController::class, 'markAllRead'])->name('notifications.markAllRead');

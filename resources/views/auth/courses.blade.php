@@ -23,14 +23,14 @@
         <!-- Header -->
         <header class="h-20 bg-[#F8FAFC] flex items-center justify-between px-8 xl:px-10 flex-shrink-0">
             <!-- Search -->
-            <div class="flex-1 max-w-2xl">
+            <form action="{{ route('search') }}" method="GET" class="flex-1 max-w-2xl">
                 <div class="relative">
                     <span class="absolute inset-y-0 left-0 flex items-center pl-5">
                         <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     </span>
-                    <input type="text" class="w-full bg-white border border-gray-200 rounded-full py-3.5 pl-12 pr-4 text-sm focus:outline-none focus:ring-1 focus:ring-[#007cc3]" placeholder="Cari materi, tugas, atau kursus...">
+                    <input type="text" name="q" value="{{ request('q') }}" class="w-full bg-white border border-gray-200 rounded-full py-3.5 pl-12 pr-4 text-sm focus:outline-none focus:ring-1 focus:ring-[#007cc3]" placeholder="Cari materi, tugas, atau kursus...">
                 </div>
-            </div>
+            </form>
 
             <!-- Right Actions -->
             <div class="flex items-center space-x-6 ml-6">
@@ -74,12 +74,6 @@
                     <p class="text-gray-500">Lanjutkan pembelajaran Anda untuk mencapai target.</p>
                 </div>
                 <div class="flex gap-3 items-center">
-                    <!-- Filtering -->
-                    <div class="flex bg-white rounded-full p-1 border border-gray-200 shadow-sm" id="courseFilter">
-                        <button data-filter="all" class="filter-btn px-6 py-2 rounded-full bg-[#007cc3] text-white text-sm font-semibold shadow-sm transition">Semua</button>
-                        <button data-filter="ongoing" class="filter-btn px-6 py-2 rounded-full text-gray-600 hover:bg-gray-100 text-sm font-semibold transition">Sedang Berjalan</button>
-                        <button data-filter="completed" class="filter-btn px-6 py-2 rounded-full text-gray-600 hover:bg-gray-100 text-sm font-semibold transition">Selesai</button>
-                    </div>
                     <button id="openJoinModalBtn" class="bg-[#007cc3] hover:bg-blue-700 text-white font-bold py-2.5 px-5 rounded-full shadow-md flex items-center transition">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                         Gabung Kelas Baru
@@ -205,42 +199,6 @@
         if (closeBtn) closeBtn.addEventListener('click', () => toggleModal(false));
         if (cancelBtn) cancelBtn.addEventListener('click', () => toggleModal(false));
 
-        // Logika Filter Kursus
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        const courseCards = document.querySelectorAll('.course-card');
-        const emptyState = document.getElementById('emptyFilterState');
-
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                // 1. Reset gaya semua tombol
-                filterBtns.forEach(b => {
-                    b.classList.remove('bg-[#007cc3]', 'text-white', 'shadow-sm');
-                    b.classList.add('text-gray-600', 'hover:bg-gray-100');
-                });
-                
-                // 2. Beri gaya aktif pada tombol yang diklik
-                btn.classList.remove('text-gray-600', 'hover:bg-gray-100');
-                btn.classList.add('bg-[#007cc3]', 'text-white', 'shadow-sm');
-
-                const filterValue = btn.getAttribute('data-filter');
-                let visibleCount = 0;
-
-                // 3. Tampilkan/Sembunyikan kartu
-                courseCards.forEach(card => {
-                    if (filterValue === 'all' || card.getAttribute('data-status') === filterValue) {
-                        card.style.display = 'flex';
-                        visibleCount++;
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-
-                // 4. Tampilkan pesan kosong jika diperlukan
-                if (emptyState) {
-                    emptyState.style.display = (visibleCount === 0 && courseCards.length > 0) ? 'block' : 'none';
-                }
-            });
-        });
     </script>
 </body>
 </html>

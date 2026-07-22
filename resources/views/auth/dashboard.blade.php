@@ -29,14 +29,14 @@
         <!-- Header -->
         <header class="h-20 bg-[#F8FAFC] flex items-center justify-between px-8 xl:px-10 flex-shrink-0">
             <!-- Search -->
-            <div class="flex-1 max-w-2xl">
+            <form action="{{ route('search') }}" method="GET" class="flex-1 max-w-2xl">
                 <div class="relative">
                     <span class="absolute inset-y-0 left-0 flex items-center pl-5">
                         <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     </span>
-                    <input type="text" class="w-full bg-white border border-gray-200 rounded-full py-3.5 pl-12 pr-4 text-sm focus:outline-none focus:ring-1 focus:ring-[#007cc3]" placeholder="Cari materi, tugas, atau mentor...">
+                    <input type="text" name="q" value="{{ request('q') }}" class="w-full bg-white border border-gray-200 rounded-full py-3.5 pl-12 pr-4 text-sm focus:outline-none focus:ring-1 focus:ring-[#007cc3]" placeholder="Cari materi, tugas, atau mentor...">
                 </div>
-            </div>
+            </form>
 
             <!-- Right Actions -->
             <div class="flex items-center space-x-6 ml-6">
@@ -114,13 +114,6 @@
                 <div class="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
                     <div>
                         <h3 class="text-2xl font-bold text-gray-900 mb-4">Kursus Aktif</h3>
-                        <div class="flex flex-wrap gap-2">
-                            <button class="px-5 py-2 rounded-full bg-[#007cc3] text-white text-sm font-medium shadow-sm">Semua</button>
-                            <button class="px-5 py-2 rounded-full bg-gray-200 text-gray-600 hover:bg-gray-300 text-sm font-medium transition">Matematika</button>
-                            <button class="px-5 py-2 rounded-full bg-gray-200 text-gray-600 hover:bg-gray-300 text-sm font-medium transition">Bahasa</button>
-                            <button class="px-5 py-2 rounded-full bg-gray-200 text-gray-600 hover:bg-gray-300 text-sm font-medium transition">Sains</button>
-                            <button class="px-5 py-2 rounded-full bg-gray-200 text-gray-600 hover:bg-gray-300 text-sm font-medium transition">Seni</button>
-                        </div>
                     </div>
                 </div>
 

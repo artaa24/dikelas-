@@ -23,14 +23,14 @@
         <!-- Header -->
         <header class="h-20 bg-[#F8FAFC] flex items-center justify-between px-8 flex-shrink-0">
             <!-- Search -->
-            <div class="flex-1 max-w-2xl">
+            <form action="{{ route('search') }}" method="GET" class="flex-1 max-w-2xl">
                 <div class="relative">
                     <span class="absolute inset-y-0 left-0 flex items-center pl-5">
                         <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     </span>
-                    <input type="text" class="w-full bg-white border border-gray-200 rounded-full py-3.5 pl-12 pr-4 text-sm focus:outline-none focus:ring-1 focus:ring-[#007cc3]" placeholder="Cari kelas, murid, atau tugas...">
+                    <input type="text" name="q" value="{{ request('q') }}" class="w-full bg-white border border-gray-200 rounded-full py-3.5 pl-12 pr-4 text-sm focus:outline-none focus:ring-1 focus:ring-[#007cc3]" placeholder="Cari kelas, murid, atau tugas...">
                 </div>
-            </div>
+            </form>
 
             <!-- Right Actions -->
             <div class="flex items-center space-x-6 ml-6">
