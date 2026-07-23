@@ -119,11 +119,11 @@
                             <div id="editMaterialModal{{ $material->id }}" class="fixed inset-0 z-50 hidden">
                                 <div class="absolute inset-0 bg-gray-900/50 backdrop-blur-sm" onclick="document.getElementById('editMaterialModal{{ $material->id }}').classList.add('hidden')"></div>
                                 <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
-                                    <div class="relative bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg w-full">
-                                        <form action="/guru/materials/{{ $material->id }}" method="POST">
+                                    <div class="relative bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg w-full max-h-[90vh] flex flex-col">
+                                        <form action="/guru/materials/{{ $material->id }}" method="POST" class="flex flex-col overflow-hidden h-full">
                                             @csrf
                                             @method('PUT')
-                                            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4 flex-1 overflow-y-auto">
                                                 <div class="mb-4">
                                                     <h3 class="text-xl leading-6 font-bold text-gray-900">Edit Materi</h3>
                                                 </div>
@@ -171,10 +171,10 @@
     <div id="uploadMaterialModal" class="fixed inset-0 z-50 hidden">
         <div class="absolute inset-0 bg-gray-900/50 backdrop-blur-sm" onclick="document.getElementById('uploadMaterialModal').classList.add('hidden')"></div>
         <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
-            <div class="relative bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg w-full">
-                <form action="/guru/materials" method="POST" enctype="multipart/form-data">
+            <div class="relative bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg w-full max-h-[90vh] flex flex-col">
+                <form action="/guru/materials" method="POST" enctype="multipart/form-data" class="flex flex-col overflow-hidden h-full">
                     @csrf
-                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4 flex-1 overflow-y-auto">
                         <div class="mb-4">
                             <h3 class="text-xl leading-6 font-bold text-gray-900" id="modal-title">Upload Materi Baru</h3>
                             <p class="text-sm text-gray-500 mt-1">Bagikan materi pelajaran kepada siswa Anda.</p>

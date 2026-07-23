@@ -345,10 +345,10 @@
     <div id="createAssignmentModal" class="fixed inset-0 z-50 hidden">
         <div class="absolute inset-0 bg-gray-900/50 backdrop-blur-sm" onclick="document.getElementById('createAssignmentModal').classList.add('hidden')"></div>
         <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
-            <div class="relative bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg w-full">
-                <form action="{{ route('classrooms.assignments.store', $classroom->id) }}" method="POST">
+            <div class="relative bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg w-full max-h-[90vh] flex flex-col">
+                <form action="{{ route('classrooms.assignments.store', $classroom->id) }}" method="POST" class="flex flex-col overflow-hidden h-full">
                     @csrf
-                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4 flex-1 overflow-y-auto">
                         <div class="mb-4">
                             <h3 class="text-xl leading-6 font-bold text-gray-900">Buat Tugas Baru</h3>
                             <p class="text-sm text-gray-500 mt-1">Berikan penugasan untuk siswa di kelas ini.</p>
@@ -394,10 +394,10 @@
     <div id="createQuizModal" class="fixed inset-0 z-50 hidden">
         <div class="absolute inset-0 bg-gray-900/50 backdrop-blur-sm" onclick="document.getElementById('createQuizModal').classList.add('hidden')"></div>
         <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
-            <div class="relative bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg w-full">
-                <form action="{{ route('classrooms.quizzes.store', $classroom->id) }}" method="POST">
+            <div class="relative bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg w-full max-h-[90vh] flex flex-col">
+                <form action="{{ route('classrooms.quizzes.store', $classroom->id) }}" method="POST" class="flex flex-col overflow-hidden h-full">
                     @csrf
-                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4 flex-1 overflow-y-auto">
                         <div class="mb-4">
                             <h3 class="text-xl leading-6 font-bold text-gray-900">Buat Kuis Baru</h3>
                             <p class="text-sm text-gray-500 mt-1">Buat kuis untuk menguji pemahaman siswa.</p>
@@ -444,10 +444,10 @@
     <div id="uploadMaterialModal" class="fixed inset-0 z-50 hidden">
         <div class="absolute inset-0 bg-gray-900/50 backdrop-blur-sm" onclick="document.getElementById('uploadMaterialModal').classList.add('hidden')"></div>
         <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
-            <div class="relative bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg w-full">
-                <form action="{{ route('classrooms.materials.store', $classroom->id) }}" method="POST" enctype="multipart/form-data">
+            <div class="relative bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg w-full max-h-[90vh] flex flex-col">
+                <form action="{{ route('classrooms.materials.store', $classroom->id) }}" method="POST" enctype="multipart/form-data" class="flex flex-col overflow-hidden h-full">
                     @csrf
-                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4 flex-1 overflow-y-auto">
                         <div class="mb-4">
                             <h3 class="text-xl leading-6 font-bold text-gray-900">Upload Materi Baru</h3>
                             <p class="text-sm text-gray-500 mt-1">Bagikan file materi untuk dipelajari oleh siswa.</p>

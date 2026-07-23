@@ -138,7 +138,7 @@
         <div class="w-full max-w-xl mt-8 flex justify-between items-center text-xs text-gray-400">
             <span>© 2026 DIKELAS LMS</span>
             <div class="space-x-6">
-                <a href="#" class="hover:text-gray-600 transition-colors">Bantuan</a>
+                <a href="/help-center" class="hover:text-gray-600 transition-colors">Bantuan</a>
                 <a href="#" class="hover:text-gray-600 transition-colors">Bahasa</a>
             </div>
         </div>
