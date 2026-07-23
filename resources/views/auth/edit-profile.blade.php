@@ -15,11 +15,11 @@
 <body class="bg-[#F8FAFC] flex h-screen overflow-hidden text-gray-800">
 
     @if(auth()->user()->isAdmin())
-        @include('components.sidebar-admin', ['active' => ''])
+        @include('components.sidebar-admin', ['active' => 'profile'])
     @elseif(auth()->user()->isTeacher())
-        @include('components.sidebar-guru', ['active' => ''])
+        @include('components.sidebar-guru', ['active' => 'profile'])
     @else
-        @include('components.sidebar-student', ['active' => ''])
+        @include('components.sidebar-student', ['active' => 'profile'])
     @endif
 
     <!-- Main Content Area -->
