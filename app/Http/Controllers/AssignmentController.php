@@ -29,7 +29,7 @@ class AssignmentController extends Controller
             'max_score' => 'required|integer|min:0|max:100',
         ]);
 
-        Assignment::create([
+        $assignment = Assignment::create([
             'classroom_id' => $classroom->id,
             'title' => $request->title,
             'description' => $request->description,
@@ -37,6 +37,8 @@ class AssignmentController extends Controller
             'max_score' => $request->max_score,
             'is_published' => true,
         ]);
+
+        \App\Models\ActivityLog::log('create_assignment', 'Guru membuat tugas: ' . $assignment->title, $assignment);
 
         return redirect()->route('classrooms.show', $classroom->id)->with('success', 'Tugas berhasil dibuat!');
     }
@@ -97,7 +99,7 @@ class AssignmentController extends Controller
         // Cek jika telat
         $status = now()->gt($assignment->deadline_at) ? 'late' : 'submitted';
 
-        Submission::updateOrCreate(
+        $submission = Submission::updateOrCreate(
             ['assignment_id' => $assignment->id, 'student_id' => $user->id],
             [
                 'file_path' => $filePath,
@@ -107,6 +109,8 @@ class AssignmentController extends Controller
                 'submitted_at' => now(),
             ]
         );
+
+        \App\Models\ActivityLog::log('submit_assignment', 'Murid mengumpulkan tugas: ' . $assignment->title, $submission);
 
         return redirect()->route('assignments.show', $assignment->id)->with('success', 'Tugas berhasil diserahkan!');
     }
@@ -135,6 +139,8 @@ class AssignmentController extends Controller
             'status' => 'graded',
             'graded_at' => now(),
         ]);
+
+        \App\Models\ActivityLog::log('grade_assignment', 'Guru menilai tugas untuk submission ID: ' . $submission->id, $submission);
 
         return redirect()->route('assignments.show', $submission->assignment_id)->with('success', 'Nilai berhasil disimpan!');
     }

@@ -31,7 +31,7 @@ class QuizController extends Controller
             'max_score' => 'required|integer|min:1',
         ]);
 
-        Quiz::create([
+        $quiz = Quiz::create([
             'classroom_id' => $classroom->id,
             'title' => $request->title,
             'description' => $request->description,
@@ -39,6 +39,8 @@ class QuizController extends Controller
             'max_score' => $request->max_score,
             'is_published' => true,
         ]);
+
+        \App\Models\ActivityLog::log('create_quiz', 'Guru membuat kuis: ' . $quiz->title, $quiz);
 
         return redirect()->route('classrooms.show', $classroom->id)->with('success', 'Kuis berhasil dibuat!');
     }
@@ -96,6 +98,7 @@ class QuizController extends Controller
             }
 
             DB::commit();
+            \App\Models\ActivityLog::log('add_question', 'Guru menambahkan soal ke kuis: ' . $quiz->title, $question);
             return back()->with('success', 'Soal berhasil ditambahkan!');
         } catch (\Exception $e) {
             DB::rollBack();
@@ -186,6 +189,7 @@ class QuizController extends Controller
             }
 
             DB::commit();
+            \App\Models\ActivityLog::log('import_questions', 'Guru mengimport ' . $imported . ' soal ke kuis: ' . $quiz->title, $quiz);
             return back()->with('success', "$imported soal berhasil diimport dari PDF!");
         } catch (\Exception $e) {
             DB::rollBack();
@@ -287,6 +291,8 @@ class QuizController extends Controller
             'status' => 'in_progress'
         ]);
 
+        \App\Models\ActivityLog::log('start_quiz', 'Murid mulai mengerjakan kuis: ' . $quiz->title, $attempt);
+
         return redirect()->route('quizzes.show', $quiz->id);
     }
 
@@ -336,6 +342,8 @@ class QuizController extends Controller
             'total_score' => $finalScore,
             'status' => 'completed'
         ]);
+
+        \App\Models\ActivityLog::log('submit_quiz', 'Murid menyelesaikan kuis: ' . $attempt->quiz->title, $attempt);
 
         return redirect()->route('quizzes.show', $attempt->quiz_id)->with('success', 'Kuis berhasil diselesaikan!');
     }

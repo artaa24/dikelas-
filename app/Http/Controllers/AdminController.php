@@ -77,7 +77,7 @@ class AdminController extends Controller
             'nis' => 'nullable|string',
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
@@ -86,6 +86,8 @@ class AdminController extends Controller
             'nis' => $request->nis,
             'is_active' => true,
         ]);
+
+        \App\Models\ActivityLog::log('create_user', 'Admin created user: ' . $user->email, $user);
 
         return redirect('/admin/users')->with('success', 'Pengguna baru berhasil ditambahkan!');
     }
@@ -113,6 +115,8 @@ class AdminController extends Controller
 
         $user->update($data);
 
+        \App\Models\ActivityLog::log('update_user', 'Admin updated user: ' . $user->email, $user);
+
         return redirect('/admin/users')->with('success', 'Data pengguna berhasil diperbarui!');
     }
 
@@ -128,7 +132,10 @@ class AdminController extends Controller
             return redirect('/admin/users')->with('error', 'Anda tidak bisa menghapus akun sendiri.');
         }
 
+        $userEmail = $user->email;
         $user->delete();
+
+        \App\Models\ActivityLog::log('delete_user', 'Admin deleted user: ' . $userEmail);
 
         return redirect('/admin/users')->with('success', 'Pengguna berhasil dihapus!');
     }

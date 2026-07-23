@@ -40,6 +40,8 @@ class AuthController extends Controller
             $user->last_login_at = now();
             $user->save();
 
+            \App\Models\ActivityLog::log('login', 'User logged in');
+
             // Tambahkan notifikasi login
             \App\Models\Notification::create([
                 'id' => (string) \Illuminate\Support\Str::uuid(),
@@ -90,11 +92,17 @@ class AuthController extends Controller
             'is_active' => true,
         ]);
 
+        \App\Models\ActivityLog::log('register', 'New user registered', $user);
+
         return redirect()->route('login')->with('success', 'Akun berhasil dibuat. Silakan login.');
     }
 
     public function logout(Request $request)
     {
+        if (Auth::check()) {
+            \App\Models\ActivityLog::log('logout', 'User logged out');
+        }
+
         Auth::logout();
 
         $request->session()->invalidate();

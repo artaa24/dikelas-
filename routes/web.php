@@ -138,6 +138,10 @@ Route::middleware('auth')->group(function () {
         // Admin: Settings, Logs, Backups, Permissions
         Route::get('/admin/settings', [\App\Http\Controllers\SettingController::class, 'index'])->name('admin.settings.index');
         Route::put('/admin/settings', [\App\Http\Controllers\SettingController::class, 'update'])->name('admin.settings.update');
+        Route::post('/admin/settings/academic-years', [\App\Http\Controllers\SettingController::class, 'storeAcademicYear'])->name('admin.settings.academic-years.store');
+        Route::post('/admin/settings/academic-years/{id}/set-active', [\App\Http\Controllers\SettingController::class, 'setAcademicYear'])->name('admin.settings.academic-years.set-active');
+        Route::post('/admin/settings/semesters', [\App\Http\Controllers\SettingController::class, 'storeSemester'])->name('admin.settings.semesters.store');
+        Route::post('/admin/settings/semesters/{id}/set-active', [\App\Http\Controllers\SettingController::class, 'setSemester'])->name('admin.settings.semesters.set-active');
         
         Route::get('/admin/logs', [\App\Http\Controllers\ActivityLogController::class, 'index'])->name('admin.logs.index');
         

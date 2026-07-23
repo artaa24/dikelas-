@@ -88,29 +88,35 @@ class TeacherController extends Controller
             ['name' => 'Mata Pelajaran ' . $subjectId, 'code' => 'MAPEL' . $subjectId]
         );
 
-        $academicYear = \App\Models\AcademicYear::firstOrCreate(
-            ['id' => 1],
-            ['name' => '2026/2027', 'start_date' => '2026-07-01', 'end_date' => '2027-06-30', 'is_active' => true]
-        );
+        $academicYear = \App\Models\AcademicYear::where('is_active', true)->first();
+        if (!$academicYear) {
+            $academicYear = \App\Models\AcademicYear::firstOrCreate(
+                ['id' => 1],
+                ['name' => '2026/2027', 'start_date' => '2026-07-01', 'end_date' => '2027-06-30', 'is_active' => true]
+            );
+        }
 
-        $semester = \App\Models\Semester::firstOrCreate(
-            ['id' => 1],
-            [
-                'name' => 'Semester Ganjil 2026/2027', 
-                'academic_year_id' => $academicYear->id, 
-                'type' => 'odd',
-                'start_date' => '2026-07-01',
-                'end_date' => '2026-12-31',
-                'is_active' => true
-            ]
-        );
+        $semester = \App\Models\Semester::where('is_active', true)->first();
+        if (!$semester) {
+            $semester = \App\Models\Semester::firstOrCreate(
+                ['id' => 1],
+                [
+                    'name' => 'Semester Ganjil 2026/2027', 
+                    'academic_year_id' => $academicYear->id, 
+                    'type' => 'odd',
+                    'start_date' => '2026-07-01',
+                    'end_date' => '2026-12-31',
+                    'is_active' => true
+                ]
+            );
+        }
 
         $bannerPath = null;
         if ($request->hasFile('banner_image')) {
             $bannerPath = $request->file('banner_image')->store('class_banners', 'public');
         }
 
-        Classroom::create([
+        $classroom = Classroom::create([
             'teacher_id' => auth()->id(),
             'subject_id' => $subject->id,
             'semester_id' => $semester->id,
@@ -122,6 +128,8 @@ class TeacherController extends Controller
             'is_active' => true,
             'max_students' => $request->max_students,
         ]);
+
+        \App\Models\ActivityLog::log('create_class', 'Guru membuat kelas: ' . $classroom->name, $classroom);
 
         return redirect('/guru/classes')->with('success', 'Kelas baru berhasil dibuat!');
     }
@@ -151,6 +159,8 @@ class TeacherController extends Controller
             'max_students' => $request->max_students,
         ]);
         
+        \App\Models\ActivityLog::log('update_class', 'Guru memperbarui kelas: ' . $classroom->name, $classroom);
+        
         return redirect('/guru/classes')->with('success', 'Kelas berhasil diupdate!');
     }
 
@@ -160,7 +170,9 @@ class TeacherController extends Controller
     public function destroyClass($id)
     {
         $classroom = Classroom::where('teacher_id', auth()->id())->findOrFail($id);
+        $className = $classroom->name;
         $classroom->delete();
+        \App\Models\ActivityLog::log('delete_class', 'Guru menghapus kelas: ' . $className);
         return redirect('/guru/classes')->with('success', 'Kelas berhasil dihapus!');
     }
 
@@ -207,7 +219,7 @@ class TeacherController extends Controller
             ]
         );
 
-        \App\Models\Assignment::create([
+        $assignment = \App\Models\Assignment::create([
             'classroom_id' => $classroom->id,
             'title' => $request->title,
             'description' => $request->description,
@@ -216,6 +228,8 @@ class TeacherController extends Controller
             'is_published' => true,
             'allow_late' => true,
         ]);
+
+        \App\Models\ActivityLog::log('create_assignment', 'Guru membuat tugas: ' . $assignment->title, $assignment);
 
         return redirect('/guru/assignments')->with('success', 'Tugas baru berhasil dibuat!');
     }
@@ -234,13 +248,18 @@ class TeacherController extends Controller
             'description' => $request->description,
             'deadline_at' => $request->deadline_at,
         ]);
+        
+        \App\Models\ActivityLog::log('update_assignment', 'Guru memperbarui tugas: ' . $assignment->title, $assignment);
+        
         return redirect('/guru/assignments')->with('success', 'Tugas berhasil diupdate!');
     }
 
     public function destroyAssignment($id)
     {
         $assignment = \App\Models\Assignment::findOrFail($id);
+        $assignmentTitle = $assignment->title;
         $assignment->delete();
+        \App\Models\ActivityLog::log('delete_assignment', 'Guru menghapus tugas: ' . $assignmentTitle);
         return redirect('/guru/assignments')->with('success', 'Tugas berhasil dihapus!');
     }
 
@@ -278,7 +297,7 @@ class TeacherController extends Controller
             ]
         );
 
-        \App\Models\Material::create([
+        $material = \App\Models\Material::create([
             'classroom_id' => $classroom->id,
             'title' => $request->title,
             'description' => 'Materi baru',
@@ -287,6 +306,8 @@ class TeacherController extends Controller
             'file_type' => 'pdf',
             'file_size' => 1024,
         ]);
+
+        \App\Models\ActivityLog::log('create_material', 'Guru membuat materi: ' . $material->title, $material);
 
         return redirect('/guru/materials')->with('success', 'Materi berhasil diunggah!');
     }
@@ -300,13 +321,16 @@ class TeacherController extends Controller
         $material->update([
             'title' => $request->title,
         ]);
+        \App\Models\ActivityLog::log('update_material', 'Guru memperbarui materi: ' . $material->title, $material);
         return redirect('/guru/materials')->with('success', 'Materi berhasil diupdate!');
     }
 
     public function destroyMaterial($id)
     {
         $material = \App\Models\Material::findOrFail($id);
+        $materialTitle = $material->title;
         $material->delete();
+        \App\Models\ActivityLog::log('delete_material', 'Guru menghapus materi: ' . $materialTitle);
         return redirect('/guru/materials')->with('success', 'Materi berhasil dihapus!');
     }
 

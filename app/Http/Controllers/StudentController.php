@@ -137,6 +137,8 @@ class StudentController extends Controller
             'updated_at' => now(),
         ]);
 
+        \App\Models\ActivityLog::log('join_class', 'Murid bergabung dengan kelas: ' . $classroom->name, $classroom);
+
         return redirect('/courses')->with('success', 'Berhasil bergabung dengan kelas ' . $classroom->name . '!');
     }
 
