@@ -6,7 +6,6 @@ use App\Models\User;
 use App\Models\Role;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -48,7 +47,7 @@ class DatabaseSeeder extends Seeder
             User::create([
                 'name' => 'Super Admin',
                 'email' => 'admin@dikelas.com',
-                'password' => Hash::make('Admin@Dikelas2026!'),
+                'password' => 'Admin@Dikelas2026!',
                 'role_id' => $superAdminRole->id,
                 'is_active' => true,
             ]);
@@ -56,7 +55,7 @@ class DatabaseSeeder extends Seeder
             User::create([
                 'name' => 'Guru Matematika',
                 'email' => 'guru@dikelas.com',
-                'password' => Hash::make('Guru@Dikelas2026!'),
+                'password' => 'Guru@Dikelas2026!',
                 'role_id' => $teacherRole->id,
                 'nip' => '198001012005011001',
                 'is_active' => true,
@@ -65,7 +64,7 @@ class DatabaseSeeder extends Seeder
             User::create([
                 'name' => 'Budi Santoso',
                 'email' => 'murid@dikelas.com',
-                'password' => Hash::make('Murid@Dikelas2026!'),
+                'password' => 'Murid@Dikelas2026!',
                 'role_id' => $studentRole->id,
                 'nis' => '12345678',
                 'is_active' => true,

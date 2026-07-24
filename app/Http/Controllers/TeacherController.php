@@ -20,11 +20,7 @@ class TeacherController extends Controller
         $totalClasses = Classroom::where('teacher_id', $teacher->id)->count();
         
         // Total Murid unik di semua kelasnya
-        $totalStudents = \DB::table('classroom_student')
-            ->join('classrooms', 'classroom_student.classroom_id', '=', 'classrooms.id')
-            ->where('classrooms.teacher_id', $teacher->id)
-            ->distinct('classroom_student.student_id')
-            ->count('classroom_student.student_id');
+        $totalStudents = $teacher->teachesClassrooms()->withCount('students')->get()->sum('students_count');
             
         // Total Materi dari semua kelas guru ini
         $classroomIds = Classroom::where('teacher_id', $teacher->id)->pluck('id');

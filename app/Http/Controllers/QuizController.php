@@ -8,35 +8,31 @@ use App\Models\QuestionOption;
 use App\Models\Quiz;
 use App\Models\QuizAttempt;
 use App\Models\QuizAnswer;
+use App\Http\Controllers\Traits\AuthorizesClassroomAccess;
+use App\Http\Requests\StoreQuizRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class QuizController extends Controller
 {
+    use AuthorizesClassroomAccess;
+
     /**
      * Membuat kuis baru (Guru).
      */
-    public function store(Request $request, $classroomId)
+    public function store(StoreQuizRequest $request, $classroomId)
     {
         $classroom = Classroom::findOrFail($classroomId);
+        $this->ensureClassroomOwner($classroom);
 
-        if (auth()->user()->id != $classroom->teacher_id) {
-            return abort(403, 'Akses ditolak.');
-        }
-
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'duration_minutes' => 'required|integer|min:1',
-            'max_score' => 'required|integer|min:1',
-        ]);
+        $validated = $request->validated();
 
         $quiz = Quiz::create([
             'classroom_id' => $classroom->id,
-            'title' => $request->title,
-            'description' => $request->description,
-            'duration_minutes' => $request->duration_minutes,
-            'max_score' => $request->max_score,
+            'title' => $validated['title'],
+            'description' => $validated['description'] ?? null,
+            'duration_minutes' => $validated['duration_minutes'],
+            'max_score' => $validated['max_score'],
             'is_published' => true,
         ]);
 
@@ -52,9 +48,7 @@ class QuizController extends Controller
     {
         $quiz = Quiz::with(['questions.options', 'attempts.student'])->findOrFail($id);
         
-        if (auth()->user()->id != $quiz->classroom->teacher_id) {
-            return abort(403, 'Akses ditolak.');
-        }
+        $this->ensureClassroomOwner($quiz->classroom);
 
         return view('auth.guru.quiz-detail', compact('quiz'));
     }
@@ -65,10 +59,7 @@ class QuizController extends Controller
     public function storeQuestion(Request $request, $quizId)
     {
         $quiz = Quiz::findOrFail($quizId);
-
-        if (auth()->user()->id != $quiz->classroom->teacher_id) {
-            return abort(403, 'Akses ditolak.');
-        }
+        $this->ensureClassroomOwner($quiz->classroom);
 
         $request->validate([
             'type' => 'required|in:multiple_choice',
@@ -112,10 +103,7 @@ class QuizController extends Controller
     public function importQuestions(Request $request, $quizId)
     {
         $quiz = Quiz::findOrFail($quizId);
-
-        if (auth()->user()->id != $quiz->classroom->teacher_id) {
-            return abort(403, 'Akses ditolak.');
-        }
+        $this->ensureClassroomOwner($quiz->classroom);
 
         $request->validate([
             'import_file' => 'required|file|mimes:pdf|max:5120',
@@ -203,10 +191,7 @@ class QuizController extends Controller
     public function exportQuestions($quizId)
     {
         $quiz = Quiz::with('questions.options')->findOrFail($quizId);
-
-        if (auth()->user()->id != $quiz->classroom->teacher_id) {
-            return abort(403, 'Akses ditolak.');
-        }
+        $this->ensureClassroomOwner($quiz->classroom);
 
         $exportData = [];
         foreach ($quiz->questions as $question) {
@@ -242,15 +227,7 @@ class QuizController extends Controller
         $quiz = Quiz::with('classroom')->findOrFail($id);
         $user = auth()->user();
 
-        // Cek apakah murid terdaftar di kelas ini
-        $isEnrolled = DB::table('classroom_student')
-            ->where('classroom_id', $quiz->classroom_id)
-            ->where('student_id', $user->id)
-            ->exists();
-
-        if (!$isEnrolled) {
-            return redirect()->route('courses')->with('error', 'Akses ditolak.');
-        }
+        $this->ensureClassroomAccess($quiz->classroom);
 
         // Cek attempt
         $attempt = QuizAttempt::where('quiz_id', $quiz->id)
@@ -270,8 +247,10 @@ class QuizController extends Controller
      */
     public function startAttempt($quizId)
     {
-        $quiz = Quiz::findOrFail($quizId);
+        $quiz = Quiz::with('classroom')->findOrFail($quizId);
         $user = auth()->user();
+
+        $this->ensureClassroomAccess($quiz->classroom);
 
         // Pastikan kuis memiliki soal
         if ($quiz->questions()->count() === 0) {

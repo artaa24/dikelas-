@@ -56,6 +56,18 @@ class User extends Authenticatable
     }
 
     /**
+     * Cek apakah user memiliki permission tertentu.
+     */
+    public function hasPermission(string $permissionName): bool
+    {
+        if ($this->isAdmin()) {
+            return true;
+        }
+
+        return $this->role->permissions()->where('name', $permissionName)->exists();
+    }
+
+    /**
      * Get the user's bookmarked materials.
      */
     public function bookmarks()
@@ -70,5 +82,22 @@ class User extends Authenticatable
     public function certificates()
     {
         return $this->hasMany(Certificate::class, 'student_id');
+    }
+
+    /**
+     * Get the classrooms this user belongs to (as student).
+     */
+    public function classrooms()
+    {
+        return $this->belongsToMany(Classroom::class, 'classroom_student', 'student_id', 'classroom_id')
+                    ->withTimestamps();
+    }
+
+    /**
+     * Get the classrooms this user teaches.
+     */
+    public function teachesClassrooms()
+    {
+        return $this->hasMany(Classroom::class, 'teacher_id');
     }
 }

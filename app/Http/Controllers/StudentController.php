@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Classroom;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class StudentController extends Controller
 {
@@ -14,57 +13,55 @@ class StudentController extends Controller
     public function dashboard()
     {
         $student = auth()->user();
-        
-        // Ambil kelas yang diikuti oleh murid ini (diurutkan berdasarkan waktu bergabung)
-        $classrooms = DB::table('classrooms')
-            ->join('classroom_student', 'classrooms.id', '=', 'classroom_student.classroom_id')
-            ->where('classroom_student.student_id', $student->id)
-            ->select('classrooms.*')
-            ->get();
-            
+
+        // Ambil kelas yang diikuti oleh murid ini
+        $classrooms = Classroom::whereHas('students', function ($query) use ($student) {
+            $query->where('student_id', $student->id);
+        })->get();
+
         $totalClasses = $classrooms->count();
-        
         $classroomIds = $classrooms->pluck('id');
-        
-        // Tugas dan Kuis aktif (belum disubmit/dikerjakan dan belum melewati batas waktu)
+
+        // Tugas aktif (belum disubmit)
         $activeAssignments = \App\Models\Assignment::whereIn('classroom_id', $classroomIds)
-            ->whereNotIn('id', function($query) use ($student) {
+            ->whereNotIn('id', function ($query) use ($student) {
                 $query->select('assignment_id')
                       ->from('submissions')
                       ->where('student_id', $student->id);
             })
             ->count();
-            
+
+        // Kuis aktif (belum dikerjakan)
         $activeQuizzes = \App\Models\Quiz::whereIn('classroom_id', $classroomIds)
-            ->whereNotIn('id', function($query) use ($student) {
+            ->whereNotIn('id', function ($query) use ($student) {
                 $query->select('quiz_id')
                       ->from('quiz_attempts')
                       ->where('student_id', $student->id)
                       ->where('status', 'completed');
             })
             ->count();
-            
-        $activeAssignments = $activeAssignments + $activeQuizzes; // Gabungkan total tugas aktif
+
+        $activeAssignments = $activeAssignments + $activeQuizzes;
 
         // Tugas yang sudah selesai
         $submissions = \App\Models\Submission::where('student_id', $student->id)
             ->whereNotNull('score')
             ->get();
-            
+
         $completedQuizzes = \App\Models\QuizAttempt::where('student_id', $student->id)
             ->where('status', 'completed')
             ->whereNotNull('total_score')
             ->get();
-            
+
         $completedAssignments = $submissions->count() + $completedQuizzes->count();
-        
+
         $totalScore = $submissions->sum('score') + $completedQuizzes->sum('total_score');
         $averageScore = $completedAssignments > 0 ? number_format($totalScore / $completedAssignments, 1) : "0";
 
-        // Get upcoming assignments for right sidebar
+        // Tugas yang akan datang
         $upcomingAssignments = \App\Models\Assignment::with('classroom')
             ->whereIn('classroom_id', $classroomIds)
-            ->whereNotIn('id', function($query) use ($student) {
+            ->whereNotIn('id', function ($query) use ($student) {
                 $query->select('assignment_id')
                     ->from('submissions')
                     ->where('student_id', $student->id);
@@ -82,12 +79,11 @@ class StudentController extends Controller
     public function courses()
     {
         $student = auth()->user();
-        
-        // Ambil kelas yang diikuti beserta data gurunya dan jumlah materi/tugas
+
         $classrooms = Classroom::whereHas('students', function ($query) use ($student) {
             $query->where('student_id', $student->id);
         })->with('teacher')->withCount(['materials', 'assignments'])->get();
-        
+
         return view('auth.courses', compact('classrooms'));
     }
 
@@ -101,40 +97,27 @@ class StudentController extends Controller
         ]);
 
         $student = auth()->user();
-        
-        // Cari kelas berdasarkan kode yang diinput
+
         $classroom = Classroom::where('code', strtoupper($request->class_code))->first();
 
         if (!$classroom) {
             return back()->withErrors(['class_code' => 'Kode kelas tidak ditemukan. Silakan periksa kembali.']);
         }
 
-        // Cek apakah kelas aktif
         if (!$classroom->is_active) {
             return back()->withErrors(['class_code' => 'Kelas ini sedang tidak menerima murid baru.']);
         }
 
-        // Cek apakah kelas sudah penuh
         if ($classroom->isFull()) {
             return back()->withErrors(['class_code' => 'Kelas ini sudah penuh (batas: ' . $classroom->max_students . ' murid).']);
         }
 
-        // Cek apakah murid sudah terdaftar di kelas ini
-        $alreadyJoined = DB::table('classroom_student')
-            ->where('classroom_id', $classroom->id)
-            ->where('student_id', $student->id)
-            ->exists();
-
-        if ($alreadyJoined) {
+        if ($classroom->students()->where('users.id', $student->id)->exists()) {
             return back()->withErrors(['class_code' => 'Anda sudah terdaftar di kelas ini.']);
         }
 
-        // Daftarkan murid ke kelas
-        DB::table('classroom_student')->insert([
-            'classroom_id' => $classroom->id,
-            'student_id' => $student->id,
-            'created_at' => now(),
-            'updated_at' => now(),
+        $classroom->students()->attach($student->id, [
+            'joined_at' => now(),
         ]);
 
         \App\Models\ActivityLog::log('join_class', 'Murid bergabung dengan kelas: ' . $classroom->name, $classroom);
@@ -148,20 +131,16 @@ class StudentController extends Controller
     public function assignments()
     {
         $student = auth()->user();
-        
-        // Ambil kelas yang diikuti
-        $classroomIds = DB::table('classroom_student')
-            ->where('student_id', $student->id)
-            ->pluck('classroom_id');
-            
-        // Ambil semua tugas dari kelas-kelas tersebut
-        $assignments = \App\Models\Assignment::with(['classroom', 'submissions' => function($query) use ($student) {
+
+        $classroomIds = $student->classrooms()->pluck('classrooms.id');
+
+        $assignments = \App\Models\Assignment::with(['classroom', 'submissions' => function ($query) use ($student) {
                 $query->where('student_id', $student->id);
             }])
             ->whereIn('classroom_id', $classroomIds)
             ->orderBy('deadline_at', 'asc')
             ->get();
-            
+
         return view('auth.assignments', compact('assignments'));
     }
 
@@ -171,20 +150,18 @@ class StudentController extends Controller
     public function schedule()
     {
         $student = auth()->user();
-        
-        $classroomIds = DB::table('classroom_student')
-            ->where('student_id', $student->id)
-            ->pluck('classroom_id');
-            
+
+        $classroomIds = $student->classrooms()->pluck('classrooms.id');
+
         $assignments = \App\Models\Assignment::with('classroom')
             ->whereIn('classroom_id', $classroomIds)
             ->where('deadline_at', '>', now())
             ->orderBy('deadline_at', 'asc')
             ->get();
-            
+
         $quizzes = \App\Models\Quiz::with('classroom')
             ->whereIn('classroom_id', $classroomIds)
-            ->where('created_at', '>', now()->subDays(30)) // just show recent or upcoming
+            ->where('created_at', '>', now()->subDays(30))
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -197,13 +174,44 @@ class StudentController extends Controller
     public function grades()
     {
         $student = auth()->user();
-        
+
+        // Nilai tugas
         $submissions = \App\Models\Submission::with(['assignment.classroom'])
             ->where('student_id', $student->id)
             ->whereNotNull('score')
             ->orderBy('updated_at', 'desc')
-            ->get();
-            
-        return view('auth.grades', compact('submissions'));
+            ->get()
+            ->map(fn($s) => (object)[
+                'type' => 'Tugas',
+                'name' => $s->assignment->title ?? 'Tugas',
+                'classroom_name' => $s->assignment->classroom->name ?? '-',
+                'submitted_at' => $s->submitted_at,
+                'graded_at' => $s->updated_at,
+                'score' => $s->score,
+                'max_score' => $s->assignment->max_score ?? 100,
+                'feedback' => $s->feedback,
+            ]);
+
+        // Nilai kuis
+        $quizAttempts = \App\Models\QuizAttempt::with(['quiz.classroom'])
+            ->where('student_id', $student->id)
+            ->where('status', 'completed')
+            ->whereNotNull('total_score')
+            ->orderBy('finished_at', 'desc')
+            ->get()
+            ->map(fn($a) => (object)[
+                'type' => 'Kuis',
+                'name' => $a->quiz->title ?? 'Kuis',
+                'classroom_name' => $a->quiz->classroom->name ?? '-',
+                'submitted_at' => $a->finished_at,
+                'graded_at' => $a->finished_at,
+                'score' => $a->total_score,
+                'max_score' => $a->quiz->max_score ?? 100,
+                'feedback' => null,
+            ]);
+
+        $allGrades = $submissions->concat($quizAttempts)->sortByDesc('graded_at')->values();
+
+        return view('auth.grades', compact('allGrades'));
     }
 }

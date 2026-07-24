@@ -16,6 +16,7 @@ class Classroom extends Model
         'cover_image',
         'banner_image',
         'is_active',
+        'is_archived',
         'max_students',
     ];
 

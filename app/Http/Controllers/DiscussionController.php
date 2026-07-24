@@ -4,13 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Classroom;
 use App\Models\Discussion;
+use App\Http\Controllers\Traits\AuthorizesClassroomAccess;
 use Illuminate\Http\Request;
 
 class DiscussionController extends Controller
 {
+    use AuthorizesClassroomAccess;
+
     public function index($classroomId)
     {
         $classroom = Classroom::findOrFail($classroomId);
+        $this->ensureClassroomAccess($classroom);
+
         $discussions = $classroom->discussions()->with('user', 'replies')->latest()->get();
         return view('auth.discussions.index', compact('classroom', 'discussions'));
     }
@@ -23,6 +28,7 @@ class DiscussionController extends Controller
         ]);
 
         $classroom = Classroom::findOrFail($classroomId);
+        $this->ensureClassroomAccess($classroom);
 
         Discussion::create([
             'classroom_id' => $classroom->id,
@@ -37,6 +43,8 @@ class DiscussionController extends Controller
     public function show($classroomId, $discussionId)
     {
         $classroom = Classroom::findOrFail($classroomId);
+        $this->ensureClassroomAccess($classroom);
+
         $discussion = Discussion::with(['user', 'replies.user'])->findOrFail($discussionId);
         return view('auth.discussions.show', compact('classroom', 'discussion'));
     }
@@ -44,6 +52,9 @@ class DiscussionController extends Controller
     public function reply(Request $request, $classroomId, $discussionId)
     {
         $request->validate(['content' => 'required|string']);
+
+        $classroom = Classroom::findOrFail($classroomId);
+        $this->ensureClassroomAccess($classroom);
 
         $discussion = Discussion::findOrFail($discussionId);
         

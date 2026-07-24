@@ -5,36 +5,33 @@ namespace App\Http\Controllers;
 use App\Models\Assignment;
 use App\Models\Classroom;
 use App\Models\Submission;
+use App\Http\Controllers\Traits\AuthorizesClassroomAccess;
+use App\Http\Requests\StoreAssignmentRequest;
+use App\Http\Requests\GradeSubmissionRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class AssignmentController extends Controller
 {
+    use AuthorizesClassroomAccess;
+
     /**
      * Membuat tugas baru (Guru)
      */
-    public function store(Request $request, $classroomId)
+    public function store(StoreAssignmentRequest $request, $classroomId)
     {
         $classroom = Classroom::findOrFail($classroomId);
+        $this->ensureClassroomOwner($classroom);
 
-        if (auth()->user()->id != $classroom->teacher_id) {
-            return abort(403, 'Akses ditolak.');
-        }
-
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'deadline_at' => 'required|date',
-            'max_score' => 'required|integer|min:0|max:100',
-        ]);
+        $validated = $request->validated();
 
         $assignment = Assignment::create([
             'classroom_id' => $classroom->id,
-            'title' => $request->title,
-            'description' => $request->description,
-            'deadline_at' => $request->deadline_at,
-            'max_score' => $request->max_score,
+            'title' => $validated['title'],
+            'description' => $validated['description'] ?? null,
+            'deadline_at' => $validated['deadline_at'],
+            'max_score' => $validated['max_score'],
             'is_published' => true,
         ]);
 
@@ -51,25 +48,15 @@ class AssignmentController extends Controller
         $assignment = Assignment::with(['classroom', 'classroom.teacher'])->findOrFail($id);
         $user = auth()->user();
 
-        // Validasi akses
-        if ($user->role->name == 'student') {
-            $isEnrolled = $assignment->classroom->students()->where('users.id', $user->id)->exists();
-            if (!$isEnrolled) {
-                return redirect('/courses')->with('error', 'Akses ditolak.');
-            }
-            
-            // Ambil submission milik murid ini
+        $this->ensureClassroomAccess($assignment->classroom);
+
+        if ($user->isStudent()) {
             $submission = Submission::where('assignment_id', $assignment->id)
                                     ->where('student_id', $user->id)
                                     ->first();
             
             return view('auth.assignment-detail', compact('assignment', 'submission'));
-        } elseif ($user->role->name == 'teacher') {
-            if ($assignment->classroom->teacher_id != $user->id) {
-                return redirect('/guru/assignments')->with('error', 'Akses ditolak.');
-            }
-            
-            // Ambil semua submissions dari murid-murid di kelas ini
+        } elseif ($user->isTeacher()) {
             $submissions = Submission::with('student')
                                      ->where('assignment_id', $assignment->id)
                                      ->get();
@@ -118,24 +105,20 @@ class AssignmentController extends Controller
     /**
      * Menilai jawaban tugas (Guru)
      */
-    public function grade(Request $request, $submissionId)
+    public function grade(GradeSubmissionRequest $request, $submissionId)
     {
         $submission = Submission::with('assignment.classroom')->findOrFail($submissionId);
         
-        // Validasi bahwa guru ini adalah pemilik kelas
         $user = auth()->user();
         if ($submission->assignment->classroom->teacher_id !== $user->id) {
             abort(403, 'Anda tidak berhak menilai submission dari kelas lain.');
         }
 
-        $request->validate([
-            'score' => 'required|numeric|min:0|max:100',
-            'feedback' => 'nullable|string',
-        ]);
+        $validated = $request->validated();
 
         $submission->update([
-            'score' => $request->score,
-            'feedback' => $request->feedback,
+            'score' => $validated['score'],
+            'feedback' => $validated['feedback'] ?? null,
             'status' => 'graded',
             'graded_at' => now(),
         ]);

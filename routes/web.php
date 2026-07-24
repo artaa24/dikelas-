@@ -147,6 +147,7 @@ Route::middleware('auth')->group(function () {
         
         Route::get('/admin/backups', [\App\Http\Controllers\BackupController::class, 'index'])->name('admin.backups.index');
         Route::post('/admin/backups', [\App\Http\Controllers\BackupController::class, 'create'])->name('admin.backups.create');
+        Route::get('/admin/backups/{id}/download', [\App\Http\Controllers\BackupController::class, 'download'])->name('admin.backups.download');
         
         Route::get('/admin/permissions', [\App\Http\Controllers\PermissionController::class, 'index'])->name('admin.permissions.index');
         Route::put('/admin/permissions/roles/{roleId}', [\App\Http\Controllers\PermissionController::class, 'updateRolePermissions'])->name('admin.permissions.update');

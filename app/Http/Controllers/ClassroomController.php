@@ -4,41 +4,27 @@ namespace App\Http\Controllers;
 
 use App\Models\Classroom;
 use App\Models\Material;
+use App\Http\Controllers\Traits\AuthorizesClassroomAccess;
+use App\Http\Requests\StoreMaterialRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class ClassroomController extends Controller
 {
+    use AuthorizesClassroomAccess;
+
     /**
      * Tampilkan detail kelas (Materi, Tugas, Anggota).
      */
     public function show($id)
     {
         $classroom = Classroom::with(['teacher', 'students'])->findOrFail($id);
-        
-        $user = auth()->user();
 
-        // Validasi akses: Hanya Guru kelas ini atau Murid kelas ini yang bisa akses
-        if ($user->role->name == 'student') {
-            $isEnrolled = $classroom->students()->where('users.id', $user->id)->exists();
-            if (!$isEnrolled) {
-                return redirect('/courses')->with('error', 'Anda tidak terdaftar di kelas ini.');
-            }
-        } elseif ($user->role->name == 'teacher') {
-            if ($classroom->teacher_id != $user->id) {
-                return redirect('/guru/classes')->with('error', 'Anda tidak memiliki akses ke kelas ini.');
-            }
-        }
+        $this->ensureClassroomAccess($classroom);
 
-        // Ambil materi
         $materials = Material::where('classroom_id', $id)->orderBy('created_at', 'desc')->get();
-        
-        // Ambil tugas
         $assignments = \App\Models\Assignment::where('classroom_id', $id)->orderBy('deadline_at', 'asc')->get();
-
-        // Ambil kuis
         $quizzes = \App\Models\Quiz::where('classroom_id', $id)->orderBy('created_at', 'desc')->get();
 
         return view('auth.class-detail', compact('classroom', 'materials', 'assignments', 'quizzes'));
@@ -47,22 +33,14 @@ class ClassroomController extends Controller
     /**
      * Menyimpan materi baru (Khusus Guru).
      */
-    public function storeMaterial(Request $request, $id)
+    public function storeMaterial(StoreMaterialRequest $request, $id)
     {
         $classroom = Classroom::findOrFail($id);
+        $this->ensureClassroomOwner($classroom);
 
-        if (auth()->user()->id != $classroom->teacher_id) {
-            return abort(403, 'Akses ditolak.');
-        }
+        $validated = $request->validated();
 
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'file' => 'nullable|file|max:10240', // Max 10MB
-            'link_url' => 'nullable|url|max:500'
-        ]);
-
-        if (!$request->hasFile('file') && empty($request->link_url)) {
+        if (!$request->hasFile('file') && empty($validated['link_url'])) {
             return back()->with('error', 'Anda harus mengunggah file atau memasukkan link URL.');
         }
 
@@ -78,9 +56,9 @@ class ClassroomController extends Controller
             elseif (in_array($extension, ['mp4', 'mkv', 'avi'])) $fileType = 'video';
             elseif (in_array($extension, ['ppt', 'pptx'])) $fileType = 'presentation';
 
-            $filePath = $file->storeAs('materials/' . $classroom->id, time() . '_' . Str::slug($request->title) . '.' . $extension, 'public');
+            $filePath = $file->storeAs('materials/' . $classroom->id, time() . '_' . Str::slug($validated['title']) . '.' . $extension, 'public');
         } else {
-            $filePath = $request->link_url;
+            $filePath = $validated['link_url'];
             $fileName = 'Tautan Eksternal';
             $fileType = 'link';
             $fileSize = 0;
@@ -89,8 +67,8 @@ class ClassroomController extends Controller
 
         Material::create([
             'classroom_id' => $classroom->id,
-            'title' => $request->title,
-            'description' => $request->description,
+            'title' => $validated['title'],
+            'description' => $validated['description'] ?? null,
             'file_path' => $filePath,
             'file_name' => $fileName,
             'file_type' => $fileType,
@@ -106,13 +84,11 @@ class ClassroomController extends Controller
      */
     public function removeStudent(Request $request, $classroomId, $studentId)
     {
-        $classroom = Classroom::where('teacher_id', auth()->id())->findOrFail($classroomId);
+        $classroom = Classroom::findOrFail($classroomId);
+        $this->ensureClassroomOwner($classroom);
 
         // Hapus relasi murid dari kelas
-        DB::table('classroom_student')
-            ->where('classroom_id', $classroomId)
-            ->where('student_id', $studentId)
-            ->delete();
+        $classroom->students()->detach($studentId);
 
         return redirect()->route('classrooms.show', $classroomId)->with('success', 'Murid berhasil dikeluarkan dari kelas.');
     }
@@ -122,7 +98,8 @@ class ClassroomController extends Controller
      */
     public function updateSettings(Request $request, $id)
     {
-        $classroom = Classroom::where('teacher_id', auth()->id())->findOrFail($id);
+        $classroom = Classroom::findOrFail($id);
+        $this->ensureClassroomOwner($classroom);
 
         $request->validate([
             'max_students' => 'nullable|integer|min:1|max:999',
